@@ -5,9 +5,13 @@ Add Qwen3 model quantization using AMD Quark.
 pip install amd_quark-<version>+<>.whl
 
 pip install datasets
+
 pip install transformers
+
 pip install accelerate
+
 pip install evaluate
+
 pip install nltk
 
 ## Run Quantization Script
