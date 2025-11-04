@@ -1,0 +1,934 @@
+
+<!DOCTYPE html>
+
+
+<html lang="en" data-content_root="../" >
+
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="viewport" content="width=device-width, initial-scale=1" />
+
+    <title>Vision Model Quantization Using Quark FX Graph Mode &#8212; AMD Quark 0.10 documentation</title>
+  
+  
+  
+  <script data-cfasync="false">
+    document.documentElement.dataset.mode = localStorage.getItem("mode") || "";
+    document.documentElement.dataset.theme = localStorage.getItem("theme") || "";
+  </script>
+  <!--
+    this give us a css class that will be invisible only if js is disabled
+  -->
+  <noscript>
+    <style>
+      .pst-js-only { display: none !important; }
+
+    </style>
+  </noscript>
+  
+  <!-- Loaded before other Sphinx assets -->
+  <link href="../_static/styles/theme.css?digest=8878045cc6db502f8baf" rel="stylesheet" />
+<link href="../_static/styles/pydata-sphinx-theme.css?digest=8878045cc6db502f8baf" rel="stylesheet" />
+
+    <link rel="stylesheet" type="text/css" href="../_static/pygments.css?v=03e43079" />
+    <link rel="stylesheet" type="text/css" href="../_static/styles/sphinx-book-theme.css?v=a3416100" />
+    <link rel="stylesheet" type="text/css" href="../_static/graphviz.css?v=4ae1632d" />
+    <link rel="stylesheet" type="text/css" href="../_static/mystnb.8ecb98da25f57f5357bf6f572d296f466b2cfe2517ffebfabe82451661e28f02.css" />
+    <link rel="stylesheet" type="text/css" href="../_static/custom.css?v=a66ef196" />
+    <link rel="stylesheet" type="text/css" href="../_static/rocm_header.css?v=9557e3d1" />
+    <link rel="stylesheet" type="text/css" href="../_static/rocm_footer.css?v=7095035a" />
+    <link rel="stylesheet" type="text/css" href="../_static/fonts.css?v=fcff5274" />
+  
+  <!-- So that users can add custom icons -->
+  <script src="../_static/scripts/fontawesome.js?digest=8878045cc6db502f8baf"></script>
+  <!-- Pre-loaded scripts that we'll load fully later -->
+  <link rel="preload" as="script" href="../_static/scripts/bootstrap.js?digest=8878045cc6db502f8baf" />
+<link rel="preload" as="script" href="../_static/scripts/pydata-sphinx-theme.js?digest=8878045cc6db502f8baf" />
+
+    <script src="../_static/documentation_options.js?v=e0f31c2e"></script>
+    <script src="../_static/doctools.js?v=9bcbadda"></script>
+    <script src="../_static/sphinx_highlight.js?v=dc90522c"></script>
+    <script async="async" src="../_static/code_word_breaks.js?v=327952c4"></script>
+    <script async="async" src="../_static/renameVersionLinks.js?v=929fe5e4"></script>
+    <script async="async" src="../_static/rdcMisc.js?v=01f88d96"></script>
+    <script async="async" src="../_static/theme_mode_captions.js?v=15f4ec5d"></script>
+    <script defer="defer" src="../_static/search.js?v=90a4452c"></script>
+    <script src="../_static/scripts/sphinx-book-theme.js?v=887ef09a"></script>
+    <script>DOCUMENTATION_OPTIONS.pagename = 'pytorch/example_quark_torch_vision';</script>
+    <script async="async" src="https://download.amd.com/js/analytics/analyticsinit.js"></script>
+    <link rel="icon" href="https://www.amd.com/content/dam/code/images/favicon/favicon.ico"/>
+    <link rel="index" title="Index" href="../genindex.html" />
+    <link rel="search" title="Search" href="../search.html" />
+    <link rel="next" title="Image Classification Models FX Graph Quantization" href="example_quark_fx_image_classification.html" />
+    <link rel="prev" title="LM-Evaluation-Harness (Offline)" href="example_quark_torch_llm_eval_harness_offline.html" />
+<script type="text/javascript">
+    window.addEventListener("load", function(event) {
+        var coll = document.querySelectorAll('.toggle > .header');  // sdelect the toggles header.
+        var i;
+
+        for (i = 0; i < coll.length; i++) {
+            coll[i].innerText = "Show code ▼\n\n";
+
+            coll[i].addEventListener("click", function() {
+                var content = this.nextElementSibling;  // code block.
+                if (content.style.display === "block") {
+                    content.style.display = "none";
+                    this.innerText = "Show code ▼\n\n";
+                } else {
+                    content.style.display = "block";
+                    this.innerText = "Hide code ▶";
+                }
+            });
+        }
+    });
+</script>
+
+  </head>
+  
+  
+  <body data-bs-spy="scroll" data-bs-target=".bd-toc-nav" data-offset="180" data-bs-root-margin="0px 0px -60%" data-default-mode="">
+
+  
+  
+  <div id="pst-skip-link" class="skip-link d-print-none"><a href="#main-content">Skip to main content</a></div>
+  
+  <div id="pst-scroll-pixel-helper"></div>
+  
+  <button type="button" class="btn rounded-pill" id="pst-back-to-top">
+    <i class="fa-solid fa-arrow-up"></i>Back to top</button>
+
+  
+  <dialog id="pst-search-dialog">
+    
+<form class="bd-search d-flex align-items-center"
+      action="../search.html"
+      method="get">
+  <i class="fa-solid fa-magnifying-glass"></i>
+  <input type="search"
+         class="form-control"
+         name="q"
+         placeholder="Search..."
+         aria-label="Search..."
+         autocomplete="off"
+         autocorrect="off"
+         autocapitalize="off"
+         spellcheck="false"/>
+  <span class="search-button__kbd-shortcut"><kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd>K</kbd></span>
+</form>
+  </dialog>
+
+  <div class="pst-async-banner-revealer d-none">
+  <aside id="bd-header-version-warning" class="d-none d-print-none" aria-label="Version warning"></aside>
+</div>
+
+  
+
+<header class="common-header" >
+    <nav class="navbar navbar-expand-xl">
+        <div class="container-fluid main-nav rocm-header">
+            
+            <button class="navbar-toggler collapsed" id="nav-icon" data-tracking-information="mainMenuToggle" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+                <span></span>
+                <span></span>
+                <span></span>
+            </button>
+            
+            <div class="header-logo">
+                <a class="navbar-brand" href="https://www.amd.com/">
+                    <img src="../_static/images/amd-header-logo.svg" alt="AMD Logo" title="AMD Logo" width="90" class="d-inline-block align-text-top hover-opacity"/>
+                </a>
+                <div class="vr vr mx-40 my-25"></div>
+                <a class="klavika-font hover-opacity" href="https://quark.docs.amd.com">Quark</a>
+                <a class="header-all-versions" href="https://quark.docs.amd.com/latest/versions.html">Version List</a>
+            </div>
+            <div class="icon-nav text-center d-flex ms-auto">
+            </div>
+        </div>
+    </nav>
+    
+    <nav class="navbar navbar-expand-xl second-level-nav">
+        <div class="container-fluid main-nav">
+            <div class="navbar-nav-container collapse navbar-collapse" id="navbarSupportedContent">
+                <ul class="navbar-nav nav-mega me-auto mb-2 mb-lg-0 col-xl-10">
+                    
+                        <li class="nav-item">
+                            <a class="nav-link top-level header-menu-links" href="https://github.com/amd/quark" id="navgithub" role="button" aria-expanded="false" target="_blank" >
+                                GitHub
+                            </a>
+                        </li>
+                    
+                        <li class="nav-item">
+                            <a class="nav-link top-level header-menu-links" href="https://github.com/amd/quark/issues/new/choose" id="navsupport" role="button" aria-expanded="false" target="_blank" >
+                                Support
+                            </a>
+                        </li>
+                    
+                </ul>
+            </div>
+        </div>
+    </nav>
+    
+</header>
+
+
+  <div class="bd-container">
+    <div class="bd-container__inner bd-page-width">
+      
+      
+      
+      <dialog id="pst-primary-sidebar-modal"></dialog>
+      <div id="pst-primary-sidebar" class="bd-sidebar-primary bd-sidebar">
+        
+
+  
+  <div class="sidebar-header-items sidebar-primary__section">
+    
+    
+    
+    
+  </div>
+  
+    <div class="sidebar-primary-items__start sidebar-primary__section">
+        <div class="sidebar-primary-item">
+
+  
+    
+  
+
+<a class="navbar-brand logo" href="../index.html">
+  
+  
+  
+  
+  
+  
+    <p class="title logo__title">AMD Quark 0.10 documentation</p>
+  
+</a></div>
+        <div class="sidebar-primary-item">
+
+<button class="btn search-button-field search-button__button pst-js-only" title="Search" aria-label="Search" data-bs-placement="bottom" data-bs-toggle="tooltip">
+ <i class="fa-solid fa-magnifying-glass"></i>
+ <span class="search-button__default-text">Search</span>
+ <span class="search-button__kbd-shortcut"><kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd class="kbd-shortcut__modifier">K</kbd></span>
+</button></div>
+        <div class="sidebar-primary-item"><nav class="bd-links bd-docs-nav" aria-label="Main">
+    <div class="bd-toc-item navbar-nav active">
+        <p aria-level="2" class="caption" role="heading"><span class="caption-text">Release Notes</span></p>
+<ul class="nav bd-sidenav">
+<li class="toctree-l1"><a class="reference internal" href="../release_note.html">Release Information</a></li>
+</ul>
+<p aria-level="2" class="caption" role="heading"><span class="caption-text">Getting Started with AMD Quark</span></p>
+<ul class="current nav bd-sidenav">
+<li class="toctree-l1"><a class="reference internal" href="../intro.html">Introduction to Quantization</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../install.html">Installation</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../basic_usage.html">Getting started: Introduction</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../onnx/basic_usage_onnx.html">Getting started: Quark for ONNX</a></li>
+<li class="toctree-l1"><a class="reference internal" href="basic_usage_pytorch.html">Getting started: Quark for PyTorch</a></li>
+<li class="toctree-l1 current active has-children"><a class="reference internal" href="pytorch_examples.html">PyTorch Examples</a><details open="open"><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul class="current">
+<li class="toctree-l2"><a class="reference internal" href="example_quark_torch_diffusers.html">Diffusion Model Quantization</a></li>
+<li class="toctree-l2"><a class="reference internal" href="example_quark_torch_brevitas.html">AMD Quark Extension for Brevitas Integration</a></li>
+<li class="toctree-l2"><a class="reference internal" href="example_quark_torch_pytorch_light.html">Integration with AMD Pytorch-light (APL)</a></li>
+<li class="toctree-l2"><a class="reference internal" href="example_quark_torch_llm_pruning.html">Language Model Pruning</a></li>
+<li class="toctree-l2 has-children"><a class="reference internal" href="example_quark_torch_llm_ptq.html">Language Model PTQ</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
+<li class="toctree-l3"><a class="reference internal" href="../tutorials/torch/example_fp4.html">FP4 Post Training Quantization (PTQ) for LLM models</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../tutorials/torch/example_fp8.html">FP8 Post Training Quantization (PTQ) for LLM models</a></li>
+</ul>
+</details></li>
+<li class="toctree-l2"><a class="reference internal" href="example_quark_torch_llm_qat.html">Language Model QAT</a></li>
+<li class="toctree-l2 has-children"><a class="reference internal" href="example_quark_torch_llm_eval.html">Language Model Evaluation</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
+<li class="toctree-l3"><a class="reference internal" href="example_quark_torch_llm_eval_perplexity.html">Perplexity Evaluations</a></li>
+<li class="toctree-l3"><a class="reference internal" href="example_quark_torch_llm_eval_rouge_meteor.html">Rouge &amp; Meteor Evaluations</a></li>
+<li class="toctree-l3"><a class="reference internal" href="example_quark_torch_llm_eval_harness.html">LM-Evaluation-Harness Evaluations</a></li>
+<li class="toctree-l3"><a class="reference internal" href="example_quark_torch_llm_eval_harness_offline.html">LM-Evaluation-Harness (Offline)</a></li>
+</ul>
+</details></li>
+<li class="toctree-l2 current active has-children"><a class="current reference internal" href="#">Vision Model Quantization using FX Graph Mode</a><details open="open"><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
+<li class="toctree-l3"><a class="reference internal" href="example_quark_fx_image_classification.html">Image Classification Models FX Graph Quantization</a></li>
+<li class="toctree-l3"><a class="reference internal" href="sample_yolo_nas_quant.html">YOLO-NAS FX graph Quantization</a></li>
+<li class="toctree-l3"><a class="reference internal" href="sample_yolo_x_tiny_quant.html">YOLO-X Tiny FX Graph Quantization</a></li>
+</ul>
+</details></li>
+</ul>
+</details></li>
+<li class="toctree-l1 has-children"><a class="reference internal" href="../onnx/onnx_examples.html">ONNX Examples</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
+<li class="toctree-l2"><a class="reference internal" href="../onnx/example_quark_onnx_BFP.html">Block Floating Point (BFP)</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../onnx/example_quark_onnx_MX.html">MX Formats</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../onnx/example_quark_onnx_adaround.html">Fast Finetune AdaRound</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../onnx/example_quark_onnx_adaquant.html">Fast Finetune AdaQuant</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../onnx/example_quark_onnx_cle.html">Cross-Layer Equalization (CLE)</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../onnx/example_quark_onnx_layerwise_percentile.html">Layer-wise Percentile</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../onnx/example_quark_onnx_gptq.html">GPTQ</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../onnx/example_quark_onnx_mixed_precision.html">Mixed Precision</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../onnx/example_quark_onnx_smoothquant.html">Smooth Quant</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../onnx/example_quark_onnx_quarot.html">QuaRot</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../onnx/example_quark_onnx_auto_search.html">Auto-Search for General Yolov3 ONNX Model Quantization</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../onnx/example_quark_onnx_ryzenai_yolonas.html">Auto-Search for Ryzen AI Yolo-nas ONNX Model Quantization</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../onnx/example_ryzenai_autosearch_resnet50.html">Auto-Search for Ryzen AI Resnet50 ONNX Model Quantization</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../onnx/example_quark_onnx_ryzenai_yolov3_custom_evaluator.html">Auto-Search for Ryzen AI Yolov3 ONNX Quantization with Custom Evaluator</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../onnx/example_quark_onnx_dynamic_quantization_llama2.html">Quantizing an Llama-2-7b Model</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../onnx/example_quark_onnx_dynamic_quantization_opt.html">Quantizing an OPT-125M Model</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../onnx/example_quark_onnx_image_classification.html">Quantizing a ResNet50-v1-12 Model</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../onnx/example_quark_onnx_language_models.html">Quantizing an OPT-125M Model</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../onnx/example_quark_onnx_weights_only_quant_int4_matmul_nbits_llama2.html">Quantizing an Llama-2-7b Model Using the ONNX MatMulNBits</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../onnx/example_quark_onnx_weights_only_quant_int8_qdq_llama2.html">Quantizing Llama-2-7b model using MatMulNBits</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../onnx/example_quark_onnx_crypto_mode.html">Quantizing a ResNet50 model in crypto mode</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../onnx/image_classification_example_quark_onnx_ryzen_ai_best_practice.html">Best Practice for Quantizing an Image Classification Model</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../onnx/object_detection_example_quark_onnx_ryzen_ai_best_practice.html">Best Practice for Quantizing an Object Detection Model</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../onnx/hugging_face_timm_quantization.html">Hugging Face TIMM Quantization</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../onnx/example_quark_onnx_yolo_quantization.html">Yolo_nas and Yolox Quantization</a></li>
+</ul>
+</details></li>
+</ul>
+<p aria-level="2" class="caption" role="heading"><span class="caption-text">Supported accelerators</span></p>
+<ul class="nav bd-sidenav">
+<li class="toctree-l1 has-children"><a class="reference internal" href="../supported_accelerators/ryzenai/index.html">AMD Ryzen AI</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
+<li class="toctree-l2"><a class="reference internal" href="../supported_accelerators/ryzenai/tutorial_quick_start_for_ryzenai.html">Quick Start for Ryzen AI</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../supported_accelerators/ryzenai/ryzen_ai_best_practice.html">Best Practice for Ryzen AI in AMD Quark ONNX</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../onnx/example_quark_onnx_ryzenai.html">Auto-Search for Ryzen AI ONNX Model Quantization</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../supported_accelerators/ryzenai/tutorial_uint4_oga.html">Quantizing LLMs for ONNX Runtime GenAI</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../supported_accelerators/ryzenai/tutorial_convert_fp32_or_fp16_to_bf16.html">FP32/FP16 to BF16 Model Conversion</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../supported_accelerators/ryzenai/tutorial_xint8_quantize.html">Power-of-Two Scales (XINT8) Quantization</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../supported_accelerators/ryzenai/tutorial_a8w8_and_a16w8_quantize.html">Float Scales (A8W8 and A16W8) Quantization</a></li>
+</ul>
+</details></li>
+<li class="toctree-l1 has-children"><a class="reference internal" href="../supported_accelerators/mi_gpus/index.html">AMD Instinct</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
+<li class="toctree-l2 has-children"><a class="reference internal" href="example_quark_torch_llm_ptq.html">Language Model Post Training Quantization (PTQ) Using Quark</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
+<li class="toctree-l3"><a class="reference internal" href="../tutorials/torch/example_fp4.html">FP4 Post Training Quantization (PTQ) for LLM models</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../tutorials/torch/example_fp8.html">FP8 Post Training Quantization (PTQ) for LLM models</a></li>
+</ul>
+</details></li>
+<li class="toctree-l2"><a class="reference internal" href="example_quark_torch_llm_eval_perplexity.html">Evaluation of Quantized Models</a></li>
+</ul>
+</details></li>
+</ul>
+<p aria-level="2" class="caption" role="heading"><span class="caption-text">Advanced AMD Quark Features for PyTorch</span></p>
+<ul class="nav bd-sidenav">
+<li class="toctree-l1"><a class="reference internal" href="user_guide_config_for_llm.html">Configuring PyTorch Quantization for Large Language Models</a></li>
+<li class="toctree-l1 has-children"><a class="reference internal" href="user_guide_config_description.html">Configuring PyTorch Quantization from Scratch</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
+<li class="toctree-l2"><a class="reference internal" href="calibration_methods.html">Calibration Methods</a></li>
+<li class="toctree-l2"><a class="reference internal" href="calibration_datasets.html">Calibration Datasets</a></li>
+<li class="toctree-l2"><a class="reference internal" href="quantization_strategies.html">Quantization Strategies</a></li>
+<li class="toctree-l2"><a class="reference internal" href="quantization_schemes.html">Quantization Schemes</a></li>
+<li class="toctree-l2"><a class="reference internal" href="quantization_symmetry.html">Quantization Symmetry</a></li>
+</ul>
+</details></li>
+<li class="toctree-l1"><a class="reference internal" href="quark_save_load.html">Save and Load Quantized Models</a></li>
+<li class="toctree-l1 has-children"><a class="reference internal" href="export/quark_export.html">Exporting Quantized Models</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
+<li class="toctree-l2"><a class="reference internal" href="export/quark_export_onnx.html">ONNX format</a></li>
+<li class="toctree-l2"><a class="reference internal" href="export/quark_export_hf.html">Hugging Face format (safetensors)</a></li>
+<li class="toctree-l2 has-children"><a class="reference internal" href="export/quark_export_gguf.html">GGUF format</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
+<li class="toctree-l3"><a class="reference internal" href="export/gguf_llamacpp.html">Bridge from Quark to llama.cpp</a></li>
+</ul>
+</details></li>
+<li class="toctree-l2"><a class="reference internal" href="export/quark_export_quark.html">Quark format</a></li>
+</ul>
+</details></li>
+<li class="toctree-l1"><a class="reference internal" href="quark_torch_best_practices.html">Best Practices for Post-Training Quantization (PTQ)</a></li>
+<li class="toctree-l1"><a class="reference internal" href="debug.html">Debugging quantization Degradation</a></li>
+<li class="toctree-l1 has-children"><a class="reference internal" href="llm_quark.html">Language Model Optimization</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
+<li class="toctree-l2"><a class="reference internal" href="feature_pruning_overall.html">LLM Pruning</a></li>
+<li class="toctree-l2 has-children"><a class="reference internal" href="example_quark_torch_llm_ptq.html">Language Model Post Training Quantization (PTQ) Using Quark</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
+<li class="toctree-l3"><a class="reference internal" href="../tutorials/torch/example_fp4.html">FP4 Post Training Quantization (PTQ) for LLM models</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../tutorials/torch/example_fp8.html">FP8 Post Training Quantization (PTQ) for LLM models</a></li>
+</ul>
+</details></li>
+<li class="toctree-l2"><a class="reference internal" href="example_quark_torch_llm_qat.html">Language Model QAT Using Quark and Trainer</a></li>
+<li class="toctree-l2 has-children"><a class="reference internal" href="example_quark_torch_llm_eval.html">Language Model Evaluations in Quark</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
+<li class="toctree-l3"><a class="reference internal" href="example_quark_torch_llm_eval_perplexity.html">Perplexity Evaluations</a></li>
+<li class="toctree-l3"><a class="reference internal" href="example_quark_torch_llm_eval_rouge_meteor.html">Rouge &amp; Meteor Evaluations</a></li>
+<li class="toctree-l3"><a class="reference internal" href="example_quark_torch_llm_eval_harness.html">LM-Evaluation-Harness Evaluations</a></li>
+<li class="toctree-l3"><a class="reference internal" href="example_quark_torch_llm_eval_harness_offline.html">LM-Evaluation-Harness (Offline)</a></li>
+</ul>
+</details></li>
+<li class="toctree-l2"><a class="reference internal" href="tutorial_rotation.html">Quantizing with Rotation and SmoothQuant</a></li>
+<li class="toctree-l2"><a class="reference internal" href="tutorial_quarot.html">Rotation-based quantization with QuaRot</a></li>
+</ul>
+</details></li>
+<li class="toctree-l1"><a class="reference internal" href="smoothquant.html">Activation/Weight Smoothing (SmoothQuant)</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../tutorials/torch/auto_smoothquant_document_and_example.html">Auto SmoothQuant</a></li>
+<li class="toctree-l1 has-children"><a class="reference internal" href="awq_document.html">Activation-aware Weight Quantization (AWQ)</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
+<li class="toctree-l2"><a class="reference internal" href="../tutorials/torch/example_awq.html">AWQ end-to-end demo</a></li>
+</ul>
+</details></li>
+<li class="toctree-l1"><a class="reference internal" href="tutorial_bfp16.html">Block Floating Point 16</a></li>
+<li class="toctree-l1 has-children"><a class="reference internal" href="extensions.html">Extensions</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
+<li class="toctree-l2"><a class="reference internal" href="example_quark_torch_pytorch_light.html">Integration with AMD Pytorch-light (APL)</a></li>
+<li class="toctree-l2"><a class="reference internal" href="example_quark_torch_brevitas.html">Brevitas Integration</a></li>
+</ul>
+</details></li>
+<li class="toctree-l1"><a class="reference internal" href="adv_mx.html">Using MX (Microscaling)</a></li>
+<li class="toctree-l1"><a class="reference internal" href="adv_two_level.html">Two Level Quantization Formats</a></li>
+</ul>
+<p aria-level="2" class="caption" role="heading"><span class="caption-text">Advanced Quark Features for ONNX</span></p>
+<ul class="nav bd-sidenav">
+<li class="toctree-l1 has-children"><a class="reference internal" href="../onnx/user_guide_config_description.html">Configuring ONNX Quantization</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
+<li class="toctree-l2"><a class="reference internal" href="../onnx/appendix_full_quant_config_features.html">Full List of Quantization Config Features</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../onnx/config/calibration_methods.html">Calibration methods</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../onnx/config/calibration_datasets.html">Calibration datasets</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../onnx/config/quantization_strategies.html">Quantization Strategies</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../onnx/config/quantization_schemes.html">Quantization Schemes</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../onnx/config/quantization_symmetry.html">Quantization Symmetry</a></li>
+</ul>
+</details></li>
+<li class="toctree-l1 has-children"><a class="reference internal" href="../onnx/user_guide_supported_optype_datatype.html">Data and OP Types</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
+<li class="toctree-l2"><a class="reference internal" href="../onnx/custom_operators/ExtendedQuantizeLinear.html">ExtendedQuantizeLinear</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../onnx/custom_operators/ExtendedDequantizeLinear.html">ExtendedDequantizeLinear</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../onnx/custom_operators/ExtendedInstanceNormalization.html">ExtendedInstanceNormalization</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../onnx/custom_operators/ExtendedLSTM.html">ExtendedLSTM</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../onnx/custom_operators/BFPQuantizeDequantize.html">BFPQuantizeDequantize</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../onnx/custom_operators/MXQuantizeDequantize.html">MXQuantizeDequantize</a></li>
+</ul>
+</details></li>
+<li class="toctree-l1"><a class="reference internal" href="../onnx/gpu_usage_guide.html">Accelerate with GPUs</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../onnx/tutorial_mix_precision.html">Mixed Precision</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../onnx/tutorial_bfp16_quantization.html">Block Floating Point 16 (BFP16)</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../onnx/tutorial_bf16_quantization.html">BF16 Quantization</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../onnx/tutorial_microscaling_quantization.html">Microscaling (MX)</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../onnx/tutorial_microexponents_quantization.html">Microexponents (MX)</a></li>
+<li class="toctree-l1 has-children"><a class="reference internal" href="../onnx/accuracy_improvement_algorithms.html">Accuracy Improvement Algorithms</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
+<li class="toctree-l2"><a class="reference internal" href="../onnx/accuracy_algorithms/cle.html">Quantizing Using CrossLayerEqualization (CLE)</a></li>
+
+<li class="toctree-l2"><a class="reference internal" href="../onnx/accuracy_algorithms/ada.html">Quantization Using AdaQuant and AdaRound</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../onnx/accuracy_algorithms/sq.html">SmoothQuant (SQ)</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../onnx/accuracy_algorithms/quarot.html">QuaRot</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../onnx/example_quark_onnx_gptq.html">Quantizing a model with GPTQ</a></li>
+</ul>
+</details></li>
+<li class="toctree-l1"><a class="reference internal" href="../onnx/user_guide_auto_search.html">Automatic Search for Model Quantization</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../onnx/config/user_guide_onnx_model_inference_save_input_npy.html">Using ONNX Model Inference and Saving Input Data in NPY Format</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../onnx/optional_utilities.html">Optional Utilities</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../onnx/tools.html">Tools</a></li>
+</ul>
+<p aria-level="2" class="caption" role="heading"><span class="caption-text">Tutorials</span></p>
+<ul class="nav bd-sidenav">
+<li class="toctree-l1"><a class="reference internal" href="../tutorials/torch/quickstart_tutorial/quickstart_tutorial.html">AMD Quark Tutorial: PyTorch Quickstart</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../tutorials/torch/diffusion_tutorial/diffusion_tutorial.html">Quantizing a Diffusion Model using Quark</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../tutorials/torch/depth_wise_pruning/llm_depth_pruning.html">LLM Model Depth-Wise Pruning (beta)</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../tutorials/torch/llm_tutorial/llm_tutorial.html">Quantizing a Large Language Model with Quark</a></li>
+</ul>
+<p aria-level="2" class="caption" role="heading"><span class="caption-text">Third-party contributions</span></p>
+<ul class="nav bd-sidenav">
+<li class="toctree-l1"><a class="reference internal" href="../intro_contrib.html">Introduction and guidelines</a></li>
+</ul>
+<p aria-level="2" class="caption" role="heading"><span class="caption-text">APIs</span></p>
+<ul class="nav bd-sidenav">
+<li class="toctree-l1 has-children"><a class="reference internal" href="../autoapi/pytorch_apis.html">PyTorch APIs</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
+<li class="toctree-l2"><a class="reference internal" href="../autoapi/quark/torch/pruning/api/index.html">Pruning</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../autoapi/quark/torch/quantization/api/index.html">Quantization</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../autoapi/quark/torch/export/api/index.html">Export</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../autoapi/quark/torch/pruning/config/index.html">Pruner Configuration</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../autoapi/quark/torch/quantization/config/config/index.html">Quantizer Configuration</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../autoapi/quark/torch/quantization/config/template/index.html">Quantizer Template</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../autoapi/quark/torch/export/config/config/index.html">Exporter Configuration</a></li>
+</ul>
+</details></li>
+<li class="toctree-l1 has-children"><a class="reference internal" href="../autoapi/onnx_apis.html">ONNX APIs</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
+<li class="toctree-l2"><a class="reference internal" href="../autoapi/quark/onnx/quantization/api/index.html">Quantization</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../autoapi/quark/onnx/optimize/index.html">Optimization</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../autoapi/quark/onnx/calibrate/index.html">Calibration</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../autoapi/quark/onnx/onnx_quantizer/index.html">ONNX Quantizer</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../autoapi/quark/onnx/qdq_quantizer/index.html">QDQ Quantizer</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../autoapi/quark/onnx/quantization/config/config/index.html">Configuration</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../autoapi/quark/onnx/quant_utils/index.html">Quantization Utilities</a></li>
+</ul>
+</details></li>
+</ul>
+<p aria-level="2" class="caption" role="heading"><span class="caption-text">Troubleshooting and Support</span></p>
+<ul class="nav bd-sidenav">
+<li class="toctree-l1"><a class="reference internal" href="pytorch_faq.html">PyTorch FAQ</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../onnx/onnx_faq.html">ONNX FAQ</a></li>
+</ul>
+<ul class="nav bd-sidenav">
+<li class="toctree-l1"><a class="reference internal" href="../versions.html">AMD Quark release history</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../license.html">Quark license</a></li>
+</ul>
+
+    </div>
+</nav></div>
+    </div>
+  
+  
+  <div class="sidebar-primary-items__end sidebar-primary__section">
+      <div class="sidebar-primary-item">
+<div id="ethical-ad-placement"
+      class="flat"
+      data-ea-publisher="readthedocs"
+      data-ea-type="readthedocs-sidebar"
+      data-ea-manual="true">
+</div></div>
+  </div>
+
+
+      </div>
+      
+      <main id="main-content" class="bd-main" role="main">
+        
+        
+
+<div class="sbt-scroll-pixel-helper"></div>
+
+          <div class="bd-content">
+            <div class="bd-article-container">
+              
+              <div class="bd-header-article d-print-none">
+<div class="header-article-items header-article__inner">
+  
+    <div class="header-article-items__start">
+      
+        <div class="header-article-item"><label class="sidebar-toggle primary-toggle btn btn-sm" for="__primary" title="Toggle primary sidebar" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <span class="fa-solid fa-angle-right"></span>
+  </label></div>
+      
+        <div class="header-article-item">
+
+<nav aria-label="Breadcrumb" class="d-print-none">
+  <ul class="bd-breadcrumbs">
+    
+    <li class="breadcrumb-item breadcrumb-home">
+      <a href="../index.html" class="nav-link" aria-label="Home">
+        <i class="fa-solid fa-home"></i>
+      </a>
+    </li>
+    
+    <li class="breadcrumb-item"><a href="pytorch_examples.html" class="nav-link">Accessing PyTorch Examples</a></li>
+    
+    <li class="breadcrumb-item active" aria-current="page"><span class="ellipsis">Vision Model Quantization Using Quark FX Graph Mode</span></li>
+  </ul>
+</nav>
+</div>
+      
+    </div>
+  
+  
+    <div class="header-article-items__end">
+      
+        <div class="header-article-item">
+
+<div class="article-header-buttons">
+
+
+<button class="btn btn-sm nav-link pst-navbar-icon theme-switch-button pst-js-only" aria-label="Color mode" data-bs-title="Color mode"  data-bs-placement="bottom" data-bs-toggle="tooltip">
+  <i class="theme-switch fa-solid fa-sun                fa-lg" data-mode="light" title="Light"></i>
+  <i class="theme-switch fa-solid fa-moon               fa-lg" data-mode="dark"  title="Dark"></i>
+  <i class="theme-switch fa-solid fa-circle-half-stroke fa-lg" data-mode="auto"  title="System Settings"></i>
+</button>
+
+
+<button class="btn btn-sm pst-navbar-icon search-button search-button__button pst-js-only" title="Search" aria-label="Search" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <i class="fa-solid fa-magnifying-glass fa-lg"></i>
+</button>
+<button class="sidebar-toggle secondary-toggle btn btn-sm" title="Toggle secondary sidebar" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <span class="fa-solid fa-list"></span>
+</button>
+</div></div>
+      
+    </div>
+  
+</div>
+</div>
+              
+              
+
+<div id="jb-print-docs-body" class="onlyprint">
+    <h1>Vision Model Quantization Using Quark FX Graph Mode</h1>
+    <!-- Table of contents -->
+    <div id="print-main-content">
+        <div id="jb-print-toc">
+            
+            <div>
+                <h2> Contents </h2>
+            </div>
+            <nav aria-label="Page">
+                <ul class="visible nav section-nav flex-column">
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#pytorch-fx-graph-quark-quantization-tool">PyTorch Fx Graph &amp; Quark Quantization Tool</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#advantage-about-the-fx-graph">Advantage about the fx graph</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#quark-fx-quantization-tool">Quark Fx quantization tool</a></li>
+</ul>
+</li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#key-feature-brief-usage-instruction">Key Feature &amp; Brief Usage instruction.</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#key-feature">Key Feature</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#quantization-work-flow">Quantization Work Flow</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#some-key-tech-feature">Some Key Tech Feature</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#brief-using-instruction">Brief using instruction</a></li>
+</ul>
+</li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#experiments">Experiments:</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#image-classification-task">Image Classification Task</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#object-detection-task">Object Detection Task</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#detailed-experiments-script">Detailed Experiments script</a></li>
+</ul>
+</li>
+</ul>
+            </nav>
+        </div>
+    </div>
+</div>
+
+              
+                
+<div id="searchbox"></div>
+                <article class="bd-article">
+                  
+  <section id="vision-model-quantization-using-quark-fx-graph-mode">
+<h1>Vision Model Quantization Using Quark FX Graph Mode<a class="headerlink" href="#vision-model-quantization-using-quark-fx-graph-mode" title="Link to this heading">#</a></h1>
+<p>What content on this page:</p>
+<ul class="simple">
+<li><p>What is PyTorch Fx graph and advantages.</p></li>
+<li><p>Overall brief feature &amp; usage instruction.</p></li>
+<li><p>Some experiments Result.</p></li>
+</ul>
+<section id="pytorch-fx-graph-quark-quantization-tool">
+<h2>PyTorch Fx Graph &amp; Quark Quantization Tool<a class="headerlink" href="#pytorch-fx-graph-quark-quantization-tool" title="Link to this heading">#</a></h2>
+<section id="advantage-about-the-fx-graph">
+<h3>Advantage about the fx graph<a class="headerlink" href="#advantage-about-the-fx-graph" title="Link to this heading">#</a></h3>
+<p>Unlike <code class="docutils literal notranslate"><span class="pre">nn.Module</span></code>, the  <a class="reference external" href="https://pytorch.org/docs/stable/fx.html#torch.fx.GraphModule">torch.fx.GraphModule</a> contains detailed graph information that describes the network forward execution process. In graph, each operation (e.g torch/python function, nn.Module, torch.aten) will be represented as a node and the linking direction represent the computation flow.</p>
+</section>
+<section id="quark-fx-quantization-tool">
+<h3>Quark Fx quantization tool<a class="headerlink" href="#quark-fx-quantization-tool" title="Link to this heading">#</a></h3>
+<p>In Quark, we take advantage of the <code class="docutils literal notranslate"><span class="pre">fx.GraphModule</span></code>, Once we get the fully described computation graph, we parse it and do the quantization in the way we demand.</p>
+<p><strong>Utilize Graph information to perform fine-grained quantization.</strong></p>
+<ul class="simple">
+<li><p>In <a class="reference external" href="https://pytorch.org/docs/stable/quantization.html#eager-mode-quantization">eager-mode quantization</a> method, that uses traditional <code class="docutils literal notranslate"><span class="pre">nn.Module</span></code> as input/output. And do the direct replacement on model’s component (e.g. <code class="docutils literal notranslate"><span class="pre">nn.Conv2d</span></code> to <code class="docutils literal notranslate"><span class="pre">QuantizedConv2d</span></code>). This method can not recognize and quantize the Python inner operation (e.g. <code class="docutils literal notranslate"><span class="pre">x</span> <span class="pre">=</span> <span class="pre">x</span> <span class="pre">+</span> <span class="pre">10</span></code>), meaning this quantization method can only quant a small part of the model. Seems little possible to deploy on the demand hardware.</p></li>
+<li><p>In Quark Fx model quantization, we use the <code class="docutils literal notranslate"><span class="pre">torch.fx.GraphModule</span></code> as the inner interpretation. The <code class="docutils literal notranslate"><span class="pre">fx.GraphModule</span></code> contain every operation relationship in the computation graph. Quark Fx tool utilize this characteristics to parse the computation graph and insert the Quantizer at the proper place. Meaning the model can be fully quantized. The quantized model are more friendly to AMD NPU etc. device.</p></li>
+</ul>
+</section>
+</section>
+<section id="key-feature-brief-usage-instruction">
+<h2>Key Feature &amp; Brief Usage instruction.<a class="headerlink" href="#key-feature-brief-usage-instruction" title="Link to this heading">#</a></h2>
+<section id="key-feature">
+<h3>Key Feature<a class="headerlink" href="#key-feature" title="Link to this heading">#</a></h3>
+<ul class="simple">
+<li><p><strong>AMD hardware friendly</strong>: Compatible with AMD’s NPU-related hardware, these devices have runtime and latency requirements. The quantized models can be easily deployed on these devices with low-bit (e.g. INT8) &amp; hardware (e.g. Pow of two quant) requirements. And for accelerate computation.</p></li>
+<li><p><strong>Easy-to-use</strong>: Equal with Quark eager mode quantization tool. Users take their PyTorch <code class="docutils literal notranslate"><span class="pre">nn.Module</span></code> as input and the related dataset (e.g. data used for calibration/test/training) and take care less about <code class="docutils literal notranslate"><span class="pre">fx.GraphModule</span></code>, all quantization will be finished by Quark.</p></li>
+<li><p><strong>PTQ &amp; QAT</strong>: As <code class="docutils literal notranslate"><span class="pre">fx.GraphModule</span></code> is Autograd safe, supports the training as typical <code class="docutils literal notranslate"><span class="pre">nn.Module</span></code>, Quark Fx graph-based quantization tool supports both PTQ (Post Training Quantization) and QAT (Quantization Aware Training).</p></li>
+<li><p><strong>Multi quantization schema</strong>: This tool is mainly used for hardware-related deployment, we also support part/fully quantization, with kinds of quantization schema and Quantizer supported. (e.g. float/Pow-of-two quantization).</p></li>
+</ul>
+</section>
+<section id="quantization-work-flow">
+<h3>Quantization Work Flow<a class="headerlink" href="#quantization-work-flow" title="Link to this heading">#</a></h3>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="sd">&#39;&#39;&#39;</span>
+<span class="sd">float_model(Python)                                            example_inputs</span>
+<span class="sd">    \                                                                 /</span>
+<span class="sd">—------------------------------------------------------------------------------—</span>
+<span class="sd">|          # Step 1. Get the torch.fx.GraphModule (Use PyTorch API)            |</span>
+<span class="sd">| exported_model = export_for_training(float_model, example_inputs).module()   |</span>
+<span class="sd">—------------------------------------------------------------------------------—</span>
+<span class="sd">                                      |</span>
+<span class="sd">                               FX Graph in ATen</span>
+<span class="sd">                                      |</span>
+<span class="sd">—------------------------------------------------------------------------------—</span>
+<span class="sd">|                          Quark Fx Quantization  (Inner Process)              |</span>
+<span class="sd">|             # Step 2.  model optimization before quant                       |</span>
+<span class="sd">|             # Step 3.  annotate the Graph node to convey quant demand        |</span>
+<span class="sd">|             # Step 4.  Insert Quantizer based on annotation information      |</span>
+<span class="sd">|             # Step 5.  Use calibration data to Perform PTQ (Optional)        |</span>
+<span class="sd">—------------------------------------------------------------------------------—</span>
+<span class="sd">                                      |</span>
+<span class="sd">                               Quantized_Model</span>
+<span class="sd">                                      |</span>
+<span class="sd">                     train(Quantized_Model)  QAT (Optional)</span>
+<span class="sd">                                      |</span>
+<span class="sd">—-----------------------—-------------------------------------------------------</span>
+<span class="sd">|                        Quark Fx Quantization  (Inner Process)                |</span>
+<span class="sd">|             # Step 6. Post optimization to align hardware requirements       |</span>
+<span class="sd">|             # Step 7. Explicitly call function to export to ONNX model       |</span>
+<span class="sd">—-------------------------------------------------------------------------------</span>
+<span class="sd">                                       |</span>
+<span class="sd">                      Compile &amp; Deploy to AMD NPU device</span>
+<span class="sd">&#39;&#39;&#39;</span>
+</pre></div>
+</div>
+</section>
+<section id="some-key-tech-feature">
+<h3>Some Key Tech Feature<a class="headerlink" href="#some-key-tech-feature" title="Link to this heading">#</a></h3>
+<ul class="simple">
+<li><p><strong>Quantization is realized by the Fakequantize</strong>. In the forward pass, the tensor will be fake quantized in the QDQ manner, known as QDQ (Quantize-DeQuantize) model.</p></li>
+<li><p><strong>Observer</strong>: Typically, each Fakequantizer contains an observer, which is used to record the FP32 tensor value and use specific algorithms to compute the quantization parameter (e.g. scale, zero point). The scale and zero point, quant min, and quant max are used for quantization. In Quark Fx tool, two addition types of observers are supported in QAT.
+- <strong>`LSQ &lt;https://arxiv.org/abs/1902.08153&gt;`_</strong> adapts a float format scale that adjusts the scale during training.
+- <strong>`TQT &lt;https://arxiv.org/abs/1903.08066&gt;`_</strong> uses a pow-of-2 format scale and will adjust the scale during the training loss, which is more friendly for hardware deployment.</p></li>
+</ul>
+</section>
+<section id="brief-using-instruction">
+<h3>Brief using instruction<a class="headerlink" href="#brief-using-instruction" title="Link to this heading">#</a></h3>
+<p>In this section, we give an overall method of using the Quark Fx quantization tool.</p>
+<ol class="arabic">
+<li><p>Prepare the PyTorch model and the related dataset.</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span><span class="w"> </span><span class="nn">torch</span>
+<span class="k">class</span><span class="w"> </span><span class="nc">SimpleConv</span><span class="p">(</span><span class="n">torch</span><span class="o">.</span><span class="n">nn</span><span class="o">.</span><span class="n">Module</span><span class="p">):</span>
+    <span class="k">def</span><span class="w"> </span><span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">conv</span> <span class="o">=</span> <span class="n">torch</span><span class="o">.</span><span class="n">nn</span><span class="o">.</span><span class="n">Conv2d</span><span class="p">(</span><span class="mi">3</span><span class="p">,</span> <span class="mi">16</span><span class="p">,</span> <span class="mi">3</span><span class="p">,</span> <span class="n">padding</span><span class="o">=</span><span class="mi">1</span><span class="p">)</span>
+        <span class="o">...</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">relu</span> <span class="o">=</span> <span class="n">torch</span><span class="o">.</span><span class="n">nn</span><span class="o">.</span><span class="n">ReLU</span><span class="p">()</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">forward</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">x</span><span class="p">:</span> <span class="n">torch</span><span class="o">.</span><span class="n">Tensor</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">torch</span><span class="o">.</span><span class="n">Tensor</span><span class="p">:</span>
+        <span class="n">a</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">conv</span><span class="p">(</span><span class="n">x</span><span class="p">)</span>
+        <span class="o">...</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">relu</span><span class="p">(</span><span class="n">a</span><span class="p">)</span>
+
+<span class="n">model</span> <span class="o">=</span> <span class="n">SimpleConv</span><span class="p">()</span>
+<span class="c1"># Assume the model is pre-trained in FP32 format</span>
+<span class="n">model</span><span class="o">.</span><span class="n">load_state_dict</span><span class="p">(</span><span class="n">torch</span><span class="o">.</span><span class="n">load</span><span class="p">(</span><span class="n">PRE_TRAINED_WEIGHT</span><span class="p">))</span>
+<span class="n">calib_loader</span> <span class="c1"># data user for calibration (PTQ)</span>
+<span class="n">train_loader</span><span class="p">,</span> <span class="n">val_loader</span> <span class="c1"># data user for train (QAT)</span>
+</pre></div>
+</div>
+</li>
+<li><p>Prepare fx model and specify the desired quantization schema.</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="c1"># Prepare the fx model using PyTorch API</span>
+<span class="n">example_inputs</span> <span class="o">=</span> <span class="p">(</span><span class="n">torch</span><span class="o">.</span><span class="n">rand</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="mi">3</span><span class="p">,</span> <span class="mi">224</span><span class="p">,</span> <span class="mi">224</span><span class="p">),)</span>
+<span class="n">graph_model</span> <span class="o">=</span> <span class="n">torch</span><span class="o">.</span><span class="n">export</span><span class="o">.</span><span class="n">export_for_training</span><span class="p">(</span><span class="n">model</span><span class="o">.</span><span class="n">eval</span><span class="p">(),</span> <span class="n">example_inputs</span><span class="p">)</span><span class="o">.</span><span class="n">module</span><span class="p">()</span>
+
+<span class="c1"># Prepare the Quantization config to convey the quant demand</span>
+<span class="c1"># More details can be found in the example codes</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">quark.torch</span><span class="w"> </span><span class="kn">import</span> <span class="n">ModelQuantizer</span><span class="p">,</span> <span class="o">...</span>
+<span class="n">INT8_PER_TENSOR</span> <span class="o">=</span> <span class="n">QuantizationSpec</span><span class="p">(</span><span class="n">dtype</span><span class="o">=</span><span class="n">Dtype</span><span class="o">.</span><span class="n">int8</span><span class="p">,</span> <span class="n">qscheme</span><span class="o">=</span><span class="n">QSchemeType</span><span class="o">.</span><span class="n">per_tensor</span><span class="p">,</span>
+    <span class="n">observer_cls</span><span class="o">=</span><span class="n">PerTensorMinMaxObserver</span><span class="p">,</span> <span class="n">symmetric</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span><span class="n">scale_type</span><span class="o">=</span><span class="n">ScaleType</span><span class="o">.</span><span class="n">float</span><span class="p">,</span>
+    <span class="n">round_method</span><span class="o">=</span><span class="n">RoundType</span><span class="o">.</span><span class="n">half_even</span><span class="p">,</span> <span class="n">is_dynamic</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span>
+<span class="n">quant_config</span> <span class="o">=</span> <span class="n">QuantizationConfig</span><span class="p">(</span> <span class="n">weight</span><span class="o">=</span><span class="n">INT8_PER_TENSOR</span><span class="p">,</span><span class="n">input_tensors</span><span class="o">=</span><span class="n">INT8_PER_TENSOR</span><span class="p">,</span>
+     <span class="n">output_tensors</span><span class="o">=</span><span class="n">INT8_PER_TENSOR</span><span class="p">,</span> <span class="n">bias</span><span class="o">=</span><span class="n">INT8_PER_TENSOR</span><span class="p">)</span>
+<span class="n">quant_config</span> <span class="o">=</span> <span class="n">Config</span><span class="p">(</span><span class="n">global_quant_config</span><span class="o">=</span><span class="n">quant_config</span><span class="p">,</span> <span class="n">quant_mode</span><span class="o">=</span><span class="n">QuantizationMode</span><span class="o">.</span><span class="n">fx_graph_mode</span><span class="p">)</span>
+</pre></div>
+</div>
+</li>
+<li><p>Perform quantization (PTQ/QAT)</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">quantizer</span> <span class="o">=</span> <span class="n">ModelQuantizer</span><span class="p">(</span><span class="n">quant_config</span><span class="p">)</span>
+<span class="c1"># PTQ: use calib_loader to perform PTQ.</span>
+<span class="n">quantized_model</span> <span class="o">=</span> <span class="n">quantizer</span><span class="o">.</span><span class="n">quantize_model</span><span class="p">(</span><span class="n">graph_model</span><span class="p">,</span> <span class="n">calib_loader</span><span class="p">)</span>
+<span class="c1"># NOTE: if calib_loader is empty (e.g []), will not perform PTQ.</span>
+<span class="c1"># QAT: User can train the model just as the traditional PyTorch model</span>
+<span class="n">train</span><span class="p">(</span><span class="n">quantized_model</span><span class="p">,</span> <span class="n">train_loader</span><span class="p">)</span>
+</pre></div>
+</div>
+</li>
+<li><p>Verify the accuracy, Export to onnx, and Deploy to AMD hardware. (Optional)</p>
+<p>Call <code class="docutils literal notranslate"><span class="pre">quantizer.freeze</span></code> will perform some AMD hardware specific optimization, which is used for better board deployment.</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">validate</span><span class="p">(</span><span class="n">val_loader</span><span class="p">,</span> <span class="n">quantized_model</span><span class="p">)</span> <span class="c1"># use the quantized_model to validate the accuracy</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">quark.torch</span><span class="w"> </span><span class="kn">import</span> <span class="n">export_onnx</span>
+<span class="c1"># Export to ONNX model</span>
+<span class="n">frozen_model</span> <span class="o">=</span> <span class="n">quantizer</span><span class="o">.</span><span class="n">freeze</span><span class="p">(</span><span class="n">quantized_model</span><span class="o">.</span><span class="n">eval</span><span class="p">())</span>
+<span class="c1"># NOTE: using batch size 1 for better hardware deploy compile</span>
+<span class="n">example_inputs</span> <span class="o">=</span> <span class="p">(</span><span class="n">torch</span><span class="o">.</span><span class="n">rand</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="mi">3</span><span class="p">,</span> <span class="mi">224</span><span class="p">,</span> <span class="mi">224</span><span class="p">),)</span>
+<span class="n">export_onnx</span><span class="p">(</span>
+    <span class="n">model</span><span class="o">=</span><span class="n">frozen_model</span><span class="p">,</span>
+    <span class="n">output_dir</span><span class="o">=</span><span class="n">args</span><span class="o">.</span><span class="n">export_dir</span><span class="p">,</span>
+    <span class="n">input_args</span><span class="o">=</span><span class="n">example_inputs</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
+<span class="p">)</span>
+</pre></div>
+</div>
+</li>
+</ol>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>The above gives a brief workflow about the Quark Fx-Graph quantization, code can not be directly run.
+The runnable code can be found in the example folder.</p>
+</div>
+</section>
+</section>
+<section id="experiments">
+<h2>Experiments:<a class="headerlink" href="#experiments" title="Link to this heading">#</a></h2>
+<p>As this is a long-term project, more and detailed experiments and Python script will be added.</p>
+<section id="image-classification-task">
+<h3>Image Classification Task<a class="headerlink" href="#image-classification-task" title="Link to this heading">#</a></h3>
+<div class="pst-scrollable-table-container"><table class="table">
+<thead>
+<tr class="row-odd"><th class="head"><p>Model Name</p></th>
+<th class="head"><p>Method</p></th>
+<th class="head"><p>Result (Acc&#64;1/Acc&#64;5)</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p>ResNet-18</p></td>
+<td><p>Original Float model</p></td>
+<td><p>69.76 / 89.08</p></td>
+</tr>
+<tr class="row-odd"><td><p>(Torchvision)</p></td>
+<td><p>QAT: NON Overflow, pow-of-2 scale</p></td>
+<td><p>69.69 / 89.01</p></td>
+</tr>
+<tr class="row-even"><td></td>
+<td><p>PTQ: float scale</p></td>
+<td><p>69.08 / 88.65</p></td>
+</tr>
+<tr class="row-odd"><td><p>MobileNet-V2</p></td>
+<td><p>Original Float model</p></td>
+<td><p>71.87 / 90.29</p></td>
+</tr>
+<tr class="row-even"><td><p>(Torchvision)</p></td>
+<td><p>QAT: TQT, pow-of-2 scale</p></td>
+<td><p>71.49 / 90.09</p></td>
+</tr>
+<tr class="row-odd"><td></td>
+<td><p>PTQ: float scale</p></td>
+<td><p>65.74 / 86.62</p></td>
+</tr>
+</tbody>
+</table>
+</div>
+</section>
+<section id="object-detection-task">
+<h3>Object Detection Task<a class="headerlink" href="#object-detection-task" title="Link to this heading">#</a></h3>
+<div class="pst-scrollable-table-container"><table class="table">
+<thead>
+<tr class="row-odd"><th class="head"><p>Model Name</p></th>
+<th class="head"><p>Method</p></th>
+<th class="head"><p>Result (mAP &#64;0.50:0.95)</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p><a class="reference external" href="https://github.com/Deci-AI/super-gradients">YOLO-NAS</a></p></td>
+<td><p>Original Float model</p></td>
+<td><p>0.4759</p></td>
+</tr>
+<tr class="row-odd"><td></td>
+<td><p>PTQ: NON flow quantizer</p></td>
+<td><p>0.3244</p></td>
+</tr>
+<tr class="row-even"><td></td>
+<td><p>QAT: NON flow quantizer</p></td>
+<td><p>0.3416</p></td>
+</tr>
+</tbody>
+</table>
+</div>
+<p>As we quantize the entire model (containing the detection head), the training model is different from the eval model. Obtaining a high quantization accuracy is relatively hard in the YOLO-NAS model.</p>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>The detailed materials (e.g. PTQ/QAT code, training parameters, etc.) can be found in the corresponding example folder.</p>
+</div>
+</section>
+<section id="detailed-experiments-script">
+<h3>Detailed Experiments script<a class="headerlink" href="#detailed-experiments-script" title="Link to this heading">#</a></h3>
+<p>Below we share a list of recipes that about the vision task.</p>
+<div class="toctree-wrapper compound">
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="example_quark_fx_image_classification.html">Image Classification Models FX Graph Quantization</a></li>
+<li class="toctree-l1"><a class="reference internal" href="sample_yolo_nas_quant.html">YOLO-NAS FX graph Quantization</a></li>
+<li class="toctree-l1"><a class="reference internal" href="sample_yolo_x_tiny_quant.html">YOLO-X Tiny FX Graph Quantization</a></li>
+</ul>
+</div>
+</section>
+</section>
+</section>
+
+
+                </article>
+              
+
+              
+              
+              
+              
+                <footer class="prev-next-footer d-print-none">
+                  
+<div class="prev-next-area">
+    <a class="left-prev"
+       href="example_quark_torch_llm_eval_harness_offline.html"
+       title="previous page">
+      <i class="fa-solid fa-angle-left"></i>
+      <div class="prev-next-info">
+        <p class="prev-next-subtitle">previous</p>
+        <p class="prev-next-title">LM-Evaluation-Harness (Offline)</p>
+      </div>
+    </a>
+    <a class="right-next"
+       href="example_quark_fx_image_classification.html"
+       title="next page">
+      <div class="prev-next-info">
+        <p class="prev-next-subtitle">next</p>
+        <p class="prev-next-title">Image Classification Models FX Graph Quantization</p>
+      </div>
+      <i class="fa-solid fa-angle-right"></i>
+    </a>
+</div>
+                </footer>
+              
+            </div>
+            
+            
+              
+                <dialog id="pst-secondary-sidebar-modal"></dialog>
+                <div id="pst-secondary-sidebar" class="bd-sidebar-secondary bd-toc"><div class="sidebar-secondary-items sidebar-secondary__inner">
+
+
+  <div class="sidebar-secondary-item">
+  <div class="page-toc tocsection onthispage">
+    <i class="fa-solid fa-list"></i> Contents
+  </div>
+  <nav class="bd-toc-nav page-toc">
+    <ul class="visible nav section-nav flex-column">
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#pytorch-fx-graph-quark-quantization-tool">PyTorch Fx Graph &amp; Quark Quantization Tool</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#advantage-about-the-fx-graph">Advantage about the fx graph</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#quark-fx-quantization-tool">Quark Fx quantization tool</a></li>
+</ul>
+</li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#key-feature-brief-usage-instruction">Key Feature &amp; Brief Usage instruction.</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#key-feature">Key Feature</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#quantization-work-flow">Quantization Work Flow</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#some-key-tech-feature">Some Key Tech Feature</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#brief-using-instruction">Brief using instruction</a></li>
+</ul>
+</li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#experiments">Experiments:</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#image-classification-task">Image Classification Task</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#object-detection-task">Object Detection Task</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#detailed-experiments-script">Detailed Experiments script</a></li>
+</ul>
+</li>
+</ul>
+  </nav></div>
+
+</div></div>
+              
+            
+          </div>
+          <footer class="bd-footer-content">
+            <p>
+      Last updated on Sep 26, 2025.<br/>
+  </p>
+          </footer>
+        
+
+      </main>
+    </div>
+  </div>
+  
+  <!-- Scripts loaded after <body> so the DOM is not blocked -->
+  <script defer src="../_static/scripts/bootstrap.js?digest=8878045cc6db502f8baf"></script>
+<script defer src="../_static/scripts/pydata-sphinx-theme.js?digest=8878045cc6db502f8baf"></script>
+
+<footer class="rocm-footer">
+    <div class="container-lg">
+        <section class="bottom-menu menu py-45">
+            <div class="row d-flex align-items-center">
+                <div class="col-12 text-center">
+                    <ul>
+                        <li><a href="https://www.amd.com/en/corporate/copyright" target="_blank">Terms and Conditions</a></li>
+                        <li><a href="https://quark.docs.amd.com/latest/license.html">Quark Licenses and Disclaimers</a></li>
+                        <li><a href="https://www.amd.com/en/corporate/privacy" target="_blank">Privacy</a></li>
+                        <li><a href="https://www.amd.com/en/corporate/trademarks" target="_blank">Trademarks</a></li>
+                        <li><a href="https://www.amd.com/content/dam/amd/en/documents/corporate/cr/supply-chain-transparency.pdf" target="_blank">Supply Chain Transparency</a></li>
+                        <li><a href="https://www.amd.com/en/corporate/competition" target="_blank">Fair and Open Competition</a></li>
+                        <li><a href="https://www.amd.com/system/files/documents/amd-uk-tax-strategy.pdf" target="_blank">UK Tax Strategy</a></li>
+                        <li><a href="https://www.amd.com/en/corporate/cookies" target="_blank">Cookie Policy</a></li>
+                        <!-- OneTrust Cookies Settings button start -->
+                        <li><a href="#cookie-settings" id="ot-sdk-btn" class="ot-sdk-show-settings">Cookie Settings</a></li>
+                        <!-- OneTrust Cookies Settings button end -->
+                    </ul>
+                </div>
+            </div>
+            <div class="row d-flex align-items-center">
+                <div class="col-12 text-center">
+                    <div>
+                        <span class="copyright">© 2025 Advanced Micro Devices, Inc</span>
+                    </div>
+                </div>
+            </div>
+        </section>
+    </div>
+</footer>
+
+<!-- <div id="rdc-watermark-container">
+    <img id="rdc-watermark" src="../_static/images/alpha-watermark.svg" alt="DRAFT watermark"/>
+</div> -->
+  </body>
+</html>

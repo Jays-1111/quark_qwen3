@@ -1,0 +1,760 @@
+
+<!DOCTYPE html>
+
+
+<html lang="en" data-content_root="./" >
+
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="viewport" content="width=device-width, initial-scale=1" />
+
+    <title>Quark’s contrib Area &#8212; AMD Quark 0.10 documentation</title>
+  
+  
+  
+  <script data-cfasync="false">
+    document.documentElement.dataset.mode = localStorage.getItem("mode") || "";
+    document.documentElement.dataset.theme = localStorage.getItem("theme") || "";
+  </script>
+  <!--
+    this give us a css class that will be invisible only if js is disabled
+  -->
+  <noscript>
+    <style>
+      .pst-js-only { display: none !important; }
+
+    </style>
+  </noscript>
+  
+  <!-- Loaded before other Sphinx assets -->
+  <link href="_static/styles/theme.css?digest=8878045cc6db502f8baf" rel="stylesheet" />
+<link href="_static/styles/pydata-sphinx-theme.css?digest=8878045cc6db502f8baf" rel="stylesheet" />
+
+    <link rel="stylesheet" type="text/css" href="_static/pygments.css?v=03e43079" />
+    <link rel="stylesheet" type="text/css" href="_static/styles/sphinx-book-theme.css?v=a3416100" />
+    <link rel="stylesheet" type="text/css" href="_static/graphviz.css?v=4ae1632d" />
+    <link rel="stylesheet" type="text/css" href="_static/mystnb.8ecb98da25f57f5357bf6f572d296f466b2cfe2517ffebfabe82451661e28f02.css" />
+    <link rel="stylesheet" type="text/css" href="_static/custom.css?v=a66ef196" />
+    <link rel="stylesheet" type="text/css" href="_static/rocm_header.css?v=9557e3d1" />
+    <link rel="stylesheet" type="text/css" href="_static/rocm_footer.css?v=7095035a" />
+    <link rel="stylesheet" type="text/css" href="_static/fonts.css?v=fcff5274" />
+  
+  <!-- So that users can add custom icons -->
+  <script src="_static/scripts/fontawesome.js?digest=8878045cc6db502f8baf"></script>
+  <!-- Pre-loaded scripts that we'll load fully later -->
+  <link rel="preload" as="script" href="_static/scripts/bootstrap.js?digest=8878045cc6db502f8baf" />
+<link rel="preload" as="script" href="_static/scripts/pydata-sphinx-theme.js?digest=8878045cc6db502f8baf" />
+
+    <script src="_static/documentation_options.js?v=e0f31c2e"></script>
+    <script src="_static/doctools.js?v=9bcbadda"></script>
+    <script src="_static/sphinx_highlight.js?v=dc90522c"></script>
+    <script async="async" src="_static/code_word_breaks.js?v=327952c4"></script>
+    <script async="async" src="_static/renameVersionLinks.js?v=929fe5e4"></script>
+    <script async="async" src="_static/rdcMisc.js?v=01f88d96"></script>
+    <script async="async" src="_static/theme_mode_captions.js?v=15f4ec5d"></script>
+    <script defer="defer" src="_static/search.js?v=90a4452c"></script>
+    <script src="_static/scripts/sphinx-book-theme.js?v=887ef09a"></script>
+    <script>DOCUMENTATION_OPTIONS.pagename = 'intro_contrib';</script>
+    <script async="async" src="https://download.amd.com/js/analytics/analyticsinit.js"></script>
+    <link rel="icon" href="https://www.amd.com/content/dam/code/images/favicon/favicon.ico"/>
+    <link rel="index" title="Index" href="genindex.html" />
+    <link rel="search" title="Search" href="search.html" />
+    <link rel="next" title="Quark APIs for PyTorch" href="autoapi/pytorch_apis.html" />
+    <link rel="prev" title="Quantizing a Large Language Model with Quark" href="tutorials/torch/llm_tutorial/llm_tutorial.html" />
+<script type="text/javascript">
+    window.addEventListener("load", function(event) {
+        var coll = document.querySelectorAll('.toggle > .header');  // sdelect the toggles header.
+        var i;
+
+        for (i = 0; i < coll.length; i++) {
+            coll[i].innerText = "Show code ▼\n\n";
+
+            coll[i].addEventListener("click", function() {
+                var content = this.nextElementSibling;  // code block.
+                if (content.style.display === "block") {
+                    content.style.display = "none";
+                    this.innerText = "Show code ▼\n\n";
+                } else {
+                    content.style.display = "block";
+                    this.innerText = "Hide code ▶";
+                }
+            });
+        }
+    });
+</script>
+
+  </head>
+  
+  
+  <body data-bs-spy="scroll" data-bs-target=".bd-toc-nav" data-offset="180" data-bs-root-margin="0px 0px -60%" data-default-mode="">
+
+  
+  
+  <div id="pst-skip-link" class="skip-link d-print-none"><a href="#main-content">Skip to main content</a></div>
+  
+  <div id="pst-scroll-pixel-helper"></div>
+  
+  <button type="button" class="btn rounded-pill" id="pst-back-to-top">
+    <i class="fa-solid fa-arrow-up"></i>Back to top</button>
+
+  
+  <dialog id="pst-search-dialog">
+    
+<form class="bd-search d-flex align-items-center"
+      action="search.html"
+      method="get">
+  <i class="fa-solid fa-magnifying-glass"></i>
+  <input type="search"
+         class="form-control"
+         name="q"
+         placeholder="Search..."
+         aria-label="Search..."
+         autocomplete="off"
+         autocorrect="off"
+         autocapitalize="off"
+         spellcheck="false"/>
+  <span class="search-button__kbd-shortcut"><kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd>K</kbd></span>
+</form>
+  </dialog>
+
+  <div class="pst-async-banner-revealer d-none">
+  <aside id="bd-header-version-warning" class="d-none d-print-none" aria-label="Version warning"></aside>
+</div>
+
+  
+
+<header class="common-header" >
+    <nav class="navbar navbar-expand-xl">
+        <div class="container-fluid main-nav rocm-header">
+            
+            <button class="navbar-toggler collapsed" id="nav-icon" data-tracking-information="mainMenuToggle" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+                <span></span>
+                <span></span>
+                <span></span>
+            </button>
+            
+            <div class="header-logo">
+                <a class="navbar-brand" href="https://www.amd.com/">
+                    <img src="_static/images/amd-header-logo.svg" alt="AMD Logo" title="AMD Logo" width="90" class="d-inline-block align-text-top hover-opacity"/>
+                </a>
+                <div class="vr vr mx-40 my-25"></div>
+                <a class="klavika-font hover-opacity" href="https://quark.docs.amd.com">Quark</a>
+                <a class="header-all-versions" href="https://quark.docs.amd.com/latest/versions.html">Version List</a>
+            </div>
+            <div class="icon-nav text-center d-flex ms-auto">
+            </div>
+        </div>
+    </nav>
+    
+    <nav class="navbar navbar-expand-xl second-level-nav">
+        <div class="container-fluid main-nav">
+            <div class="navbar-nav-container collapse navbar-collapse" id="navbarSupportedContent">
+                <ul class="navbar-nav nav-mega me-auto mb-2 mb-lg-0 col-xl-10">
+                    
+                        <li class="nav-item">
+                            <a class="nav-link top-level header-menu-links" href="https://github.com/amd/quark" id="navgithub" role="button" aria-expanded="false" target="_blank" >
+                                GitHub
+                            </a>
+                        </li>
+                    
+                        <li class="nav-item">
+                            <a class="nav-link top-level header-menu-links" href="https://github.com/amd/quark/issues/new/choose" id="navsupport" role="button" aria-expanded="false" target="_blank" >
+                                Support
+                            </a>
+                        </li>
+                    
+                </ul>
+            </div>
+        </div>
+    </nav>
+    
+</header>
+
+
+  <div class="bd-container">
+    <div class="bd-container__inner bd-page-width">
+      
+      
+      
+      <dialog id="pst-primary-sidebar-modal"></dialog>
+      <div id="pst-primary-sidebar" class="bd-sidebar-primary bd-sidebar">
+        
+
+  
+  <div class="sidebar-header-items sidebar-primary__section">
+    
+    
+    
+    
+  </div>
+  
+    <div class="sidebar-primary-items__start sidebar-primary__section">
+        <div class="sidebar-primary-item">
+
+  
+    
+  
+
+<a class="navbar-brand logo" href="index.html">
+  
+  
+  
+  
+  
+  
+    <p class="title logo__title">AMD Quark 0.10 documentation</p>
+  
+</a></div>
+        <div class="sidebar-primary-item">
+
+<button class="btn search-button-field search-button__button pst-js-only" title="Search" aria-label="Search" data-bs-placement="bottom" data-bs-toggle="tooltip">
+ <i class="fa-solid fa-magnifying-glass"></i>
+ <span class="search-button__default-text">Search</span>
+ <span class="search-button__kbd-shortcut"><kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd class="kbd-shortcut__modifier">K</kbd></span>
+</button></div>
+        <div class="sidebar-primary-item"><nav class="bd-links bd-docs-nav" aria-label="Main">
+    <div class="bd-toc-item navbar-nav active">
+        <p aria-level="2" class="caption" role="heading"><span class="caption-text">Release Notes</span></p>
+<ul class="nav bd-sidenav">
+<li class="toctree-l1"><a class="reference internal" href="release_note.html">Release Information</a></li>
+</ul>
+<p aria-level="2" class="caption" role="heading"><span class="caption-text">Getting Started with AMD Quark</span></p>
+<ul class="nav bd-sidenav">
+<li class="toctree-l1"><a class="reference internal" href="intro.html">Introduction to Quantization</a></li>
+<li class="toctree-l1"><a class="reference internal" href="install.html">Installation</a></li>
+<li class="toctree-l1"><a class="reference internal" href="basic_usage.html">Getting started: Introduction</a></li>
+<li class="toctree-l1"><a class="reference internal" href="onnx/basic_usage_onnx.html">Getting started: Quark for ONNX</a></li>
+<li class="toctree-l1"><a class="reference internal" href="pytorch/basic_usage_pytorch.html">Getting started: Quark for PyTorch</a></li>
+<li class="toctree-l1 has-children"><a class="reference internal" href="pytorch/pytorch_examples.html">PyTorch Examples</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
+<li class="toctree-l2"><a class="reference internal" href="pytorch/example_quark_torch_diffusers.html">Diffusion Model Quantization</a></li>
+<li class="toctree-l2"><a class="reference internal" href="pytorch/example_quark_torch_brevitas.html">AMD Quark Extension for Brevitas Integration</a></li>
+<li class="toctree-l2"><a class="reference internal" href="pytorch/example_quark_torch_pytorch_light.html">Integration with AMD Pytorch-light (APL)</a></li>
+<li class="toctree-l2"><a class="reference internal" href="pytorch/example_quark_torch_llm_pruning.html">Language Model Pruning</a></li>
+<li class="toctree-l2 has-children"><a class="reference internal" href="pytorch/example_quark_torch_llm_ptq.html">Language Model PTQ</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
+<li class="toctree-l3"><a class="reference internal" href="tutorials/torch/example_fp4.html">FP4 Post Training Quantization (PTQ) for LLM models</a></li>
+<li class="toctree-l3"><a class="reference internal" href="tutorials/torch/example_fp8.html">FP8 Post Training Quantization (PTQ) for LLM models</a></li>
+</ul>
+</details></li>
+<li class="toctree-l2"><a class="reference internal" href="pytorch/example_quark_torch_llm_qat.html">Language Model QAT</a></li>
+<li class="toctree-l2 has-children"><a class="reference internal" href="pytorch/example_quark_torch_llm_eval.html">Language Model Evaluation</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
+<li class="toctree-l3"><a class="reference internal" href="pytorch/example_quark_torch_llm_eval_perplexity.html">Perplexity Evaluations</a></li>
+<li class="toctree-l3"><a class="reference internal" href="pytorch/example_quark_torch_llm_eval_rouge_meteor.html">Rouge &amp; Meteor Evaluations</a></li>
+<li class="toctree-l3"><a class="reference internal" href="pytorch/example_quark_torch_llm_eval_harness.html">LM-Evaluation-Harness Evaluations</a></li>
+<li class="toctree-l3"><a class="reference internal" href="pytorch/example_quark_torch_llm_eval_harness_offline.html">LM-Evaluation-Harness (Offline)</a></li>
+</ul>
+</details></li>
+<li class="toctree-l2 has-children"><a class="reference internal" href="pytorch/example_quark_torch_vision.html">Vision Model Quantization using FX Graph Mode</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
+<li class="toctree-l3"><a class="reference internal" href="pytorch/example_quark_fx_image_classification.html">Image Classification Models FX Graph Quantization</a></li>
+<li class="toctree-l3"><a class="reference internal" href="pytorch/sample_yolo_nas_quant.html">YOLO-NAS FX graph Quantization</a></li>
+<li class="toctree-l3"><a class="reference internal" href="pytorch/sample_yolo_x_tiny_quant.html">YOLO-X Tiny FX Graph Quantization</a></li>
+</ul>
+</details></li>
+</ul>
+</details></li>
+<li class="toctree-l1 has-children"><a class="reference internal" href="onnx/onnx_examples.html">ONNX Examples</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
+<li class="toctree-l2"><a class="reference internal" href="onnx/example_quark_onnx_BFP.html">Block Floating Point (BFP)</a></li>
+<li class="toctree-l2"><a class="reference internal" href="onnx/example_quark_onnx_MX.html">MX Formats</a></li>
+<li class="toctree-l2"><a class="reference internal" href="onnx/example_quark_onnx_adaround.html">Fast Finetune AdaRound</a></li>
+<li class="toctree-l2"><a class="reference internal" href="onnx/example_quark_onnx_adaquant.html">Fast Finetune AdaQuant</a></li>
+<li class="toctree-l2"><a class="reference internal" href="onnx/example_quark_onnx_cle.html">Cross-Layer Equalization (CLE)</a></li>
+<li class="toctree-l2"><a class="reference internal" href="onnx/example_quark_onnx_layerwise_percentile.html">Layer-wise Percentile</a></li>
+<li class="toctree-l2"><a class="reference internal" href="onnx/example_quark_onnx_gptq.html">GPTQ</a></li>
+<li class="toctree-l2"><a class="reference internal" href="onnx/example_quark_onnx_mixed_precision.html">Mixed Precision</a></li>
+<li class="toctree-l2"><a class="reference internal" href="onnx/example_quark_onnx_smoothquant.html">Smooth Quant</a></li>
+<li class="toctree-l2"><a class="reference internal" href="onnx/example_quark_onnx_quarot.html">QuaRot</a></li>
+<li class="toctree-l2"><a class="reference internal" href="onnx/example_quark_onnx_auto_search.html">Auto-Search for General Yolov3 ONNX Model Quantization</a></li>
+<li class="toctree-l2"><a class="reference internal" href="onnx/example_quark_onnx_ryzenai_yolonas.html">Auto-Search for Ryzen AI Yolo-nas ONNX Model Quantization</a></li>
+<li class="toctree-l2"><a class="reference internal" href="onnx/example_ryzenai_autosearch_resnet50.html">Auto-Search for Ryzen AI Resnet50 ONNX Model Quantization</a></li>
+<li class="toctree-l2"><a class="reference internal" href="onnx/example_quark_onnx_ryzenai_yolov3_custom_evaluator.html">Auto-Search for Ryzen AI Yolov3 ONNX Quantization with Custom Evaluator</a></li>
+<li class="toctree-l2"><a class="reference internal" href="onnx/example_quark_onnx_dynamic_quantization_llama2.html">Quantizing an Llama-2-7b Model</a></li>
+<li class="toctree-l2"><a class="reference internal" href="onnx/example_quark_onnx_dynamic_quantization_opt.html">Quantizing an OPT-125M Model</a></li>
+<li class="toctree-l2"><a class="reference internal" href="onnx/example_quark_onnx_image_classification.html">Quantizing a ResNet50-v1-12 Model</a></li>
+<li class="toctree-l2"><a class="reference internal" href="onnx/example_quark_onnx_language_models.html">Quantizing an OPT-125M Model</a></li>
+<li class="toctree-l2"><a class="reference internal" href="onnx/example_quark_onnx_weights_only_quant_int4_matmul_nbits_llama2.html">Quantizing an Llama-2-7b Model Using the ONNX MatMulNBits</a></li>
+<li class="toctree-l2"><a class="reference internal" href="onnx/example_quark_onnx_weights_only_quant_int8_qdq_llama2.html">Quantizing Llama-2-7b model using MatMulNBits</a></li>
+<li class="toctree-l2"><a class="reference internal" href="onnx/example_quark_onnx_crypto_mode.html">Quantizing a ResNet50 model in crypto mode</a></li>
+<li class="toctree-l2"><a class="reference internal" href="onnx/image_classification_example_quark_onnx_ryzen_ai_best_practice.html">Best Practice for Quantizing an Image Classification Model</a></li>
+<li class="toctree-l2"><a class="reference internal" href="onnx/object_detection_example_quark_onnx_ryzen_ai_best_practice.html">Best Practice for Quantizing an Object Detection Model</a></li>
+<li class="toctree-l2"><a class="reference internal" href="onnx/hugging_face_timm_quantization.html">Hugging Face TIMM Quantization</a></li>
+<li class="toctree-l2"><a class="reference internal" href="onnx/example_quark_onnx_yolo_quantization.html">Yolo_nas and Yolox Quantization</a></li>
+</ul>
+</details></li>
+</ul>
+<p aria-level="2" class="caption" role="heading"><span class="caption-text">Supported accelerators</span></p>
+<ul class="nav bd-sidenav">
+<li class="toctree-l1 has-children"><a class="reference internal" href="supported_accelerators/ryzenai/index.html">AMD Ryzen AI</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
+<li class="toctree-l2"><a class="reference internal" href="supported_accelerators/ryzenai/tutorial_quick_start_for_ryzenai.html">Quick Start for Ryzen AI</a></li>
+<li class="toctree-l2"><a class="reference internal" href="supported_accelerators/ryzenai/ryzen_ai_best_practice.html">Best Practice for Ryzen AI in AMD Quark ONNX</a></li>
+<li class="toctree-l2"><a class="reference internal" href="onnx/example_quark_onnx_ryzenai.html">Auto-Search for Ryzen AI ONNX Model Quantization</a></li>
+<li class="toctree-l2"><a class="reference internal" href="supported_accelerators/ryzenai/tutorial_uint4_oga.html">Quantizing LLMs for ONNX Runtime GenAI</a></li>
+<li class="toctree-l2"><a class="reference internal" href="supported_accelerators/ryzenai/tutorial_convert_fp32_or_fp16_to_bf16.html">FP32/FP16 to BF16 Model Conversion</a></li>
+<li class="toctree-l2"><a class="reference internal" href="supported_accelerators/ryzenai/tutorial_xint8_quantize.html">Power-of-Two Scales (XINT8) Quantization</a></li>
+<li class="toctree-l2"><a class="reference internal" href="supported_accelerators/ryzenai/tutorial_a8w8_and_a16w8_quantize.html">Float Scales (A8W8 and A16W8) Quantization</a></li>
+</ul>
+</details></li>
+<li class="toctree-l1 has-children"><a class="reference internal" href="supported_accelerators/mi_gpus/index.html">AMD Instinct</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
+<li class="toctree-l2 has-children"><a class="reference internal" href="pytorch/example_quark_torch_llm_ptq.html">Language Model Post Training Quantization (PTQ) Using Quark</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
+<li class="toctree-l3"><a class="reference internal" href="tutorials/torch/example_fp4.html">FP4 Post Training Quantization (PTQ) for LLM models</a></li>
+<li class="toctree-l3"><a class="reference internal" href="tutorials/torch/example_fp8.html">FP8 Post Training Quantization (PTQ) for LLM models</a></li>
+</ul>
+</details></li>
+<li class="toctree-l2"><a class="reference internal" href="pytorch/example_quark_torch_llm_eval_perplexity.html">Evaluation of Quantized Models</a></li>
+</ul>
+</details></li>
+</ul>
+<p aria-level="2" class="caption" role="heading"><span class="caption-text">Advanced AMD Quark Features for PyTorch</span></p>
+<ul class="nav bd-sidenav">
+<li class="toctree-l1"><a class="reference internal" href="pytorch/user_guide_config_for_llm.html">Configuring PyTorch Quantization for Large Language Models</a></li>
+<li class="toctree-l1 has-children"><a class="reference internal" href="pytorch/user_guide_config_description.html">Configuring PyTorch Quantization from Scratch</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
+<li class="toctree-l2"><a class="reference internal" href="pytorch/calibration_methods.html">Calibration Methods</a></li>
+<li class="toctree-l2"><a class="reference internal" href="pytorch/calibration_datasets.html">Calibration Datasets</a></li>
+<li class="toctree-l2"><a class="reference internal" href="pytorch/quantization_strategies.html">Quantization Strategies</a></li>
+<li class="toctree-l2"><a class="reference internal" href="pytorch/quantization_schemes.html">Quantization Schemes</a></li>
+<li class="toctree-l2"><a class="reference internal" href="pytorch/quantization_symmetry.html">Quantization Symmetry</a></li>
+</ul>
+</details></li>
+<li class="toctree-l1"><a class="reference internal" href="pytorch/quark_save_load.html">Save and Load Quantized Models</a></li>
+<li class="toctree-l1 has-children"><a class="reference internal" href="pytorch/export/quark_export.html">Exporting Quantized Models</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
+<li class="toctree-l2"><a class="reference internal" href="pytorch/export/quark_export_onnx.html">ONNX format</a></li>
+<li class="toctree-l2"><a class="reference internal" href="pytorch/export/quark_export_hf.html">Hugging Face format (safetensors)</a></li>
+<li class="toctree-l2 has-children"><a class="reference internal" href="pytorch/export/quark_export_gguf.html">GGUF format</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
+<li class="toctree-l3"><a class="reference internal" href="pytorch/export/gguf_llamacpp.html">Bridge from Quark to llama.cpp</a></li>
+</ul>
+</details></li>
+<li class="toctree-l2"><a class="reference internal" href="pytorch/export/quark_export_quark.html">Quark format</a></li>
+</ul>
+</details></li>
+<li class="toctree-l1"><a class="reference internal" href="pytorch/quark_torch_best_practices.html">Best Practices for Post-Training Quantization (PTQ)</a></li>
+<li class="toctree-l1"><a class="reference internal" href="pytorch/debug.html">Debugging quantization Degradation</a></li>
+<li class="toctree-l1 has-children"><a class="reference internal" href="pytorch/llm_quark.html">Language Model Optimization</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
+<li class="toctree-l2"><a class="reference internal" href="pytorch/feature_pruning_overall.html">LLM Pruning</a></li>
+<li class="toctree-l2 has-children"><a class="reference internal" href="pytorch/example_quark_torch_llm_ptq.html">Language Model Post Training Quantization (PTQ) Using Quark</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
+<li class="toctree-l3"><a class="reference internal" href="tutorials/torch/example_fp4.html">FP4 Post Training Quantization (PTQ) for LLM models</a></li>
+<li class="toctree-l3"><a class="reference internal" href="tutorials/torch/example_fp8.html">FP8 Post Training Quantization (PTQ) for LLM models</a></li>
+</ul>
+</details></li>
+<li class="toctree-l2"><a class="reference internal" href="pytorch/example_quark_torch_llm_qat.html">Language Model QAT Using Quark and Trainer</a></li>
+<li class="toctree-l2 has-children"><a class="reference internal" href="pytorch/example_quark_torch_llm_eval.html">Language Model Evaluations in Quark</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
+<li class="toctree-l3"><a class="reference internal" href="pytorch/example_quark_torch_llm_eval_perplexity.html">Perplexity Evaluations</a></li>
+<li class="toctree-l3"><a class="reference internal" href="pytorch/example_quark_torch_llm_eval_rouge_meteor.html">Rouge &amp; Meteor Evaluations</a></li>
+<li class="toctree-l3"><a class="reference internal" href="pytorch/example_quark_torch_llm_eval_harness.html">LM-Evaluation-Harness Evaluations</a></li>
+<li class="toctree-l3"><a class="reference internal" href="pytorch/example_quark_torch_llm_eval_harness_offline.html">LM-Evaluation-Harness (Offline)</a></li>
+</ul>
+</details></li>
+<li class="toctree-l2"><a class="reference internal" href="pytorch/tutorial_rotation.html">Quantizing with Rotation and SmoothQuant</a></li>
+<li class="toctree-l2"><a class="reference internal" href="pytorch/tutorial_quarot.html">Rotation-based quantization with QuaRot</a></li>
+</ul>
+</details></li>
+<li class="toctree-l1"><a class="reference internal" href="pytorch/smoothquant.html">Activation/Weight Smoothing (SmoothQuant)</a></li>
+<li class="toctree-l1"><a class="reference internal" href="tutorials/torch/auto_smoothquant_document_and_example.html">Auto SmoothQuant</a></li>
+<li class="toctree-l1 has-children"><a class="reference internal" href="pytorch/awq_document.html">Activation-aware Weight Quantization (AWQ)</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
+<li class="toctree-l2"><a class="reference internal" href="tutorials/torch/example_awq.html">AWQ end-to-end demo</a></li>
+</ul>
+</details></li>
+<li class="toctree-l1"><a class="reference internal" href="pytorch/tutorial_bfp16.html">Block Floating Point 16</a></li>
+<li class="toctree-l1 has-children"><a class="reference internal" href="pytorch/extensions.html">Extensions</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
+<li class="toctree-l2"><a class="reference internal" href="pytorch/example_quark_torch_pytorch_light.html">Integration with AMD Pytorch-light (APL)</a></li>
+<li class="toctree-l2"><a class="reference internal" href="pytorch/example_quark_torch_brevitas.html">Brevitas Integration</a></li>
+</ul>
+</details></li>
+<li class="toctree-l1"><a class="reference internal" href="pytorch/adv_mx.html">Using MX (Microscaling)</a></li>
+<li class="toctree-l1"><a class="reference internal" href="pytorch/adv_two_level.html">Two Level Quantization Formats</a></li>
+</ul>
+<p aria-level="2" class="caption" role="heading"><span class="caption-text">Advanced Quark Features for ONNX</span></p>
+<ul class="nav bd-sidenav">
+<li class="toctree-l1 has-children"><a class="reference internal" href="onnx/user_guide_config_description.html">Configuring ONNX Quantization</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
+<li class="toctree-l2"><a class="reference internal" href="onnx/appendix_full_quant_config_features.html">Full List of Quantization Config Features</a></li>
+<li class="toctree-l2"><a class="reference internal" href="onnx/config/calibration_methods.html">Calibration methods</a></li>
+<li class="toctree-l2"><a class="reference internal" href="onnx/config/calibration_datasets.html">Calibration datasets</a></li>
+<li class="toctree-l2"><a class="reference internal" href="onnx/config/quantization_strategies.html">Quantization Strategies</a></li>
+<li class="toctree-l2"><a class="reference internal" href="onnx/config/quantization_schemes.html">Quantization Schemes</a></li>
+<li class="toctree-l2"><a class="reference internal" href="onnx/config/quantization_symmetry.html">Quantization Symmetry</a></li>
+</ul>
+</details></li>
+<li class="toctree-l1 has-children"><a class="reference internal" href="onnx/user_guide_supported_optype_datatype.html">Data and OP Types</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
+<li class="toctree-l2"><a class="reference internal" href="onnx/custom_operators/ExtendedQuantizeLinear.html">ExtendedQuantizeLinear</a></li>
+<li class="toctree-l2"><a class="reference internal" href="onnx/custom_operators/ExtendedDequantizeLinear.html">ExtendedDequantizeLinear</a></li>
+<li class="toctree-l2"><a class="reference internal" href="onnx/custom_operators/ExtendedInstanceNormalization.html">ExtendedInstanceNormalization</a></li>
+<li class="toctree-l2"><a class="reference internal" href="onnx/custom_operators/ExtendedLSTM.html">ExtendedLSTM</a></li>
+<li class="toctree-l2"><a class="reference internal" href="onnx/custom_operators/BFPQuantizeDequantize.html">BFPQuantizeDequantize</a></li>
+<li class="toctree-l2"><a class="reference internal" href="onnx/custom_operators/MXQuantizeDequantize.html">MXQuantizeDequantize</a></li>
+</ul>
+</details></li>
+<li class="toctree-l1"><a class="reference internal" href="onnx/gpu_usage_guide.html">Accelerate with GPUs</a></li>
+<li class="toctree-l1"><a class="reference internal" href="onnx/tutorial_mix_precision.html">Mixed Precision</a></li>
+<li class="toctree-l1"><a class="reference internal" href="onnx/tutorial_bfp16_quantization.html">Block Floating Point 16 (BFP16)</a></li>
+<li class="toctree-l1"><a class="reference internal" href="onnx/tutorial_bf16_quantization.html">BF16 Quantization</a></li>
+<li class="toctree-l1"><a class="reference internal" href="onnx/tutorial_microscaling_quantization.html">Microscaling (MX)</a></li>
+<li class="toctree-l1"><a class="reference internal" href="onnx/tutorial_microexponents_quantization.html">Microexponents (MX)</a></li>
+<li class="toctree-l1 has-children"><a class="reference internal" href="onnx/accuracy_improvement_algorithms.html">Accuracy Improvement Algorithms</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
+<li class="toctree-l2"><a class="reference internal" href="onnx/accuracy_algorithms/cle.html">Quantizing Using CrossLayerEqualization (CLE)</a></li>
+
+<li class="toctree-l2"><a class="reference internal" href="onnx/accuracy_algorithms/ada.html">Quantization Using AdaQuant and AdaRound</a></li>
+<li class="toctree-l2"><a class="reference internal" href="onnx/accuracy_algorithms/sq.html">SmoothQuant (SQ)</a></li>
+<li class="toctree-l2"><a class="reference internal" href="onnx/accuracy_algorithms/quarot.html">QuaRot</a></li>
+<li class="toctree-l2"><a class="reference internal" href="onnx/example_quark_onnx_gptq.html">Quantizing a model with GPTQ</a></li>
+</ul>
+</details></li>
+<li class="toctree-l1"><a class="reference internal" href="onnx/user_guide_auto_search.html">Automatic Search for Model Quantization</a></li>
+<li class="toctree-l1"><a class="reference internal" href="onnx/config/user_guide_onnx_model_inference_save_input_npy.html">Using ONNX Model Inference and Saving Input Data in NPY Format</a></li>
+<li class="toctree-l1"><a class="reference internal" href="onnx/optional_utilities.html">Optional Utilities</a></li>
+<li class="toctree-l1"><a class="reference internal" href="onnx/tools.html">Tools</a></li>
+</ul>
+<p aria-level="2" class="caption" role="heading"><span class="caption-text">Tutorials</span></p>
+<ul class="nav bd-sidenav">
+<li class="toctree-l1"><a class="reference internal" href="tutorials/torch/quickstart_tutorial/quickstart_tutorial.html">AMD Quark Tutorial: PyTorch Quickstart</a></li>
+<li class="toctree-l1"><a class="reference internal" href="tutorials/torch/diffusion_tutorial/diffusion_tutorial.html">Quantizing a Diffusion Model using Quark</a></li>
+<li class="toctree-l1"><a class="reference internal" href="tutorials/torch/depth_wise_pruning/llm_depth_pruning.html">LLM Model Depth-Wise Pruning (beta)</a></li>
+<li class="toctree-l1"><a class="reference internal" href="tutorials/torch/llm_tutorial/llm_tutorial.html">Quantizing a Large Language Model with Quark</a></li>
+</ul>
+<p aria-level="2" class="caption" role="heading"><span class="caption-text">Third-party contributions</span></p>
+<ul class="current nav bd-sidenav">
+<li class="toctree-l1 current active"><a class="current reference internal" href="#">Introduction and guidelines</a></li>
+</ul>
+<p aria-level="2" class="caption" role="heading"><span class="caption-text">APIs</span></p>
+<ul class="nav bd-sidenav">
+<li class="toctree-l1 has-children"><a class="reference internal" href="autoapi/pytorch_apis.html">PyTorch APIs</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
+<li class="toctree-l2"><a class="reference internal" href="autoapi/quark/torch/pruning/api/index.html">Pruning</a></li>
+<li class="toctree-l2"><a class="reference internal" href="autoapi/quark/torch/quantization/api/index.html">Quantization</a></li>
+<li class="toctree-l2"><a class="reference internal" href="autoapi/quark/torch/export/api/index.html">Export</a></li>
+<li class="toctree-l2"><a class="reference internal" href="autoapi/quark/torch/pruning/config/index.html">Pruner Configuration</a></li>
+<li class="toctree-l2"><a class="reference internal" href="autoapi/quark/torch/quantization/config/config/index.html">Quantizer Configuration</a></li>
+<li class="toctree-l2"><a class="reference internal" href="autoapi/quark/torch/quantization/config/template/index.html">Quantizer Template</a></li>
+<li class="toctree-l2"><a class="reference internal" href="autoapi/quark/torch/export/config/config/index.html">Exporter Configuration</a></li>
+</ul>
+</details></li>
+<li class="toctree-l1 has-children"><a class="reference internal" href="autoapi/onnx_apis.html">ONNX APIs</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
+<li class="toctree-l2"><a class="reference internal" href="autoapi/quark/onnx/quantization/api/index.html">Quantization</a></li>
+<li class="toctree-l2"><a class="reference internal" href="autoapi/quark/onnx/optimize/index.html">Optimization</a></li>
+<li class="toctree-l2"><a class="reference internal" href="autoapi/quark/onnx/calibrate/index.html">Calibration</a></li>
+<li class="toctree-l2"><a class="reference internal" href="autoapi/quark/onnx/onnx_quantizer/index.html">ONNX Quantizer</a></li>
+<li class="toctree-l2"><a class="reference internal" href="autoapi/quark/onnx/qdq_quantizer/index.html">QDQ Quantizer</a></li>
+<li class="toctree-l2"><a class="reference internal" href="autoapi/quark/onnx/quantization/config/config/index.html">Configuration</a></li>
+<li class="toctree-l2"><a class="reference internal" href="autoapi/quark/onnx/quant_utils/index.html">Quantization Utilities</a></li>
+</ul>
+</details></li>
+</ul>
+<p aria-level="2" class="caption" role="heading"><span class="caption-text">Troubleshooting and Support</span></p>
+<ul class="nav bd-sidenav">
+<li class="toctree-l1"><a class="reference internal" href="pytorch/pytorch_faq.html">PyTorch FAQ</a></li>
+<li class="toctree-l1"><a class="reference internal" href="onnx/onnx_faq.html">ONNX FAQ</a></li>
+</ul>
+<ul class="nav bd-sidenav">
+<li class="toctree-l1"><a class="reference internal" href="versions.html">AMD Quark release history</a></li>
+<li class="toctree-l1"><a class="reference internal" href="license.html">Quark license</a></li>
+</ul>
+
+    </div>
+</nav></div>
+    </div>
+  
+  
+  <div class="sidebar-primary-items__end sidebar-primary__section">
+      <div class="sidebar-primary-item">
+<div id="ethical-ad-placement"
+      class="flat"
+      data-ea-publisher="readthedocs"
+      data-ea-type="readthedocs-sidebar"
+      data-ea-manual="true">
+</div></div>
+  </div>
+
+
+      </div>
+      
+      <main id="main-content" class="bd-main" role="main">
+        
+        
+
+<div class="sbt-scroll-pixel-helper"></div>
+
+          <div class="bd-content">
+            <div class="bd-article-container">
+              
+              <div class="bd-header-article d-print-none">
+<div class="header-article-items header-article__inner">
+  
+    <div class="header-article-items__start">
+      
+        <div class="header-article-item"><label class="sidebar-toggle primary-toggle btn btn-sm" for="__primary" title="Toggle primary sidebar" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <span class="fa-solid fa-angle-right"></span>
+  </label></div>
+      
+        <div class="header-article-item">
+
+<nav aria-label="Breadcrumb" class="d-print-none">
+  <ul class="bd-breadcrumbs">
+    
+    <li class="breadcrumb-item breadcrumb-home">
+      <a href="index.html" class="nav-link" aria-label="Home">
+        <i class="fa-solid fa-home"></i>
+      </a>
+    </li>
+    <li class="breadcrumb-item active" aria-current="page"><span class="ellipsis">Quark’s <code class="docutils literal notranslate"><span class="pre">contrib</span></code> Area</span></li>
+  </ul>
+</nav>
+</div>
+      
+    </div>
+  
+  
+    <div class="header-article-items__end">
+      
+        <div class="header-article-item">
+
+<div class="article-header-buttons">
+
+
+<button class="btn btn-sm nav-link pst-navbar-icon theme-switch-button pst-js-only" aria-label="Color mode" data-bs-title="Color mode"  data-bs-placement="bottom" data-bs-toggle="tooltip">
+  <i class="theme-switch fa-solid fa-sun                fa-lg" data-mode="light" title="Light"></i>
+  <i class="theme-switch fa-solid fa-moon               fa-lg" data-mode="dark"  title="Dark"></i>
+  <i class="theme-switch fa-solid fa-circle-half-stroke fa-lg" data-mode="auto"  title="System Settings"></i>
+</button>
+
+
+<button class="btn btn-sm pst-navbar-icon search-button search-button__button pst-js-only" title="Search" aria-label="Search" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <i class="fa-solid fa-magnifying-glass fa-lg"></i>
+</button>
+<button class="sidebar-toggle secondary-toggle btn btn-sm" title="Toggle secondary sidebar" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <span class="fa-solid fa-list"></span>
+</button>
+</div></div>
+      
+    </div>
+  
+</div>
+</div>
+              
+              
+
+<div id="jb-print-docs-body" class="onlyprint">
+    <h1>Quark’s contrib Area</h1>
+    <!-- Table of contents -->
+    <div id="print-main-content">
+        <div id="jb-print-toc">
+            
+            <div>
+                <h2> Contents </h2>
+            </div>
+            <nav aria-label="Page">
+                <ul class="visible nav section-nav flex-column">
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#for-users-understanding-the-contrib-area">For Users: Understanding the <code class="docutils literal notranslate"><span class="pre">contrib</span></code> Area</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#for-contributors-how-to-contribute">For Contributors: How to Contribute</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#contribution-principles">Contribution Principles</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#how-to-contribute">How to Contribute</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#testing-your-contribution">Testing Your Contribution</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#documenting-your-contribution">Documenting Your Contribution</a></li>
+</ul>
+</li>
+</ul>
+            </nav>
+        </div>
+    </div>
+</div>
+
+              
+                
+<div id="searchbox"></div>
+                <article class="bd-article">
+                  
+  <section id="quark-s-contrib-area">
+<h1>Quark’s <code class="docutils literal notranslate"><span class="pre">contrib</span></code> Area<a class="headerlink" href="#quark-s-contrib-area" title="Link to this heading">#</a></h1>
+<p>Welcome to the AMD Quark <code class="docutils literal notranslate"><span class="pre">contrib</span></code> area! This guide outlines the terms of use for users and the policies for contributing code that is shipped with Quark but is not officially supported by the Quark Core Team. All contributions to this area are maintained and supported by their original authors.</p>
+<section id="for-users-understanding-the-contrib-area">
+<span id="users-contrib-area"></span><h2>For Users: Understanding the <code class="docutils literal notranslate"><span class="pre">contrib</span></code> Area<a class="headerlink" href="#for-users-understanding-the-contrib-area" title="Link to this heading">#</a></h2>
+<p>The <code class="docutils literal notranslate"><span class="pre">contrib</span></code> area is a valuable collection of community-authored extensions to Quark. While these components are included in the AMD Quark library for convenience, it is critical to understand their relationship with the Quark Core Team and your responsibility as a user:</p>
+<ul class="simple">
+<li><p><strong>No Official Support:</strong> Components within the <code class="docutils literal notranslate"><span class="pre">contrib</span></code> area are <strong>not officially supported</strong> by the Quark Core Team. This means we cannot provide direct assistance, bug fixes, or guarantees for these modules.</p></li>
+<li><p><strong>Use at Your Own Risk:</strong> You <strong>use these contributions at your own risk</strong>. While we encourage high-quality submissions, the Quark Core Team does not guarantee the stability, security, or future compatibility of <code class="docutils literal notranslate"><span class="pre">contrib</span></code> code.</p></li>
+<li><p><strong>Support from the Author:</strong> If you encounter issues, have questions, or require support, please contact the <strong>original author</strong> of the contribution. The author’s name and contact information (typically a GitHub profile or link) should be available in the module’s documentation.</p></li>
+</ul>
+<p>By using <code class="docutils literal notranslate"><span class="pre">contrib</span></code> code, you agree that the Quark Core Team is not responsible for any issues that may arise from its use.</p>
+</section>
+<section id="for-contributors-how-to-contribute">
+<span id="contributors-contrib-area"></span><h2>For Contributors: How to Contribute<a class="headerlink" href="#for-contributors-how-to-contribute" title="Link to this heading">#</a></h2>
+<section id="contribution-principles">
+<span id="id1"></span><h3>Contribution Principles<a class="headerlink" href="#contribution-principles" title="Link to this heading">#</a></h3>
+<p>By contributing to the <code class="docutils literal notranslate"><span class="pre">contrib</span></code> area, you agree to the following responsibilities:</p>
+<ul class="simple">
+<li><p><strong>Quark Release Schedule:</strong> Quark’s release schedule is determined by the Core Team and is not subject to change based on the readiness or release requirements of <code class="docutils literal notranslate"><span class="pre">contrib</span></code> contributions.</p></li>
+<li><p><strong>Legal Responsibility:</strong> All code, including in the <code class="docutils literal notranslate"><span class="pre">contrib</span></code> area, must pass a legal review. You are responsible for resolving any legal issues identified by our Legal department before your code can be merged.</p></li>
+<li><p><strong>Code Standards &amp; Maintenance:</strong> Your code must comply with Quark’s established code formatting, style, and quality standards. You are the sole maintainer of your contribution, responsible for its long-term health and compatibility with new Quark releases.</p></li>
+<li><dl class="simple">
+<dt><strong>Full Author Support:</strong> The original author is responsible for all aspects of their contribution’s lifecycle, including:</dt><dd><ul>
+<li><p>Performing code reviews for any proposed changes to your contribution.</p></li>
+<li><p>Fixing bugs and refactoring code as needed.</p></li>
+<li><p>Responding to user and customer support requests.</p></li>
+<li><p>Resolving CI (Continuous Integration) failures related to your code.</p></li>
+<li><p>Ensuring the code meets all required unit test and code coverage policies.</p></li>
+</ul>
+</dd>
+</dl>
+</li>
+<li><p><strong>Licensing:</strong> Your contribution must be licensed under the MIT license, consistent with the main Quark project.</p></li>
+<li><p><strong>Documentation:</strong> All code must be fully documented using Quark’s specified policy and tooling. Your module must include comprehensive usage instructions and API documentation.</p></li>
+</ul>
+</section>
+<section id="how-to-contribute">
+<span id="how-to-contribute-steps"></span><h3>How to Contribute<a class="headerlink" href="#how-to-contribute" title="Link to this heading">#</a></h3>
+<ul class="simple">
+<li><p><strong>File an Intent-to-Contribute Issue:</strong> Before starting any work, you <strong>must</strong> open an issue on the Quark GitHub repository to declare your intent to contribute. This issue should provide a summary, design, and other relevant technical information about your proposed contribution. This step is crucial for preventing work duplication with the Quark Core Team’s roadmap and allows for a discussion of the solution before significant time is invested in implementation.</p></li>
+<li><p><strong>Create a ``README.md``:</strong> Each contribution must include a <code class="docutils literal notranslate"><span class="pre">README.md</span></code> file within its component directory (e.g., <code class="docutils literal notranslate"><span class="pre">quark/contrib/your-component-name/README.md</span></code>). This file should provide a short description of your contribution, its purpose, and clear contact information for users to report bugs, provide feedback, or address any other concerns directly to you, the author.</p></li>
+<li><p><strong>Take ownership of your contrib subfolder:</strong> You must update the <code class="docutils literal notranslate"><span class="pre">CODEOWNERS</span></code> file to include yourself as a code owner for your contribution. This ensures that you are notified of any changes or issues related to your code. Note that Quark core team will also be allowed to make changes to the code base for maintenance purposes.</p></li>
+</ul>
+<p>E.g., for taking ownership for <code class="docutils literal notranslate"><span class="pre">your-component-name</span></code>:</p>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>/quark/contrib/your-component-name<span class="w"> </span>@your-github-username
+</pre></div>
+</div>
+<ul class="simple">
+<li><p><strong>Contribution Guidelines:</strong> For general development guidelines, including information on setting up your environment, writing tests, and submitting a pull request, please refer to the main <code class="docutils literal notranslate"><span class="pre">CONTRIBUTING.md</span></code> file in the repository.</p></li>
+<li><p><strong>Update the ``.gitignore``:</strong> If your contribution includes files that should not be tracked by Git, you must update the <code class="docutils literal notranslate"><span class="pre">.gitignore</span></code> file in your component’s directory. This ensures that temporary files, build artifacts, or other non-essential files are not included in the repository.</p></li>
+<li><p><strong>Update the ``requirements.txt``:</strong> If your contribution introduces new Python dependencies, you must reach out to the Quark Core Team to discuss whether it is appropriate to update the main <code class="docutils literal notranslate"><span class="pre">requirements.txt</span></code>. Otherwise, create a <code class="docutils literal notranslate"><span class="pre">requirements.txt</span></code> file in your component’s directory to include these dependencies and produce documentation to inform users about the installation process.</p></li>
+</ul>
+</section>
+<section id="testing-your-contribution">
+<span id="testing-contribution"></span><h3>Testing Your Contribution<a class="headerlink" href="#testing-your-contribution" title="Link to this heading">#</a></h3>
+<p>Each <code class="docutils literal notranslate"><span class="pre">contrib</span></code> component is expected to include its own dedicated tests to ensure its functionality and stability.</p>
+<ul class="simple">
+<li><p><strong>Test Location:</strong> All unit tests for your contribution must reside in a <code class="docutils literal notranslate"><span class="pre">tests</span></code> subfolder within your component’s directory, i.e., <code class="docutils literal notranslate"><span class="pre">quark/contrib/your-component-name/tests/</span></code>.</p></li>
+<li><p><strong>Test Quality:</strong> As per the general <code class="docutils literal notranslate"><span class="pre">CONTRIBUTING.md</span></code> guidelines and test’s README.md (aka <code class="docutils literal notranslate"><span class="pre">tests/README.md</span></code>)_, your unit tests must be fast, small, and strive to cover most, if not all, of the source code maintained by your contribution.</p></li>
+<li><p><strong>CI/CD Integration:</strong> To integrate your tests into Quark’s continuous integration/continuous deployment (CI/CD) workflows and scripts, you <strong>must consult with a DevOps engineer</strong> from the Quark Core Team. They will assist in updating the infrastructure to properly run your tests.</p></li>
+</ul>
+</section>
+<section id="documenting-your-contribution">
+<span id="documenting-contribution"></span><h3>Documenting Your Contribution<a class="headerlink" href="#documenting-your-contribution" title="Link to this heading">#</a></h3>
+<p>Comprehensive documentation is vital for the usability and maintainability of your <code class="docutils literal notranslate"><span class="pre">contrib</span></code> component.</p>
+<ul>
+<li><p><strong>Documentation Location:</strong> All documentation for your contribution must be placed in a <code class="docutils literal notranslate"><span class="pre">docs</span></code> subfolder within your component’s directory, i.e., <code class="docutils literal notranslate"><span class="pre">quark/contrib/your-component-name/docs/</span></code>.</p></li>
+<li><p><strong>Format and Content:</strong> Documentation must be written in <strong>ReStructuredText</strong> format. It should include a good conceptual introduction, clear examples, relevant diagrams, and any other information necessary to make the component easy to use, understand, and maintain for other developers.</p></li>
+<li><p><strong>CI/CD Integration:</strong> To integrate your documentation into Quark’s build and deployment infrastructure, you <strong>may consult with a DevOps engineer</strong> from the Quark Core Team. They will assist in updating the necessary CI/CD workflows or scripts, if needed. Typically, it is needed to update the <code class="docutils literal notranslate"><span class="pre">docs/source/index.rst</span></code> file to add an entry point for your new contribution’s documentation. This entry should be placed right below the <code class="docutils literal notranslate"><span class="pre">intro_contrib.rst</span></code> page, similar to this example:</p>
+<blockquote>
+<div><div class="highlight-rst notranslate"><div class="highlight"><pre><span></span><span class="p">..</span> <span class="ow">toctree</span><span class="p">::</span>
+    <span class="nc">:hidden:</span>
+    <span class="nc">:caption:</span> Contributions
+    <span class="nc">:maxdepth:</span> 1
+
+    Quark <span class="s">``contrib``s &lt;intro_contrib.rst&gt;</span>
+<span class="s">    Your component name &lt;contrib_your_component_name.rst&gt;</span>
+</pre></div>
+</div>
+</div></blockquote>
+</li>
+<li><p>Write and test rendering of the documentation as per the general <code class="docutils literal notranslate"><span class="pre">CONTRIBUTING.md</span></code> guidelines.</p></li>
+</ul>
+<p>Thank you for your commitment to expanding the Quark ecosystem.</p>
+</section>
+</section>
+</section>
+
+
+                </article>
+              
+
+              
+              
+              
+              
+                <footer class="prev-next-footer d-print-none">
+                  
+<div class="prev-next-area">
+    <a class="left-prev"
+       href="tutorials/torch/llm_tutorial/llm_tutorial.html"
+       title="previous page">
+      <i class="fa-solid fa-angle-left"></i>
+      <div class="prev-next-info">
+        <p class="prev-next-subtitle">previous</p>
+        <p class="prev-next-title">Quantizing a Large Language Model with Quark</p>
+      </div>
+    </a>
+    <a class="right-next"
+       href="autoapi/pytorch_apis.html"
+       title="next page">
+      <div class="prev-next-info">
+        <p class="prev-next-subtitle">next</p>
+        <p class="prev-next-title">Quark APIs for PyTorch</p>
+      </div>
+      <i class="fa-solid fa-angle-right"></i>
+    </a>
+</div>
+                </footer>
+              
+            </div>
+            
+            
+              
+                <dialog id="pst-secondary-sidebar-modal"></dialog>
+                <div id="pst-secondary-sidebar" class="bd-sidebar-secondary bd-toc"><div class="sidebar-secondary-items sidebar-secondary__inner">
+
+
+  <div class="sidebar-secondary-item">
+  <div class="page-toc tocsection onthispage">
+    <i class="fa-solid fa-list"></i> Contents
+  </div>
+  <nav class="bd-toc-nav page-toc">
+    <ul class="visible nav section-nav flex-column">
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#for-users-understanding-the-contrib-area">For Users: Understanding the <code class="docutils literal notranslate"><span class="pre">contrib</span></code> Area</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#for-contributors-how-to-contribute">For Contributors: How to Contribute</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#contribution-principles">Contribution Principles</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#how-to-contribute">How to Contribute</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#testing-your-contribution">Testing Your Contribution</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#documenting-your-contribution">Documenting Your Contribution</a></li>
+</ul>
+</li>
+</ul>
+  </nav></div>
+
+</div></div>
+              
+            
+          </div>
+          <footer class="bd-footer-content">
+            <p>
+      Last updated on Sep 26, 2025.<br/>
+  </p>
+          </footer>
+        
+
+      </main>
+    </div>
+  </div>
+  
+  <!-- Scripts loaded after <body> so the DOM is not blocked -->
+  <script defer src="_static/scripts/bootstrap.js?digest=8878045cc6db502f8baf"></script>
+<script defer src="_static/scripts/pydata-sphinx-theme.js?digest=8878045cc6db502f8baf"></script>
+
+<footer class="rocm-footer">
+    <div class="container-lg">
+        <section class="bottom-menu menu py-45">
+            <div class="row d-flex align-items-center">
+                <div class="col-12 text-center">
+                    <ul>
+                        <li><a href="https://www.amd.com/en/corporate/copyright" target="_blank">Terms and Conditions</a></li>
+                        <li><a href="https://quark.docs.amd.com/latest/license.html">Quark Licenses and Disclaimers</a></li>
+                        <li><a href="https://www.amd.com/en/corporate/privacy" target="_blank">Privacy</a></li>
+                        <li><a href="https://www.amd.com/en/corporate/trademarks" target="_blank">Trademarks</a></li>
+                        <li><a href="https://www.amd.com/content/dam/amd/en/documents/corporate/cr/supply-chain-transparency.pdf" target="_blank">Supply Chain Transparency</a></li>
+                        <li><a href="https://www.amd.com/en/corporate/competition" target="_blank">Fair and Open Competition</a></li>
+                        <li><a href="https://www.amd.com/system/files/documents/amd-uk-tax-strategy.pdf" target="_blank">UK Tax Strategy</a></li>
+                        <li><a href="https://www.amd.com/en/corporate/cookies" target="_blank">Cookie Policy</a></li>
+                        <!-- OneTrust Cookies Settings button start -->
+                        <li><a href="#cookie-settings" id="ot-sdk-btn" class="ot-sdk-show-settings">Cookie Settings</a></li>
+                        <!-- OneTrust Cookies Settings button end -->
+                    </ul>
+                </div>
+            </div>
+            <div class="row d-flex align-items-center">
+                <div class="col-12 text-center">
+                    <div>
+                        <span class="copyright">© 2025 Advanced Micro Devices, Inc</span>
+                    </div>
+                </div>
+            </div>
+        </section>
+    </div>
+</footer>
+
+<!-- <div id="rdc-watermark-container">
+    <img id="rdc-watermark" src="_static/images/alpha-watermark.svg" alt="DRAFT watermark"/>
+</div> -->
+  </body>
+</html>

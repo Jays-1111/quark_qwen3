@@ -1,0 +1,1182 @@
+
+<!DOCTYPE html>
+
+
+<html lang="en" data-content_root="../../../" >
+
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="viewport" content="width=device-width, initial-scale=1" />
+
+    <title>Quantizing a Large Language Model with Quark &#8212; AMD Quark 0.10 documentation</title>
+  
+  
+  
+  <script data-cfasync="false">
+    document.documentElement.dataset.mode = localStorage.getItem("mode") || "";
+    document.documentElement.dataset.theme = localStorage.getItem("theme") || "";
+  </script>
+  <!--
+    this give us a css class that will be invisible only if js is disabled
+  -->
+  <noscript>
+    <style>
+      .pst-js-only { display: none !important; }
+
+    </style>
+  </noscript>
+  
+  <!-- Loaded before other Sphinx assets -->
+  <link href="../../../_static/styles/theme.css?digest=8878045cc6db502f8baf" rel="stylesheet" />
+<link href="../../../_static/styles/pydata-sphinx-theme.css?digest=8878045cc6db502f8baf" rel="stylesheet" />
+
+    <link rel="stylesheet" type="text/css" href="../../../_static/pygments.css?v=03e43079" />
+    <link rel="stylesheet" type="text/css" href="../../../_static/styles/sphinx-book-theme.css?v=a3416100" />
+    <link rel="stylesheet" type="text/css" href="../../../_static/graphviz.css?v=4ae1632d" />
+    <link rel="stylesheet" type="text/css" href="../../../_static/mystnb.8ecb98da25f57f5357bf6f572d296f466b2cfe2517ffebfabe82451661e28f02.css" />
+    <link rel="stylesheet" type="text/css" href="../../../_static/custom.css?v=a66ef196" />
+    <link rel="stylesheet" type="text/css" href="../../../_static/rocm_header.css?v=9557e3d1" />
+    <link rel="stylesheet" type="text/css" href="../../../_static/rocm_footer.css?v=7095035a" />
+    <link rel="stylesheet" type="text/css" href="../../../_static/fonts.css?v=fcff5274" />
+  
+  <!-- So that users can add custom icons -->
+  <script src="../../../_static/scripts/fontawesome.js?digest=8878045cc6db502f8baf"></script>
+  <!-- Pre-loaded scripts that we'll load fully later -->
+  <link rel="preload" as="script" href="../../../_static/scripts/bootstrap.js?digest=8878045cc6db502f8baf" />
+<link rel="preload" as="script" href="../../../_static/scripts/pydata-sphinx-theme.js?digest=8878045cc6db502f8baf" />
+
+    <script src="../../../_static/documentation_options.js?v=e0f31c2e"></script>
+    <script src="../../../_static/doctools.js?v=9bcbadda"></script>
+    <script src="../../../_static/sphinx_highlight.js?v=dc90522c"></script>
+    <script async="async" src="../../../_static/code_word_breaks.js?v=327952c4"></script>
+    <script async="async" src="../../../_static/renameVersionLinks.js?v=929fe5e4"></script>
+    <script async="async" src="../../../_static/rdcMisc.js?v=01f88d96"></script>
+    <script async="async" src="../../../_static/theme_mode_captions.js?v=15f4ec5d"></script>
+    <script defer="defer" src="../../../_static/search.js?v=90a4452c"></script>
+    <script src="../../../_static/scripts/sphinx-book-theme.js?v=887ef09a"></script>
+    <script async="async" src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+    <script>DOCUMENTATION_OPTIONS.pagename = 'tutorials/torch/llm_tutorial/llm_tutorial';</script>
+    <script async="async" src="https://download.amd.com/js/analytics/analyticsinit.js"></script>
+    <link rel="icon" href="https://www.amd.com/content/dam/code/images/favicon/favicon.ico"/>
+    <link rel="index" title="Index" href="../../../genindex.html" />
+    <link rel="search" title="Search" href="../../../search.html" />
+    <link rel="next" title="Quark’s contrib Area" href="../../../intro_contrib.html" />
+    <link rel="prev" title="LLM Model Depth-Wise Pruning (beta)" href="../depth_wise_pruning/llm_depth_pruning.html" />
+<script type="text/javascript">
+    window.addEventListener("load", function(event) {
+        var coll = document.querySelectorAll('.toggle > .header');  // sdelect the toggles header.
+        var i;
+
+        for (i = 0; i < coll.length; i++) {
+            coll[i].innerText = "Show code ▼\n\n";
+
+            coll[i].addEventListener("click", function() {
+                var content = this.nextElementSibling;  // code block.
+                if (content.style.display === "block") {
+                    content.style.display = "none";
+                    this.innerText = "Show code ▼\n\n";
+                } else {
+                    content.style.display = "block";
+                    this.innerText = "Hide code ▶";
+                }
+            });
+        }
+    });
+</script>
+
+  </head>
+  
+  
+  <body data-bs-spy="scroll" data-bs-target=".bd-toc-nav" data-offset="180" data-bs-root-margin="0px 0px -60%" data-default-mode="">
+
+  
+  
+  <div id="pst-skip-link" class="skip-link d-print-none"><a href="#main-content">Skip to main content</a></div>
+  
+  <div id="pst-scroll-pixel-helper"></div>
+  
+  <button type="button" class="btn rounded-pill" id="pst-back-to-top">
+    <i class="fa-solid fa-arrow-up"></i>Back to top</button>
+
+  
+  <dialog id="pst-search-dialog">
+    
+<form class="bd-search d-flex align-items-center"
+      action="../../../search.html"
+      method="get">
+  <i class="fa-solid fa-magnifying-glass"></i>
+  <input type="search"
+         class="form-control"
+         name="q"
+         placeholder="Search..."
+         aria-label="Search..."
+         autocomplete="off"
+         autocorrect="off"
+         autocapitalize="off"
+         spellcheck="false"/>
+  <span class="search-button__kbd-shortcut"><kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd>K</kbd></span>
+</form>
+  </dialog>
+
+  <div class="pst-async-banner-revealer d-none">
+  <aside id="bd-header-version-warning" class="d-none d-print-none" aria-label="Version warning"></aside>
+</div>
+
+  
+
+<header class="common-header" >
+    <nav class="navbar navbar-expand-xl">
+        <div class="container-fluid main-nav rocm-header">
+            
+            <button class="navbar-toggler collapsed" id="nav-icon" data-tracking-information="mainMenuToggle" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+                <span></span>
+                <span></span>
+                <span></span>
+            </button>
+            
+            <div class="header-logo">
+                <a class="navbar-brand" href="https://www.amd.com/">
+                    <img src="../../../_static/images/amd-header-logo.svg" alt="AMD Logo" title="AMD Logo" width="90" class="d-inline-block align-text-top hover-opacity"/>
+                </a>
+                <div class="vr vr mx-40 my-25"></div>
+                <a class="klavika-font hover-opacity" href="https://quark.docs.amd.com">Quark</a>
+                <a class="header-all-versions" href="https://quark.docs.amd.com/latest/versions.html">Version List</a>
+            </div>
+            <div class="icon-nav text-center d-flex ms-auto">
+            </div>
+        </div>
+    </nav>
+    
+    <nav class="navbar navbar-expand-xl second-level-nav">
+        <div class="container-fluid main-nav">
+            <div class="navbar-nav-container collapse navbar-collapse" id="navbarSupportedContent">
+                <ul class="navbar-nav nav-mega me-auto mb-2 mb-lg-0 col-xl-10">
+                    
+                        <li class="nav-item">
+                            <a class="nav-link top-level header-menu-links" href="https://github.com/amd/quark" id="navgithub" role="button" aria-expanded="false" target="_blank" >
+                                GitHub
+                            </a>
+                        </li>
+                    
+                        <li class="nav-item">
+                            <a class="nav-link top-level header-menu-links" href="https://github.com/amd/quark/issues/new/choose" id="navsupport" role="button" aria-expanded="false" target="_blank" >
+                                Support
+                            </a>
+                        </li>
+                    
+                </ul>
+            </div>
+        </div>
+    </nav>
+    
+</header>
+
+
+  <div class="bd-container">
+    <div class="bd-container__inner bd-page-width">
+      
+      
+      
+      <dialog id="pst-primary-sidebar-modal"></dialog>
+      <div id="pst-primary-sidebar" class="bd-sidebar-primary bd-sidebar">
+        
+
+  
+  <div class="sidebar-header-items sidebar-primary__section">
+    
+    
+    
+    
+  </div>
+  
+    <div class="sidebar-primary-items__start sidebar-primary__section">
+        <div class="sidebar-primary-item">
+
+  
+    
+  
+
+<a class="navbar-brand logo" href="../../../index.html">
+  
+  
+  
+  
+  
+  
+    <p class="title logo__title">AMD Quark 0.10 documentation</p>
+  
+</a></div>
+        <div class="sidebar-primary-item">
+
+<button class="btn search-button-field search-button__button pst-js-only" title="Search" aria-label="Search" data-bs-placement="bottom" data-bs-toggle="tooltip">
+ <i class="fa-solid fa-magnifying-glass"></i>
+ <span class="search-button__default-text">Search</span>
+ <span class="search-button__kbd-shortcut"><kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd class="kbd-shortcut__modifier">K</kbd></span>
+</button></div>
+        <div class="sidebar-primary-item"><nav class="bd-links bd-docs-nav" aria-label="Main">
+    <div class="bd-toc-item navbar-nav active">
+        <p aria-level="2" class="caption" role="heading"><span class="caption-text">Release Notes</span></p>
+<ul class="nav bd-sidenav">
+<li class="toctree-l1"><a class="reference internal" href="../../../release_note.html">Release Information</a></li>
+</ul>
+<p aria-level="2" class="caption" role="heading"><span class="caption-text">Getting Started with AMD Quark</span></p>
+<ul class="nav bd-sidenav">
+<li class="toctree-l1"><a class="reference internal" href="../../../intro.html">Introduction to Quantization</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../install.html">Installation</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../basic_usage.html">Getting started: Introduction</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../onnx/basic_usage_onnx.html">Getting started: Quark for ONNX</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../pytorch/basic_usage_pytorch.html">Getting started: Quark for PyTorch</a></li>
+<li class="toctree-l1 has-children"><a class="reference internal" href="../../../pytorch/pytorch_examples.html">PyTorch Examples</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
+<li class="toctree-l2"><a class="reference internal" href="../../../pytorch/example_quark_torch_diffusers.html">Diffusion Model Quantization</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../pytorch/example_quark_torch_brevitas.html">AMD Quark Extension for Brevitas Integration</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../pytorch/example_quark_torch_pytorch_light.html">Integration with AMD Pytorch-light (APL)</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../pytorch/example_quark_torch_llm_pruning.html">Language Model Pruning</a></li>
+<li class="toctree-l2 has-children"><a class="reference internal" href="../../../pytorch/example_quark_torch_llm_ptq.html">Language Model PTQ</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
+<li class="toctree-l3"><a class="reference internal" href="../example_fp4.html">FP4 Post Training Quantization (PTQ) for LLM models</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../example_fp8.html">FP8 Post Training Quantization (PTQ) for LLM models</a></li>
+</ul>
+</details></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../pytorch/example_quark_torch_llm_qat.html">Language Model QAT</a></li>
+<li class="toctree-l2 has-children"><a class="reference internal" href="../../../pytorch/example_quark_torch_llm_eval.html">Language Model Evaluation</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
+<li class="toctree-l3"><a class="reference internal" href="../../../pytorch/example_quark_torch_llm_eval_perplexity.html">Perplexity Evaluations</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../../pytorch/example_quark_torch_llm_eval_rouge_meteor.html">Rouge &amp; Meteor Evaluations</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../../pytorch/example_quark_torch_llm_eval_harness.html">LM-Evaluation-Harness Evaluations</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../../pytorch/example_quark_torch_llm_eval_harness_offline.html">LM-Evaluation-Harness (Offline)</a></li>
+</ul>
+</details></li>
+<li class="toctree-l2 has-children"><a class="reference internal" href="../../../pytorch/example_quark_torch_vision.html">Vision Model Quantization using FX Graph Mode</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
+<li class="toctree-l3"><a class="reference internal" href="../../../pytorch/example_quark_fx_image_classification.html">Image Classification Models FX Graph Quantization</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../../pytorch/sample_yolo_nas_quant.html">YOLO-NAS FX graph Quantization</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../../pytorch/sample_yolo_x_tiny_quant.html">YOLO-X Tiny FX Graph Quantization</a></li>
+</ul>
+</details></li>
+</ul>
+</details></li>
+<li class="toctree-l1 has-children"><a class="reference internal" href="../../../onnx/onnx_examples.html">ONNX Examples</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
+<li class="toctree-l2"><a class="reference internal" href="../../../onnx/example_quark_onnx_BFP.html">Block Floating Point (BFP)</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../onnx/example_quark_onnx_MX.html">MX Formats</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../onnx/example_quark_onnx_adaround.html">Fast Finetune AdaRound</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../onnx/example_quark_onnx_adaquant.html">Fast Finetune AdaQuant</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../onnx/example_quark_onnx_cle.html">Cross-Layer Equalization (CLE)</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../onnx/example_quark_onnx_layerwise_percentile.html">Layer-wise Percentile</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../onnx/example_quark_onnx_gptq.html">GPTQ</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../onnx/example_quark_onnx_mixed_precision.html">Mixed Precision</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../onnx/example_quark_onnx_smoothquant.html">Smooth Quant</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../onnx/example_quark_onnx_quarot.html">QuaRot</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../onnx/example_quark_onnx_auto_search.html">Auto-Search for General Yolov3 ONNX Model Quantization</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../onnx/example_quark_onnx_ryzenai_yolonas.html">Auto-Search for Ryzen AI Yolo-nas ONNX Model Quantization</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../onnx/example_ryzenai_autosearch_resnet50.html">Auto-Search for Ryzen AI Resnet50 ONNX Model Quantization</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../onnx/example_quark_onnx_ryzenai_yolov3_custom_evaluator.html">Auto-Search for Ryzen AI Yolov3 ONNX Quantization with Custom Evaluator</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../onnx/example_quark_onnx_dynamic_quantization_llama2.html">Quantizing an Llama-2-7b Model</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../onnx/example_quark_onnx_dynamic_quantization_opt.html">Quantizing an OPT-125M Model</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../onnx/example_quark_onnx_image_classification.html">Quantizing a ResNet50-v1-12 Model</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../onnx/example_quark_onnx_language_models.html">Quantizing an OPT-125M Model</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../onnx/example_quark_onnx_weights_only_quant_int4_matmul_nbits_llama2.html">Quantizing an Llama-2-7b Model Using the ONNX MatMulNBits</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../onnx/example_quark_onnx_weights_only_quant_int8_qdq_llama2.html">Quantizing Llama-2-7b model using MatMulNBits</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../onnx/example_quark_onnx_crypto_mode.html">Quantizing a ResNet50 model in crypto mode</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../onnx/image_classification_example_quark_onnx_ryzen_ai_best_practice.html">Best Practice for Quantizing an Image Classification Model</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../onnx/object_detection_example_quark_onnx_ryzen_ai_best_practice.html">Best Practice for Quantizing an Object Detection Model</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../onnx/hugging_face_timm_quantization.html">Hugging Face TIMM Quantization</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../onnx/example_quark_onnx_yolo_quantization.html">Yolo_nas and Yolox Quantization</a></li>
+</ul>
+</details></li>
+</ul>
+<p aria-level="2" class="caption" role="heading"><span class="caption-text">Supported accelerators</span></p>
+<ul class="nav bd-sidenav">
+<li class="toctree-l1 has-children"><a class="reference internal" href="../../../supported_accelerators/ryzenai/index.html">AMD Ryzen AI</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
+<li class="toctree-l2"><a class="reference internal" href="../../../supported_accelerators/ryzenai/tutorial_quick_start_for_ryzenai.html">Quick Start for Ryzen AI</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../supported_accelerators/ryzenai/ryzen_ai_best_practice.html">Best Practice for Ryzen AI in AMD Quark ONNX</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../onnx/example_quark_onnx_ryzenai.html">Auto-Search for Ryzen AI ONNX Model Quantization</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../supported_accelerators/ryzenai/tutorial_uint4_oga.html">Quantizing LLMs for ONNX Runtime GenAI</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../supported_accelerators/ryzenai/tutorial_convert_fp32_or_fp16_to_bf16.html">FP32/FP16 to BF16 Model Conversion</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../supported_accelerators/ryzenai/tutorial_xint8_quantize.html">Power-of-Two Scales (XINT8) Quantization</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../supported_accelerators/ryzenai/tutorial_a8w8_and_a16w8_quantize.html">Float Scales (A8W8 and A16W8) Quantization</a></li>
+</ul>
+</details></li>
+<li class="toctree-l1 has-children"><a class="reference internal" href="../../../supported_accelerators/mi_gpus/index.html">AMD Instinct</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
+<li class="toctree-l2 has-children"><a class="reference internal" href="../../../pytorch/example_quark_torch_llm_ptq.html">Language Model Post Training Quantization (PTQ) Using Quark</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
+<li class="toctree-l3"><a class="reference internal" href="../example_fp4.html">FP4 Post Training Quantization (PTQ) for LLM models</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../example_fp8.html">FP8 Post Training Quantization (PTQ) for LLM models</a></li>
+</ul>
+</details></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../pytorch/example_quark_torch_llm_eval_perplexity.html">Evaluation of Quantized Models</a></li>
+</ul>
+</details></li>
+</ul>
+<p aria-level="2" class="caption" role="heading"><span class="caption-text">Advanced AMD Quark Features for PyTorch</span></p>
+<ul class="nav bd-sidenav">
+<li class="toctree-l1"><a class="reference internal" href="../../../pytorch/user_guide_config_for_llm.html">Configuring PyTorch Quantization for Large Language Models</a></li>
+<li class="toctree-l1 has-children"><a class="reference internal" href="../../../pytorch/user_guide_config_description.html">Configuring PyTorch Quantization from Scratch</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
+<li class="toctree-l2"><a class="reference internal" href="../../../pytorch/calibration_methods.html">Calibration Methods</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../pytorch/calibration_datasets.html">Calibration Datasets</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../pytorch/quantization_strategies.html">Quantization Strategies</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../pytorch/quantization_schemes.html">Quantization Schemes</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../pytorch/quantization_symmetry.html">Quantization Symmetry</a></li>
+</ul>
+</details></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../pytorch/quark_save_load.html">Save and Load Quantized Models</a></li>
+<li class="toctree-l1 has-children"><a class="reference internal" href="../../../pytorch/export/quark_export.html">Exporting Quantized Models</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
+<li class="toctree-l2"><a class="reference internal" href="../../../pytorch/export/quark_export_onnx.html">ONNX format</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../pytorch/export/quark_export_hf.html">Hugging Face format (safetensors)</a></li>
+<li class="toctree-l2 has-children"><a class="reference internal" href="../../../pytorch/export/quark_export_gguf.html">GGUF format</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
+<li class="toctree-l3"><a class="reference internal" href="../../../pytorch/export/gguf_llamacpp.html">Bridge from Quark to llama.cpp</a></li>
+</ul>
+</details></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../pytorch/export/quark_export_quark.html">Quark format</a></li>
+</ul>
+</details></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../pytorch/quark_torch_best_practices.html">Best Practices for Post-Training Quantization (PTQ)</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../pytorch/debug.html">Debugging quantization Degradation</a></li>
+<li class="toctree-l1 has-children"><a class="reference internal" href="../../../pytorch/llm_quark.html">Language Model Optimization</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
+<li class="toctree-l2"><a class="reference internal" href="../../../pytorch/feature_pruning_overall.html">LLM Pruning</a></li>
+<li class="toctree-l2 has-children"><a class="reference internal" href="../../../pytorch/example_quark_torch_llm_ptq.html">Language Model Post Training Quantization (PTQ) Using Quark</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
+<li class="toctree-l3"><a class="reference internal" href="../example_fp4.html">FP4 Post Training Quantization (PTQ) for LLM models</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../example_fp8.html">FP8 Post Training Quantization (PTQ) for LLM models</a></li>
+</ul>
+</details></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../pytorch/example_quark_torch_llm_qat.html">Language Model QAT Using Quark and Trainer</a></li>
+<li class="toctree-l2 has-children"><a class="reference internal" href="../../../pytorch/example_quark_torch_llm_eval.html">Language Model Evaluations in Quark</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
+<li class="toctree-l3"><a class="reference internal" href="../../../pytorch/example_quark_torch_llm_eval_perplexity.html">Perplexity Evaluations</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../../pytorch/example_quark_torch_llm_eval_rouge_meteor.html">Rouge &amp; Meteor Evaluations</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../../pytorch/example_quark_torch_llm_eval_harness.html">LM-Evaluation-Harness Evaluations</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../../pytorch/example_quark_torch_llm_eval_harness_offline.html">LM-Evaluation-Harness (Offline)</a></li>
+</ul>
+</details></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../pytorch/tutorial_rotation.html">Quantizing with Rotation and SmoothQuant</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../pytorch/tutorial_quarot.html">Rotation-based quantization with QuaRot</a></li>
+</ul>
+</details></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../pytorch/smoothquant.html">Activation/Weight Smoothing (SmoothQuant)</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../auto_smoothquant_document_and_example.html">Auto SmoothQuant</a></li>
+<li class="toctree-l1 has-children"><a class="reference internal" href="../../../pytorch/awq_document.html">Activation-aware Weight Quantization (AWQ)</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
+<li class="toctree-l2"><a class="reference internal" href="../example_awq.html">AWQ end-to-end demo</a></li>
+</ul>
+</details></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../pytorch/tutorial_bfp16.html">Block Floating Point 16</a></li>
+<li class="toctree-l1 has-children"><a class="reference internal" href="../../../pytorch/extensions.html">Extensions</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
+<li class="toctree-l2"><a class="reference internal" href="../../../pytorch/example_quark_torch_pytorch_light.html">Integration with AMD Pytorch-light (APL)</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../pytorch/example_quark_torch_brevitas.html">Brevitas Integration</a></li>
+</ul>
+</details></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../pytorch/adv_mx.html">Using MX (Microscaling)</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../pytorch/adv_two_level.html">Two Level Quantization Formats</a></li>
+</ul>
+<p aria-level="2" class="caption" role="heading"><span class="caption-text">Advanced Quark Features for ONNX</span></p>
+<ul class="nav bd-sidenav">
+<li class="toctree-l1 has-children"><a class="reference internal" href="../../../onnx/user_guide_config_description.html">Configuring ONNX Quantization</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
+<li class="toctree-l2"><a class="reference internal" href="../../../onnx/appendix_full_quant_config_features.html">Full List of Quantization Config Features</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../onnx/config/calibration_methods.html">Calibration methods</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../onnx/config/calibration_datasets.html">Calibration datasets</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../onnx/config/quantization_strategies.html">Quantization Strategies</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../onnx/config/quantization_schemes.html">Quantization Schemes</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../onnx/config/quantization_symmetry.html">Quantization Symmetry</a></li>
+</ul>
+</details></li>
+<li class="toctree-l1 has-children"><a class="reference internal" href="../../../onnx/user_guide_supported_optype_datatype.html">Data and OP Types</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
+<li class="toctree-l2"><a class="reference internal" href="../../../onnx/custom_operators/ExtendedQuantizeLinear.html">ExtendedQuantizeLinear</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../onnx/custom_operators/ExtendedDequantizeLinear.html">ExtendedDequantizeLinear</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../onnx/custom_operators/ExtendedInstanceNormalization.html">ExtendedInstanceNormalization</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../onnx/custom_operators/ExtendedLSTM.html">ExtendedLSTM</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../onnx/custom_operators/BFPQuantizeDequantize.html">BFPQuantizeDequantize</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../onnx/custom_operators/MXQuantizeDequantize.html">MXQuantizeDequantize</a></li>
+</ul>
+</details></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../onnx/gpu_usage_guide.html">Accelerate with GPUs</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../onnx/tutorial_mix_precision.html">Mixed Precision</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../onnx/tutorial_bfp16_quantization.html">Block Floating Point 16 (BFP16)</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../onnx/tutorial_bf16_quantization.html">BF16 Quantization</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../onnx/tutorial_microscaling_quantization.html">Microscaling (MX)</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../onnx/tutorial_microexponents_quantization.html">Microexponents (MX)</a></li>
+<li class="toctree-l1 has-children"><a class="reference internal" href="../../../onnx/accuracy_improvement_algorithms.html">Accuracy Improvement Algorithms</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
+<li class="toctree-l2"><a class="reference internal" href="../../../onnx/accuracy_algorithms/cle.html">Quantizing Using CrossLayerEqualization (CLE)</a></li>
+
+<li class="toctree-l2"><a class="reference internal" href="../../../onnx/accuracy_algorithms/ada.html">Quantization Using AdaQuant and AdaRound</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../onnx/accuracy_algorithms/sq.html">SmoothQuant (SQ)</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../onnx/accuracy_algorithms/quarot.html">QuaRot</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../onnx/example_quark_onnx_gptq.html">Quantizing a model with GPTQ</a></li>
+</ul>
+</details></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../onnx/user_guide_auto_search.html">Automatic Search for Model Quantization</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../onnx/config/user_guide_onnx_model_inference_save_input_npy.html">Using ONNX Model Inference and Saving Input Data in NPY Format</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../onnx/optional_utilities.html">Optional Utilities</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../onnx/tools.html">Tools</a></li>
+</ul>
+<p aria-level="2" class="caption" role="heading"><span class="caption-text">Tutorials</span></p>
+<ul class="current nav bd-sidenav">
+<li class="toctree-l1"><a class="reference internal" href="../quickstart_tutorial/quickstart_tutorial.html">AMD Quark Tutorial: PyTorch Quickstart</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../diffusion_tutorial/diffusion_tutorial.html">Quantizing a Diffusion Model using Quark</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../depth_wise_pruning/llm_depth_pruning.html">LLM Model Depth-Wise Pruning (beta)</a></li>
+<li class="toctree-l1 current active"><a class="current reference internal" href="#">Quantizing a Large Language Model with Quark</a></li>
+</ul>
+<p aria-level="2" class="caption" role="heading"><span class="caption-text">Third-party contributions</span></p>
+<ul class="nav bd-sidenav">
+<li class="toctree-l1"><a class="reference internal" href="../../../intro_contrib.html">Introduction and guidelines</a></li>
+</ul>
+<p aria-level="2" class="caption" role="heading"><span class="caption-text">APIs</span></p>
+<ul class="nav bd-sidenav">
+<li class="toctree-l1 has-children"><a class="reference internal" href="../../../autoapi/pytorch_apis.html">PyTorch APIs</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
+<li class="toctree-l2"><a class="reference internal" href="../../../autoapi/quark/torch/pruning/api/index.html">Pruning</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../autoapi/quark/torch/quantization/api/index.html">Quantization</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../autoapi/quark/torch/export/api/index.html">Export</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../autoapi/quark/torch/pruning/config/index.html">Pruner Configuration</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../autoapi/quark/torch/quantization/config/config/index.html">Quantizer Configuration</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../autoapi/quark/torch/quantization/config/template/index.html">Quantizer Template</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../autoapi/quark/torch/export/config/config/index.html">Exporter Configuration</a></li>
+</ul>
+</details></li>
+<li class="toctree-l1 has-children"><a class="reference internal" href="../../../autoapi/onnx_apis.html">ONNX APIs</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
+<li class="toctree-l2"><a class="reference internal" href="../../../autoapi/quark/onnx/quantization/api/index.html">Quantization</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../autoapi/quark/onnx/optimize/index.html">Optimization</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../autoapi/quark/onnx/calibrate/index.html">Calibration</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../autoapi/quark/onnx/onnx_quantizer/index.html">ONNX Quantizer</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../autoapi/quark/onnx/qdq_quantizer/index.html">QDQ Quantizer</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../autoapi/quark/onnx/quantization/config/config/index.html">Configuration</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../autoapi/quark/onnx/quant_utils/index.html">Quantization Utilities</a></li>
+</ul>
+</details></li>
+</ul>
+<p aria-level="2" class="caption" role="heading"><span class="caption-text">Troubleshooting and Support</span></p>
+<ul class="nav bd-sidenav">
+<li class="toctree-l1"><a class="reference internal" href="../../../pytorch/pytorch_faq.html">PyTorch FAQ</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../onnx/onnx_faq.html">ONNX FAQ</a></li>
+</ul>
+<ul class="nav bd-sidenav">
+<li class="toctree-l1"><a class="reference internal" href="../../../versions.html">AMD Quark release history</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../license.html">Quark license</a></li>
+</ul>
+
+    </div>
+</nav></div>
+    </div>
+  
+  
+  <div class="sidebar-primary-items__end sidebar-primary__section">
+      <div class="sidebar-primary-item">
+<div id="ethical-ad-placement"
+      class="flat"
+      data-ea-publisher="readthedocs"
+      data-ea-type="readthedocs-sidebar"
+      data-ea-manual="true">
+</div></div>
+  </div>
+
+
+      </div>
+      
+      <main id="main-content" class="bd-main" role="main">
+        
+        
+
+<div class="sbt-scroll-pixel-helper"></div>
+
+          <div class="bd-content">
+            <div class="bd-article-container">
+              
+              <div class="bd-header-article d-print-none">
+<div class="header-article-items header-article__inner">
+  
+    <div class="header-article-items__start">
+      
+        <div class="header-article-item"><label class="sidebar-toggle primary-toggle btn btn-sm" for="__primary" title="Toggle primary sidebar" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <span class="fa-solid fa-angle-right"></span>
+  </label></div>
+      
+        <div class="header-article-item">
+
+<nav aria-label="Breadcrumb" class="d-print-none">
+  <ul class="bd-breadcrumbs">
+    
+    <li class="breadcrumb-item breadcrumb-home">
+      <a href="../../../index.html" class="nav-link" aria-label="Home">
+        <i class="fa-solid fa-home"></i>
+      </a>
+    </li>
+    <li class="breadcrumb-item active" aria-current="page"><span class="ellipsis">Quantizing a Large Language Model with Quark</span></li>
+  </ul>
+</nav>
+</div>
+      
+    </div>
+  
+  
+    <div class="header-article-items__end">
+      
+        <div class="header-article-item">
+
+<div class="article-header-buttons">
+
+
+<button class="btn btn-sm nav-link pst-navbar-icon theme-switch-button pst-js-only" aria-label="Color mode" data-bs-title="Color mode"  data-bs-placement="bottom" data-bs-toggle="tooltip">
+  <i class="theme-switch fa-solid fa-sun                fa-lg" data-mode="light" title="Light"></i>
+  <i class="theme-switch fa-solid fa-moon               fa-lg" data-mode="dark"  title="Dark"></i>
+  <i class="theme-switch fa-solid fa-circle-half-stroke fa-lg" data-mode="auto"  title="System Settings"></i>
+</button>
+
+
+<button class="btn btn-sm pst-navbar-icon search-button search-button__button pst-js-only" title="Search" aria-label="Search" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <i class="fa-solid fa-magnifying-glass fa-lg"></i>
+</button>
+<button class="sidebar-toggle secondary-toggle btn btn-sm" title="Toggle secondary sidebar" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <span class="fa-solid fa-list"></span>
+</button>
+</div></div>
+      
+    </div>
+  
+</div>
+</div>
+              
+              
+
+<div id="jb-print-docs-body" class="onlyprint">
+    <h1>Quantizing a Large Language Model with Quark</h1>
+    <!-- Table of contents -->
+    <div id="print-main-content">
+        <div id="jb-print-toc">
+            
+            <div>
+                <h2> Contents </h2>
+            </div>
+            <nav aria-label="Page">
+                <ul class="visible nav section-nav flex-column">
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#what-you-will-learn">What You Will Learn</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#installation-and-setup">Installation and Setup</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#large-language-model-fundamentals">Large Language Model Fundamentals</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#chunking-tokenization">Chunking &amp; Tokenization</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#text-encoding">Text Encoding</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#latent-space">Latent Space</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#transformers-attention">Transformers &amp; Attention</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#model-architecture">Model Architecture</a></li>
+</ul>
+</li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#cli-scripts">CLI Scripts</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#downloading-the-model">Downloading the Model</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#model-evaluation-pre-quantization">Model Evaluation: Pre-Quantization</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#quantization">Quantization</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#model-evaluation-post-quantization">Model Evaluation: Post-Quantization</a></li>
+</ul>
+</li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#further-reading">Further Reading</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#tutorials-articles">Tutorials/Articles</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#papers">Papers</a></li>
+</ul>
+</li>
+</ul>
+            </nav>
+        </div>
+    </div>
+</div>
+
+              
+                
+<div id="searchbox"></div>
+                <article class="bd-article">
+                  
+  <section id="quantizing-a-large-language-model-with-quark">
+<h1>Quantizing a Large Language Model with Quark<a class="headerlink" href="#quantizing-a-large-language-model-with-quark" title="Link to this heading">#</a></h1>
+<p>In this tutorial, we will be quantizing a Large Language Model (LLM)
+using AMD Quark. We are following on from the <em>Quantizing a Diffusion
+Model using Quark</em> tutorial. If you are not familiar with quantization,
+we recommended having a look at the <a class="reference external" href="https://quark.docs.amd.com/latest/tutorials/torch/quickstart_tutorial/quickstart_tutorial.html">Quickstart
+Tutorial</a>
+first.</p>
+<section id="what-you-will-learn">
+<h2>What You Will Learn<a class="headerlink" href="#what-you-will-learn" title="Link to this heading">#</a></h2>
+<ul class="simple">
+<li><p>Large Language Model fundamentals</p></li>
+<li><p>AMD Command Line Interface (CLI) for Quantization</p></li>
+<li><p>Advanced quantization algorithms</p></li>
+<li><p>Comparing the model’s accuracy before and after quantization using
+benchmarks</p></li>
+<li><p>Exporting using Hugging Face format</p></li>
+</ul>
+</section>
+<section id="installation-and-setup">
+<h2>Installation and Setup<a class="headerlink" href="#installation-and-setup" title="Link to this heading">#</a></h2>
+<p>Please refer to <a class="reference external" href="https://quark.docs.amd.com/latest/install.html">Recommended First Time User
+Installation</a> for
+necessary packages imports, and <a class="reference external" href="https://quark.docs.amd.com/latest/tutorials/torch/quickstart_tutorial/quickstart_tutorial.html">AMD Quark Tutorial: PyTorch
+Quickstart</a>
+for setting up Linux for Windows machines usign WSL (Windows Subsystem
+for Linux). As we will be using the CLI for this tutorial, WSL is needed
+to run our scripts using Linux to download, quantize and evaluate our
+model.</p>
+<p>If you have not already completed the <em>diffusion model</em> tutorial, we
+must install the necessary additional packages required for this
+tutorial. You can run the commands:</p>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>pip<span class="w"> </span>install<span class="w"> </span>accelerate<span class="w"> </span>notebook<span class="w"> </span>safetensors<span class="w"> </span>transformers<span class="w"> </span>huggingface_hub<span class="o">[</span>cli<span class="o">]</span>
+</pre></div>
+</div>
+<p>If you are using GPUs compatible with ROCm (AMD GPUs), you can install
+the PyTorch version below to accelerate runtime. You should check
+<a class="reference external" href="https://pytorch.org/get-started/locally/">PyTorch’s installation
+page</a> for instructions on
+installing an up-to-date version for your system. For example, we used
+ROCm 6.2.4 in this tutorial, which we installed as follows:</p>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>pip<span class="w"> </span>install<span class="w"> </span>torch<span class="w"> </span>torchvision<span class="w"> </span>torchaudio<span class="w"> </span>--index-url<span class="w"> </span>https://download.pytorch.org/whl/rocm6.2.4
+</pre></div>
+</div>
+<p>If you are using GPUs compatible with CUDA (NVIDIA GPUs), you can
+install the below version instead. This tutorial uses CUDA 12.6, but
+feel free to swap it out for a different version.</p>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>pip<span class="w"> </span>install<span class="w"> </span>torch<span class="w"> </span>torchvision<span class="w"> </span>torchaudio<span class="w"> </span>--index-url<span class="w"> </span>https://download.pytorch.org/whl/cu126
+</pre></div>
+</div>
+<p>You can also install the requirements necessary to run Quark with the
+below:</p>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>pip<span class="w"> </span>install<span class="w"> </span>amd-quark
+</pre></div>
+</div>
+<p>By default, Hugging Face uses paths stored in environment variables
+<code class="docutils literal notranslate"><span class="pre">HUGGINGFACE_HUB_CACHE</span></code>, and <code class="docutils literal notranslate"><span class="pre">HF_DATASETS_CACHE</span></code> as the location to
+cache downloaded models and datasets, respectively. You can set these
+environment variables to specify your own paths. By default they will be
+under <code class="docutils literal notranslate"><span class="pre">~/.cache/huggingface/hub/</span></code> and
+<code class="docutils literal notranslate"><span class="pre">~/.cache/huggingface/datasets/</span></code>.</p>
+<p>We will be using the example scripts available in the Quark github
+repository to run our CLI scripts.</p>
+</section>
+<section id="large-language-model-fundamentals">
+<h2>Large Language Model Fundamentals<a class="headerlink" href="#large-language-model-fundamentals" title="Link to this heading">#</a></h2>
+<section id="chunking-tokenization">
+<h3>Chunking &amp; Tokenization<a class="headerlink" href="#chunking-tokenization" title="Link to this heading">#</a></h3>
+<p>Tokenization converts the user’s prompt into a numerical representation
+called tokens. In production-use LLMs like ChatGPT, tokens are generally
+subsections of a word. For example, the word <code class="docutils literal notranslate"><span class="pre">Ireland</span></code> may be split
+into <code class="docutils literal notranslate"><span class="pre">Ire</span></code> and <code class="docutils literal notranslate"><span class="pre">land</span></code>. However, sometimes tokenization is performed
+at a character or word level. Special characters, such as <code class="docutils literal notranslate"><span class="pre">&lt;UNK&gt;</span></code> for
+unknown words, or <code class="docutils literal notranslate"><span class="pre">&lt;PAD&gt;</span></code> for padding, <code class="docutils literal notranslate"><span class="pre">&lt;EOS&gt;</span></code> for end of sentence,
+are also included.</p>
+</section>
+<section id="text-encoding">
+<h3>Text Encoding<a class="headerlink" href="#text-encoding" title="Link to this heading">#</a></h3>
+<p>The tokens are mapped to their corresponding integers, to allow the
+computer to read them. This is called <em>text encoding</em>.</p>
+<p>In each layer, the token is contextualized within a context window; a
+fixed-length of surrounding tokens (think: a word in a sentence).
+Higher-importance tokens within the context window are prioritized using
+an attention mechanism; more on this later. In a LLM, the model uses the
+context window to generate the next most likely token in a sequence.</p>
+<p><img alt="image1" src="../../../_images/generation.png" /></p>
+<p>The tokens are usually processed in parallel, to speed up compute time.
+This is why we check if we can use a GPU with
+<code class="docutils literal notranslate"><span class="pre">torch.cuda.is_available()</span></code>, as GPUs are very efficient at processing
+data in parallel. However, this means we lose the position of the words
+in our sentences/tokens in our context window. To solve this, we add a
+<em>positional embedding</em>. You can think about it like a dictionary of
+tokens with a corresponding index associated with it:</p>
+<p><img alt="image2" src="../../../_images/positional_encoding.png" /></p>
+<p>To process a large text into smaller and more manageable pieces for the
+model to interpret, the text is split into sections called <em>chunks</em> to
+allow the LLM to process it within its context window.</p>
+</section>
+<section id="latent-space">
+<h3>Latent Space<a class="headerlink" href="#latent-space" title="Link to this heading">#</a></h3>
+<p>While the machine can now read our text encodings, there is no way for
+the machine to relate other tokens to each other. We can solve this
+issue by mapping all the encodings into a <em>co-ordinate space</em> (think:
+each token will now have a physical co-ordinate, or location, on a map
+or grid), with the distance between encodings being their closeness in
+relation to each other. We call this mapping a <em>latent space</em>. You can
+think of it as below:</p>
+<p><img alt="image3" src="../../../_images/associations.png" /></p>
+<p>You can clearly see the different categories as below:</p>
+<p><img alt="image4" src="../../../_images/latent_space_clustering.png" /></p>
+<p>In a computer, however, instead of a two-dimensional space, it is
+<em>n</em>-dimensional. The emojis, depicted above, can represent the machine’s
+understanding of the word as a floating-point number, which corresponds
+to its coordinate in latent space. For example, the model might think in
+the following way:</p>
+<p><span class="math notranslate nohighlight">\(king - man + woman ~= queen\)</span></p>
+<p>which could be something similar as below:</p>
+<p><span class="math notranslate nohighlight">\(0.51-0.22 + 0.24 ~= 0.528\)</span></p>
+<p>As seen in the diagrams, similar concepts cluster together. Directions
+in the space can correspond to features like tense, plurality, or
+sentiment.</p>
+<p>We can put together the tokenization -&gt; text encoding -&gt; latent space as
+follows:</p>
+<figure class="align-default" id="id1">
+<img alt="prompt_processing" src="../../../_images/prompt_processing.png" />
+<figcaption>
+<p><span class="caption-text">prompt_processing</span><a class="headerlink" href="#id1" title="Link to this image">#</a></p>
+</figcaption>
+</figure>
+<p>It’s important to note that LLMs are unambiguous; i.e. each word is
+context-dependent. With human language, words may have dual meanings,
+such as orange meaning a fruit and a colour. The model uses the context
+window to figure out which meaning the word has, during content
+generation/inference.</p>
+</section>
+<section id="transformers-attention">
+<h3>Transformers &amp; Attention<a class="headerlink" href="#transformers-attention" title="Link to this heading">#</a></h3>
+<p>Transformers are most famous for their use in LLMs, however they are
+also used in computer vision, audio processing, and other tasks. We need
+to make sure that more important words are prioritized in our context
+for our next token generation. This is where transformers come into
+play; they are able to distinguish between important vs. not as
+important parts of information during inference (prompting) and
+training. As transformers can also be used in image segmentation tasks,
+we can think about the attention mechanism visually as below:</p>
+<p><img alt="image5" src="../../../_images/attention_mechanism.png" /></p>
+<p>The important part of the picture, the two rabbits, are extracted. The
+background is not considered as much when classifying, as we are looking
+for the focus of the image; the two rabbits. This is very similar when
+we consider prompts. For example, if we have the prompt:</p>
+<p><code class="docutils literal notranslate"><span class="pre">The</span> <span class="pre">capital</span> <span class="pre">of</span> <span class="pre">Ireland</span> <span class="pre">is</span></code></p>
+<p>the model puts its focus on <code class="docutils literal notranslate"><span class="pre">capital</span></code> and <code class="docutils literal notranslate"><span class="pre">Ireland</span></code>, and does not
+consider the other words as much, like <code class="docutils literal notranslate"><span class="pre">the</span></code>, <code class="docutils literal notranslate"><span class="pre">of</span></code>, and <code class="docutils literal notranslate"><span class="pre">is</span></code>, as
+their addition does not change the meaning of the sentance as much. If
+the user inputted <code class="docutils literal notranslate"><span class="pre">capital</span> <span class="pre">Ireland</span></code>, the model would still associate
+it with <code class="docutils literal notranslate"><span class="pre">Dublin</span></code> despite the incomplete sentence.</p>
+<p>Testing with <em>Microsoft Copilot</em>, we can see this is the case, with
+slight variations in its response:</p>
+<p><img alt="image6" src="../../../_images/prompt_long.png" /></p>
+<p>compared to</p>
+<p><img alt="image7" src="../../../_images/prompt_short.png" /></p>
+<p>The reasoning can be visualized as follows:</p>
+<p><img alt="image8" src="../../../_images/prompt_attention.png" /></p>
+<p>Within the transformer architecture, the self-attention mechanism
+computes the attention scores so the transformer model knows which words
+to assign more priority to. It uses <code class="docutils literal notranslate"><span class="pre">Query</span></code>, <code class="docutils literal notranslate"><span class="pre">Key</span></code> and <code class="docutils literal notranslate"><span class="pre">Value</span></code>
+<code class="docutils literal notranslate"><span class="pre">(Q,</span> <span class="pre">K,</span> <span class="pre">V)</span></code> values to assign these priorities.</p>
+<p>We can think about the <code class="docutils literal notranslate"><span class="pre">Query</span></code>, <code class="docutils literal notranslate"><span class="pre">Key</span></code> and <code class="docutils literal notranslate"><span class="pre">Value</span></code> intuitively by
+considering a search query, as below:</p>
+<p><img alt="image9" src="../../../_images/query_key_value.png" /></p>
+<p>The <code class="docutils literal notranslate"><span class="pre">Query</span></code> is the search. The <code class="docutils literal notranslate"><span class="pre">Key</span></code> is the indexes or titles of the
+links returned (like “Quantization (signal processing)”). The <code class="docutils literal notranslate"><span class="pre">Value</span></code>
+is the actual information within the <code class="docutils literal notranslate"><span class="pre">Key</span></code>; for example, the Wikipedia
+page itself.</p>
+<p>We can calculate the attention. The output of the transformer can be
+calculated through the dot product of the <code class="docutils literal notranslate"><span class="pre">Query</span></code> and <code class="docutils literal notranslate"><span class="pre">Key</span></code> tokens.
+We then use a <em>softmax</em> to get the attention weights. The <code class="docutils literal notranslate"><span class="pre">Value</span></code>
+vectors are weighted by this result.</p>
+<p>Putting it all together, we can now make our transformer architecture as
+below:</p>
+<p><img alt="image10" src="../../../_images/transformer.png" /></p>
+<p>LLMs use <em>Multi-Headed</em> attention; this allows the model to have
+different relationships between words. This is like our example from
+earlier with the orange representing a colour and a fruit. Each head has
+it’s own sub-space these results are joined together and projected back
+into the latent space.</p>
+</section>
+<section id="model-architecture">
+<h3>Model Architecture<a class="headerlink" href="#model-architecture" title="Link to this heading">#</a></h3>
+<p>Once the attention has been computed, the output is fed through a neural
+network. This is composed of multiple transformer blocks, with a
+self-attention mechanism and a feed-forward neural network. This
+structure allows the model to get the different hierarchical
+representations of the text.</p>
+<p>The final layer is a softmax layer that converts our output into
+probabilities, to select the next most likely token.</p>
+<p>The full LLM architecture can be described as below:</p>
+<p><img alt="image11" src="../../../_images/llm_architecture.png" /></p>
+<p>To break it down, the LLM processes and outputs text as follows:</p>
+<ol class="arabic simple">
+<li><p>User inputs a prompt</p></li>
+<li><p>Prompt is chunked &amp; tokenized</p></li>
+<li><p>Tokens are embedded into latent space</p></li>
+<li><p>Positional encodings are added</p></li>
+<li><p>Input is fed through a series of transformer blocks for processing</p></li>
+<li><p>Output is fed through a linear layer for transforming into correct
+size</p></li>
+<li><p>Output is fed through softmax to get output in the range
+<span class="math notranslate nohighlight">\([0,1]\)</span>; i.e. their probabilities</p></li>
+<li><p>Token probabilities are generated from softmax to find next most
+probable word</p></li>
+<li><p>Next token is repeatedly generated from next most probable outcome</p></li>
+<li><p>This process is repeated until until max token limit is reached.</p></li>
+</ol>
+</section>
+</section>
+<section id="cli-scripts">
+<h2>CLI Scripts<a class="headerlink" href="#cli-scripts" title="Link to this heading">#</a></h2>
+<p>Now that we have covered the theory of the architecture of LLMs, we can
+get started with our code implementation. We will be using Quark’s
+Command Line Interface (CLI). This means we will be running our scripts
+using the terminal, rather than writing the python scripts directly.</p>
+<p>The following quantization portion of this tutorial is intended to run
+with a GPU, since it can process tensor operations much faster than a
+CPU due to its parallel architecture. You can test if you have the
+correct access by running the script below. If the output returns
+<code class="docutils literal notranslate"><span class="pre">True</span></code>, you have access to a compatible GPU. Otherwise, you will be
+running on CPU.</p>
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span><span class="w"> </span><span class="nn">torch</span>
+
+<span class="n">torch</span><span class="o">.</span><span class="n">cuda</span><span class="o">.</span><span class="n">is_available</span><span class="p">()</span>
+</pre></div>
+</div>
+<section id="downloading-the-model">
+<h3>Downloading the Model<a class="headerlink" href="#downloading-the-model" title="Link to this heading">#</a></h3>
+<p>We will be using Mistral’s 7B instruct model during this tutorial, but
+feel free to switch in for another model if you would like! It’s
+important to note that only a select few models are supported by the
+CLI; you can view a list of them
+<a class="reference external" href="https://quark.docs.amd.com/latest/pytorch/example_quark_torch_llm_ptq.html">here</a>.</p>
+<p>If you have not already done so, make sure to create a Hugging Face
+account so we can download the models for use. Like in the previous
+tutorial on diffusion models, we need to request access to the
+repository so we can download it. You can navigate to the following
+link:
+<a class="reference external" href="https://huggingface.co/mistralai/Mistral-7B-v0.1">mistralai/Mistral-7B-v0.1</a>.
+Click the button to access the repo:</p>
+<figure class="align-default" id="id2">
+<img alt="access_repo" src="../../../_images/access_repo.png" />
+<figcaption>
+<p><span class="caption-text">access_repo</span><a class="headerlink" href="#id2" title="Link to this image">#</a></p>
+</figcaption>
+</figure>
+<p>Once you have access, you can try running the below command to download
+a Llama model from Hugging Face and evaluate it’s performance prior to
+quantization. You can switch out a different model from the supported
+list by copying the repo name:</p>
+<figure class="align-default" id="id3">
+<img alt="copy_repo_name" src="../../../_images/copy_repo_name.png" />
+<figcaption>
+<p><span class="caption-text">copy_repo_name</span><a class="headerlink" href="#id3" title="Link to this image">#</a></p>
+</figcaption>
+</figure>
+<p>and switching it out from <code class="docutils literal notranslate"><span class="pre">mistralai/Mistral-7B-v0.1</span></code>.</p>
+<p>Please note that the <code class="docutils literal notranslate"><span class="pre">mistral-7B</span></code> model requires 14.48 GB of storage.
+Consider switching to a smaller model like
+<a class="reference external" href="https://huggingface.co/meta-llama/Llama-3.2-1B">llama-1b</a>, which
+requires 2.5 GB of storage if you do not have enough room on your
+device. A general rule of thumb is the larger the number of parameters,
+the more accurate the model is, the more compute it will take to run,
+and the larger its file size is.</p>
+<p>Login to the Hugging Face API locally by running the below in your
+terminal and inputting your token: <code class="docutils literal notranslate"><span class="pre">huggingface-cli</span> <span class="pre">login</span></code></p>
+<p>Now, we can download our model. You can see the commands within the CLI
+to specify what task we are doing; <code class="docutils literal notranslate"><span class="pre">model_dir</span></code> refers to the path from
+our copied Hugging Face dir, and we set the <code class="docutils literal notranslate"><span class="pre">skip_quantization</span></code> flag
+as we want to just download our model right now.</p>
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="o">!</span>hf<span class="w"> </span>download<span class="w"> </span>mistralai/Mistral-7B-v0.1
+</pre></div>
+</div>
+</section>
+<section id="model-evaluation-pre-quantization">
+<h3>Model Evaluation: Pre-Quantization<a class="headerlink" href="#model-evaluation-pre-quantization" title="Link to this heading">#</a></h3>
+<p>As we will be quantizing our model, i.e. reducing the precision of our
+model’s weights to improve performance speed, we need a way to measure
+the degradation in quality. In the previous tutorial on diffusion model
+quantization, we were able to compare the quality degradation through
+our generated images, however with text outputs, it isn’t as obvious
+where the degradation in quality is. Therefore, we need to test or
+benchmark our model before and after quantization, rather than just
+reviewing the outputs.</p>
+<p>We will be using a test called <em>Measuring Massive Multitask Language
+Understanding</em>. This test measures an LLM’s multitask accuracy in 57
+tasks including elementary mathematics, law, US history, computer
+science, and more. We will be testing just a few tasks from MMLU as
+otherwise, it will take a long time to run. The tasks are divided into
+four categories; humanities, other, social sciences, and STEM. We will
+be taking one from each category; professional law from humanities,
+management from others, sociology from social sciences, and machine
+learning from STEM.</p>
+<p>Let’s set our model directory path to call in our bash script. The model
+directory should be downloaded into the <code class="docutils literal notranslate"><span class="pre">.cache</span></code> folder as a default,
+as below.</p>
+<figure class="align-default" id="id4">
+<img alt="model_dir" src="../../../_images/model_dir.png" />
+<figcaption>
+<p><span class="caption-text">model_dir</span><a class="headerlink" href="#id4" title="Link to this image">#</a></p>
+</figcaption>
+</figure>
+<p>If we were specifying this as our model checkpoint, we could set it
+using the command below:</p>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span><span class="nv">MODEL_PATH</span><span class="o">=</span>/.cache/huggingface/transformers/models--mistralai--Mistral-7B-v0.1/snapshots/27d67f1b5f57dc0953326b2601d68371d40ea8da
+</pre></div>
+</div>
+<p>Note that the snapshot changes for each user. The large number,
+<code class="docutils literal notranslate"><span class="pre">27d67f1b5f57dc0953326b2601d68371d40ea8da</span></code> is used to differentiate
+between multiple downloaded models of the same type, so we can download
+the same <code class="docutils literal notranslate"><span class="pre">mistralai</span></code> model multiple times for different purposes.</p>
+<p>Now, we can call our bash script as below:</p>
+<div class="highlight-sh notranslate"><div class="highlight"><pre><span></span>%%sh
+<span class="nv">SNAPSHOT</span><span class="o">=</span><span class="k">$(</span>ls<span class="w"> </span><span class="s2">&quot;</span><span class="nv">$HUGGINGFACE_HUB_CACHE</span><span class="s2">/models--mistralai--Mistral-7B-v0.1/snapshots&quot;</span><span class="w"> </span><span class="p">|</span><span class="w"> </span>head<span class="w"> </span>-n<span class="w"> </span><span class="m">1</span><span class="k">)</span>
+<span class="nv">MODEL_PATH</span><span class="o">=</span><span class="s2">&quot;</span><span class="nv">$HUGGINGFACE_HUB_CACHE</span><span class="s2">/models--mistralai--Mistral-7B-v0.1/snapshots/</span><span class="nv">$SNAPSHOT</span><span class="s2">&quot;</span>
+</pre></div>
+</div>
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># Set the path to your snapshot here, as in described above:</span>
+<span class="c1"># MODEL_PATH=.cache/huggingface/transformers/models--mistralai--Mistral-7B-v0.1/snapshots/27d67f1b5f57dc0953326b2601d68371d40ea8da/</span>
+
+<span class="o">!</span>python<span class="w"> </span>examples/torch/language_modeling/llm_eval/llm_eval.py<span class="w"> </span>--model_args<span class="w"> </span><span class="nv">pretrained</span><span class="o">=</span><span class="nv">$MODEL_PATH</span><span class="w"> </span>--model<span class="w"> </span>hf<span class="w"> </span>--tasks<span class="w"> </span>mmlu_professional_law,mmlu_management,mmlu_sociology,mmlu_machine_learning<span class="w"> </span>--batch_size<span class="w"> </span><span class="m">1</span><span class="w"> </span>--device<span class="w"> </span>cuda
+</pre></div>
+</div>
+<p>The output should be similar to the below:</p>
+<figure class="align-default" id="id5">
+<img alt="prequant_stats" src="../../../_images/prequant_stats.png" />
+<figcaption>
+<p><span class="caption-text">prequant_stats</span><a class="headerlink" href="#id5" title="Link to this image">#</a></p>
+</figcaption>
+</figure>
+</section>
+<section id="quantization">
+<h3>Quantization<a class="headerlink" href="#quantization" title="Link to this heading">#</a></h3>
+<p>Now that we have evaluated our model performance, let’s quantize and
+export our model. We will be quantizing our model using <code class="docutils literal notranslate"><span class="pre">int4</span></code>
+quantization. Hugging Face models are typically stored in <code class="docutils literal notranslate"><span class="pre">FP32</span></code>; this
+means there is an x8 decrease in weight size from our original model.</p>
+<p>However, with such an aggressive quantization method, the accuracy of
+our model will be greatly impacted, especially considering it is already
+a significantly smaller model than used in industry at 7 billion
+parameters compared to GPT-3, which has 175 billion, or GPT-4, which is
+estimated to be around 1.76 trillion parameters. Therefore, we must
+think about if there is any ways we could <em>select</em> some weights for
+quantization while leaving more important ones at full accuracy, to make
+sure our quality does not degrade too much.</p>
+<p>This is where quantization algorithms come into play. In this tutorial,
+we will be using a quantization algorithm called <em>AWQ: Activation-aware
+Weight Quantization</em>, specifically designed for low-bit precision like
+<code class="docutils literal notranslate"><span class="pre">int4</span></code>. In LLMs, not all weights contribute equally to model
+performance; even by just protecting 1% of higher-importance weights, we
+can greatly reduce the quantization error. This is done by checking the
+model activations to see which weights are of importance. Take the
+diagram below of a tiny neural network:</p>
+<figure class="align-default" id="id6">
+<img alt="neuron" src="../../../_images/neuron.png" />
+<figcaption>
+<p><span class="caption-text">neuron</span><a class="headerlink" href="#id6" title="Link to this image">#</a></p>
+</figcaption>
+</figure>
+<p>The output of this simple network in the image can be calculated by
+taking the dot product of our weights with our inputs, then adding our
+bias and putting it into the activation function. In our LLM
+transformer, these layers are stacked on top of one another, and when we
+input a prompt, the embeddings are filtered through the model,
+activating different neurons. With AWQ, we see which of these
+activations are selected frequently in high-importance, and only
+quantize the ones which are not as critical to performance.</p>
+<p>To select the activated neurons, we have to have a calibration set to
+let our model measure the activations. We will be using the
+<code class="docutils literal notranslate"><span class="pre">pileval_for_awq_benchmark</span></code> dataset as specified in our CLI command.
+We will be exporting our model in <code class="docutils literal notranslate"><span class="pre">hf_format</span></code>, so we can test the
+quantization benchmark again later.</p>
+<p>Let’s run the below script to quantize our model weights with
+<code class="docutils literal notranslate"><span class="pre">int4</span> <span class="pre">AWQ</span></code> quantization and save it to a new folder called
+<code class="docutils literal notranslate"><span class="pre">quantized_llm</span></code>.</p>
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="o">!</span>python3<span class="w"> </span>quantize_quark.py<span class="w"> </span>--model_dir<span class="w"> </span><span class="nv">$MODEL_PATH</span><span class="w"> </span>--output_dir<span class="w"> </span>output_dir<span class="w"> </span>--quant_scheme<span class="w"> </span>w_int4_per_group_sym<span class="w"> </span>--num_calib_data<span class="w"> </span><span class="m">128</span><span class="w"> </span>--quant_algo<span class="w"> </span>awq<span class="w"> </span>--dataset<span class="w"> </span>pileval_for_awq_benchmark<span class="w"> </span>--seq_len<span class="w"> </span><span class="m">512</span><span class="w"> </span>--model_export<span class="w"> </span>hf_format
+</pre></div>
+</div>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>python3<span class="w"> </span>quantize_quark.py<span class="w"> </span>--model_dir<span class="w"> </span><span class="nv">$MODEL_PATH</span><span class="w"> </span><span class="se">\</span>
+--output_dir<span class="w"> </span>output_dir<span class="w"> </span><span class="se">\</span>
+--quant_scheme<span class="w"> </span>w_int4_per_group_sym<span class="w"> </span><span class="se">\</span>
+--num_calib_data<span class="w"> </span><span class="m">128</span><span class="w"> </span><span class="se">\</span>
+--quant_algo<span class="w"> </span>awq<span class="w"> </span><span class="se">\</span>
+--dataset<span class="w"> </span>pileval_for_awq_benchmark<span class="w"> </span><span class="se">\</span>
+--seq_len<span class="w"> </span><span class="m">512</span><span class="w"> </span><span class="se">\</span>
+--model_export<span class="w"> </span>hf_format
+</pre></div>
+</div>
+</section>
+<section id="model-evaluation-post-quantization">
+<h3>Model Evaluation: Post-Quantization<a class="headerlink" href="#model-evaluation-post-quantization" title="Link to this heading">#</a></h3>
+<p>Now that we have quantized our model, let’s benchmark it again using the
+same script from earlier.</p>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>!python<span class="w"> </span>llm_eval.py<span class="w"> </span><span class="se">\</span>
+<span class="w">    </span>--model_args<span class="w"> </span><span class="nv">pretrained</span><span class="o">=</span><span class="s2">&quot;llm_quant&quot;</span><span class="se">\</span>
+<span class="w">    </span>--model<span class="w"> </span>hf<span class="w"> </span><span class="se">\</span>
+<span class="w">    </span>--tasks<span class="w"> </span>mmlu_professional_law,mmlu_management,mmlu_sociology,mmlu_machine_learning<span class="w"> </span><span class="se">\</span>
+<span class="w">    </span>--batch_size<span class="w"> </span><span class="m">1</span><span class="w"> </span><span class="se">\</span>
+<span class="w">    </span>--device<span class="w"> </span>cuda
+</pre></div>
+</div>
+</section>
+</section>
+<section id="further-reading">
+<h2>Further Reading<a class="headerlink" href="#further-reading" title="Link to this heading">#</a></h2>
+<section id="tutorials-articles">
+<h3>Tutorials/Articles<a class="headerlink" href="#tutorials-articles" title="Link to this heading">#</a></h3>
+<ul class="simple">
+<li><p><a class="reference external" href="https://transformer-circuits.pub/2025/attribution-graphs/biology.html">On the Biology of a Large Language
+Model</a></p>
+<ul>
+<li><p>Explains the internals of how LLMs “think” beyond just a black box</p></li>
+</ul>
+</li>
+<li><p><a class="reference external" href="https://huggingface.co/learn/llm-course/chapter1/3?fw=pt">Hugging Face LLM
+Course</a></p>
+<ul>
+<li><p>More in-depth description on the background of LLM models</p></li>
+</ul>
+</li>
+<li><p><a class="reference external" href="https://www.youtube.com/watch?v=kCc8FmEb1nY">GPT from scratch</a></p>
+<ul>
+<li><p>A video on creating a LLM from scratch in PyTorch, by a founding
+engineer of ChatGPT, Andrej Karpathy</p></li>
+</ul>
+</li>
+<li><p><a class="reference external" href="https://huggingface.co/docs/optimum/onnxruntime/usage_guides/amdgpu">AMD GPU ONNX
+runtime</a></p>
+<ul>
+<li><p>Detailing how to use ONNX runtime on AMD GPUs for inference using
+ONNX</p></li>
+</ul>
+</li>
+</ul>
+</section>
+<section id="papers">
+<h3>Papers<a class="headerlink" href="#papers" title="Link to this heading">#</a></h3>
+<ul class="simple">
+<li><p><a class="reference external" href="https://arxiv.org/pdf/1706.03762">Attention Is All you Need</a></p>
+<ul>
+<li><p>Original Transformer model paper; based on language translation
+tasks</p></li>
+</ul>
+</li>
+<li><p><a class="reference external" href="https://cdn.openai.com/research-covers/language-unsupervised/language_understanding_paper.pdf">Improving Language Understanding by Generative
+Pre-Training</a></p>
+<ul>
+<li><p>Introduces the original ChatGPT; the first pretrained Transformer
+model</p></li>
+</ul>
+</li>
+<li><p><a class="reference external" href="https://arxiv.org/pdf/2304.09960">A Latent Space Theory for Emergent Abilities in Large Language
+Models</a></p>
+<ul>
+<li><p>Examining latent space clustering for words in LLMs</p></li>
+</ul>
+</li>
+<li><p><a class="reference external" href="https://arxiv.org/abs/2009.03300">Measuring Massive Multitask Language
+Understanding</a></p>
+<ul>
+<li><p>Introduction to the method used to evaluate our LLM performance;
+MMLU</p></li>
+</ul>
+</li>
+<li><p><a class="reference external" href="https://arxiv.org/abs/2306.00978">AWQ: Activation-aware Weight Quantization for LLM Compression and
+Acceleration</a></p>
+<ul>
+<li><p>Weight selection for quantization accuracy</p></li>
+</ul>
+</li>
+</ul>
+</section>
+</section>
+</section>
+
+
+                </article>
+              
+
+              
+              
+              
+              
+                <footer class="prev-next-footer d-print-none">
+                  
+<div class="prev-next-area">
+    <a class="left-prev"
+       href="../depth_wise_pruning/llm_depth_pruning.html"
+       title="previous page">
+      <i class="fa-solid fa-angle-left"></i>
+      <div class="prev-next-info">
+        <p class="prev-next-subtitle">previous</p>
+        <p class="prev-next-title">LLM Model Depth-Wise Pruning (beta)</p>
+      </div>
+    </a>
+    <a class="right-next"
+       href="../../../intro_contrib.html"
+       title="next page">
+      <div class="prev-next-info">
+        <p class="prev-next-subtitle">next</p>
+        <p class="prev-next-title">Quark’s <code class="docutils literal notranslate"><span class="pre">contrib</span></code> Area</p>
+      </div>
+      <i class="fa-solid fa-angle-right"></i>
+    </a>
+</div>
+                </footer>
+              
+            </div>
+            
+            
+              
+                <dialog id="pst-secondary-sidebar-modal"></dialog>
+                <div id="pst-secondary-sidebar" class="bd-sidebar-secondary bd-toc"><div class="sidebar-secondary-items sidebar-secondary__inner">
+
+
+  <div class="sidebar-secondary-item">
+  <div class="page-toc tocsection onthispage">
+    <i class="fa-solid fa-list"></i> Contents
+  </div>
+  <nav class="bd-toc-nav page-toc">
+    <ul class="visible nav section-nav flex-column">
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#what-you-will-learn">What You Will Learn</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#installation-and-setup">Installation and Setup</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#large-language-model-fundamentals">Large Language Model Fundamentals</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#chunking-tokenization">Chunking &amp; Tokenization</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#text-encoding">Text Encoding</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#latent-space">Latent Space</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#transformers-attention">Transformers &amp; Attention</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#model-architecture">Model Architecture</a></li>
+</ul>
+</li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#cli-scripts">CLI Scripts</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#downloading-the-model">Downloading the Model</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#model-evaluation-pre-quantization">Model Evaluation: Pre-Quantization</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#quantization">Quantization</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#model-evaluation-post-quantization">Model Evaluation: Post-Quantization</a></li>
+</ul>
+</li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#further-reading">Further Reading</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#tutorials-articles">Tutorials/Articles</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#papers">Papers</a></li>
+</ul>
+</li>
+</ul>
+  </nav></div>
+
+</div></div>
+              
+            
+          </div>
+          <footer class="bd-footer-content">
+            <p>
+      Last updated on Sep 26, 2025.<br/>
+  </p>
+          </footer>
+        
+
+      </main>
+    </div>
+  </div>
+  
+  <!-- Scripts loaded after <body> so the DOM is not blocked -->
+  <script defer src="../../../_static/scripts/bootstrap.js?digest=8878045cc6db502f8baf"></script>
+<script defer src="../../../_static/scripts/pydata-sphinx-theme.js?digest=8878045cc6db502f8baf"></script>
+
+<footer class="rocm-footer">
+    <div class="container-lg">
+        <section class="bottom-menu menu py-45">
+            <div class="row d-flex align-items-center">
+                <div class="col-12 text-center">
+                    <ul>
+                        <li><a href="https://www.amd.com/en/corporate/copyright" target="_blank">Terms and Conditions</a></li>
+                        <li><a href="https://quark.docs.amd.com/latest/license.html">Quark Licenses and Disclaimers</a></li>
+                        <li><a href="https://www.amd.com/en/corporate/privacy" target="_blank">Privacy</a></li>
+                        <li><a href="https://www.amd.com/en/corporate/trademarks" target="_blank">Trademarks</a></li>
+                        <li><a href="https://www.amd.com/content/dam/amd/en/documents/corporate/cr/supply-chain-transparency.pdf" target="_blank">Supply Chain Transparency</a></li>
+                        <li><a href="https://www.amd.com/en/corporate/competition" target="_blank">Fair and Open Competition</a></li>
+                        <li><a href="https://www.amd.com/system/files/documents/amd-uk-tax-strategy.pdf" target="_blank">UK Tax Strategy</a></li>
+                        <li><a href="https://www.amd.com/en/corporate/cookies" target="_blank">Cookie Policy</a></li>
+                        <!-- OneTrust Cookies Settings button start -->
+                        <li><a href="#cookie-settings" id="ot-sdk-btn" class="ot-sdk-show-settings">Cookie Settings</a></li>
+                        <!-- OneTrust Cookies Settings button end -->
+                    </ul>
+                </div>
+            </div>
+            <div class="row d-flex align-items-center">
+                <div class="col-12 text-center">
+                    <div>
+                        <span class="copyright">© 2025 Advanced Micro Devices, Inc</span>
+                    </div>
+                </div>
+            </div>
+        </section>
+    </div>
+</footer>
+
+<!-- <div id="rdc-watermark-container">
+    <img id="rdc-watermark" src="../../../_static/images/alpha-watermark.svg" alt="DRAFT watermark"/>
+</div> -->
+  </body>
+</html>

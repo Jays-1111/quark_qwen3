@@ -1,0 +1,7 @@
+numpy
+onnxruntime-gpu
+onnxruntime_extensions
+Pillow
+protobuf
+rich
+timm

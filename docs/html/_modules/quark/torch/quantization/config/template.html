@@ -1,0 +1,1656 @@
+
+<!DOCTYPE html>
+
+
+<html lang="en" data-content_root="../../../../../" >
+
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>quark.torch.quantization.config.template &#8212; AMD Quark 0.10 documentation</title>
+  
+  
+  
+  <script data-cfasync="false">
+    document.documentElement.dataset.mode = localStorage.getItem("mode") || "";
+    document.documentElement.dataset.theme = localStorage.getItem("theme") || "";
+  </script>
+  <!--
+    this give us a css class that will be invisible only if js is disabled
+  -->
+  <noscript>
+    <style>
+      .pst-js-only { display: none !important; }
+
+    </style>
+  </noscript>
+  
+  <!-- Loaded before other Sphinx assets -->
+  <link href="../../../../../_static/styles/theme.css?digest=8878045cc6db502f8baf" rel="stylesheet" />
+<link href="../../../../../_static/styles/pydata-sphinx-theme.css?digest=8878045cc6db502f8baf" rel="stylesheet" />
+
+    <link rel="stylesheet" type="text/css" href="../../../../../_static/pygments.css?v=03e43079" />
+    <link rel="stylesheet" type="text/css" href="../../../../../_static/styles/sphinx-book-theme.css?v=a3416100" />
+    <link rel="stylesheet" type="text/css" href="../../../../../_static/graphviz.css?v=4ae1632d" />
+    <link rel="stylesheet" type="text/css" href="../../../../../_static/mystnb.8ecb98da25f57f5357bf6f572d296f466b2cfe2517ffebfabe82451661e28f02.css" />
+    <link rel="stylesheet" type="text/css" href="../../../../../_static/custom.css?v=a66ef196" />
+    <link rel="stylesheet" type="text/css" href="../../../../../_static/rocm_header.css?v=9557e3d1" />
+    <link rel="stylesheet" type="text/css" href="../../../../../_static/rocm_footer.css?v=7095035a" />
+    <link rel="stylesheet" type="text/css" href="../../../../../_static/fonts.css?v=fcff5274" />
+  
+  <!-- So that users can add custom icons -->
+  <script src="../../../../../_static/scripts/fontawesome.js?digest=8878045cc6db502f8baf"></script>
+  <!-- Pre-loaded scripts that we'll load fully later -->
+  <link rel="preload" as="script" href="../../../../../_static/scripts/bootstrap.js?digest=8878045cc6db502f8baf" />
+<link rel="preload" as="script" href="../../../../../_static/scripts/pydata-sphinx-theme.js?digest=8878045cc6db502f8baf" />
+
+    <script src="../../../../../_static/documentation_options.js?v=e0f31c2e"></script>
+    <script src="../../../../../_static/doctools.js?v=9bcbadda"></script>
+    <script src="../../../../../_static/sphinx_highlight.js?v=dc90522c"></script>
+    <script async="async" src="../../../../../_static/code_word_breaks.js?v=327952c4"></script>
+    <script async="async" src="../../../../../_static/renameVersionLinks.js?v=929fe5e4"></script>
+    <script async="async" src="../../../../../_static/rdcMisc.js?v=01f88d96"></script>
+    <script async="async" src="../../../../../_static/theme_mode_captions.js?v=15f4ec5d"></script>
+    <script defer="defer" src="../../../../../_static/search.js?v=90a4452c"></script>
+    <script src="../../../../../_static/scripts/sphinx-book-theme.js?v=887ef09a"></script>
+    <script>DOCUMENTATION_OPTIONS.pagename = '_modules/quark/torch/quantization/config/template';</script>
+    <script async="async" src="https://download.amd.com/js/analytics/analyticsinit.js"></script>
+    <link rel="icon" href="https://www.amd.com/content/dam/code/images/favicon/favicon.ico"/>
+    <link rel="index" title="Index" href="../../../../../genindex.html" />
+    <link rel="search" title="Search" href="../../../../../search.html" />
+<script type="text/javascript">
+    window.addEventListener("load", function(event) {
+        var coll = document.querySelectorAll('.toggle > .header');  // sdelect the toggles header.
+        var i;
+
+        for (i = 0; i < coll.length; i++) {
+            coll[i].innerText = "Show code ▼\n\n";
+
+            coll[i].addEventListener("click", function() {
+                var content = this.nextElementSibling;  // code block.
+                if (content.style.display === "block") {
+                    content.style.display = "none";
+                    this.innerText = "Show code ▼\n\n";
+                } else {
+                    content.style.display = "block";
+                    this.innerText = "Hide code ▶";
+                }
+            });
+        }
+    });
+</script>
+
+  </head>
+  
+  
+  <body data-bs-spy="scroll" data-bs-target=".bd-toc-nav" data-offset="180" data-bs-root-margin="0px 0px -60%" data-default-mode="">
+
+  
+  
+  <div id="pst-skip-link" class="skip-link d-print-none"><a href="#main-content">Skip to main content</a></div>
+  
+  <div id="pst-scroll-pixel-helper"></div>
+  
+  <button type="button" class="btn rounded-pill" id="pst-back-to-top">
+    <i class="fa-solid fa-arrow-up"></i>Back to top</button>
+
+  
+  <dialog id="pst-search-dialog">
+    
+<form class="bd-search d-flex align-items-center"
+      action="../../../../../search.html"
+      method="get">
+  <i class="fa-solid fa-magnifying-glass"></i>
+  <input type="search"
+         class="form-control"
+         name="q"
+         placeholder="Search..."
+         aria-label="Search..."
+         autocomplete="off"
+         autocorrect="off"
+         autocapitalize="off"
+         spellcheck="false"/>
+  <span class="search-button__kbd-shortcut"><kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd>K</kbd></span>
+</form>
+  </dialog>
+
+  <div class="pst-async-banner-revealer d-none">
+  <aside id="bd-header-version-warning" class="d-none d-print-none" aria-label="Version warning"></aside>
+</div>
+
+  
+
+<header class="common-header" >
+    <nav class="navbar navbar-expand-xl">
+        <div class="container-fluid main-nav rocm-header">
+            
+            <button class="navbar-toggler collapsed" id="nav-icon" data-tracking-information="mainMenuToggle" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+                <span></span>
+                <span></span>
+                <span></span>
+            </button>
+            
+            <div class="header-logo">
+                <a class="navbar-brand" href="https://www.amd.com/">
+                    <img src="../../../../../_static/images/amd-header-logo.svg" alt="AMD Logo" title="AMD Logo" width="90" class="d-inline-block align-text-top hover-opacity"/>
+                </a>
+                <div class="vr vr mx-40 my-25"></div>
+                <a class="klavika-font hover-opacity" href="https://quark.docs.amd.com">Quark</a>
+                <a class="header-all-versions" href="https://quark.docs.amd.com/latest/versions.html">Version List</a>
+            </div>
+            <div class="icon-nav text-center d-flex ms-auto">
+            </div>
+        </div>
+    </nav>
+    
+    <nav class="navbar navbar-expand-xl second-level-nav">
+        <div class="container-fluid main-nav">
+            <div class="navbar-nav-container collapse navbar-collapse" id="navbarSupportedContent">
+                <ul class="navbar-nav nav-mega me-auto mb-2 mb-lg-0 col-xl-10">
+                    
+                        <li class="nav-item">
+                            <a class="nav-link top-level header-menu-links" href="https://github.com/amd/quark" id="navgithub" role="button" aria-expanded="false" target="_blank" >
+                                GitHub
+                            </a>
+                        </li>
+                    
+                        <li class="nav-item">
+                            <a class="nav-link top-level header-menu-links" href="https://github.com/amd/quark/issues/new/choose" id="navsupport" role="button" aria-expanded="false" target="_blank" >
+                                Support
+                            </a>
+                        </li>
+                    
+                </ul>
+            </div>
+        </div>
+    </nav>
+    
+</header>
+
+
+  <div class="bd-container">
+    <div class="bd-container__inner bd-page-width">
+      
+      
+      
+        
+      
+      <dialog id="pst-primary-sidebar-modal"></dialog>
+      <div id="pst-primary-sidebar" class="bd-sidebar-primary bd-sidebar">
+        
+
+  
+  <div class="sidebar-header-items sidebar-primary__section">
+    
+    
+    
+    
+  </div>
+  
+    <div class="sidebar-primary-items__start sidebar-primary__section">
+        <div class="sidebar-primary-item">
+
+  
+    
+  
+
+<a class="navbar-brand logo" href="../../../../../index.html">
+  
+  
+  
+  
+  
+  
+    <p class="title logo__title">AMD Quark 0.10 documentation</p>
+  
+</a></div>
+        <div class="sidebar-primary-item">
+
+<button class="btn search-button-field search-button__button pst-js-only" title="Search" aria-label="Search" data-bs-placement="bottom" data-bs-toggle="tooltip">
+ <i class="fa-solid fa-magnifying-glass"></i>
+ <span class="search-button__default-text">Search</span>
+ <span class="search-button__kbd-shortcut"><kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd class="kbd-shortcut__modifier">K</kbd></span>
+</button></div>
+        <div class="sidebar-primary-item"><nav class="bd-links bd-docs-nav" aria-label="Main">
+    <div class="bd-toc-item navbar-nav active">
+        <p aria-level="2" class="caption" role="heading"><span class="caption-text">Release Notes</span></p>
+<ul class="nav bd-sidenav">
+<li class="toctree-l1"><a class="reference internal" href="../../../../../release_note.html">Release Information</a></li>
+</ul>
+<p aria-level="2" class="caption" role="heading"><span class="caption-text">Getting Started with AMD Quark</span></p>
+<ul class="nav bd-sidenav">
+<li class="toctree-l1"><a class="reference internal" href="../../../../../intro.html">Introduction to Quantization</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../../install.html">Installation</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../../basic_usage.html">Getting started: Introduction</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../../onnx/basic_usage_onnx.html">Getting started: Quark for ONNX</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../../pytorch/basic_usage_pytorch.html">Getting started: Quark for PyTorch</a></li>
+<li class="toctree-l1 has-children"><a class="reference internal" href="../../../../../pytorch/pytorch_examples.html">PyTorch Examples</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
+<li class="toctree-l2"><a class="reference internal" href="../../../../../pytorch/example_quark_torch_diffusers.html">Diffusion Model Quantization</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../../../pytorch/example_quark_torch_brevitas.html">AMD Quark Extension for Brevitas Integration</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../../../pytorch/example_quark_torch_pytorch_light.html">Integration with AMD Pytorch-light (APL)</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../../../pytorch/example_quark_torch_llm_pruning.html">Language Model Pruning</a></li>
+<li class="toctree-l2 has-children"><a class="reference internal" href="../../../../../pytorch/example_quark_torch_llm_ptq.html">Language Model PTQ</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
+<li class="toctree-l3"><a class="reference internal" href="../../../../../tutorials/torch/example_fp4.html">FP4 Post Training Quantization (PTQ) for LLM models</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../../../../tutorials/torch/example_fp8.html">FP8 Post Training Quantization (PTQ) for LLM models</a></li>
+</ul>
+</details></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../../../pytorch/example_quark_torch_llm_qat.html">Language Model QAT</a></li>
+<li class="toctree-l2 has-children"><a class="reference internal" href="../../../../../pytorch/example_quark_torch_llm_eval.html">Language Model Evaluation</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
+<li class="toctree-l3"><a class="reference internal" href="../../../../../pytorch/example_quark_torch_llm_eval_perplexity.html">Perplexity Evaluations</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../../../../pytorch/example_quark_torch_llm_eval_rouge_meteor.html">Rouge &amp; Meteor Evaluations</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../../../../pytorch/example_quark_torch_llm_eval_harness.html">LM-Evaluation-Harness Evaluations</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../../../../pytorch/example_quark_torch_llm_eval_harness_offline.html">LM-Evaluation-Harness (Offline)</a></li>
+</ul>
+</details></li>
+<li class="toctree-l2 has-children"><a class="reference internal" href="../../../../../pytorch/example_quark_torch_vision.html">Vision Model Quantization using FX Graph Mode</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
+<li class="toctree-l3"><a class="reference internal" href="../../../../../pytorch/example_quark_fx_image_classification.html">Image Classification Models FX Graph Quantization</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../../../../pytorch/sample_yolo_nas_quant.html">YOLO-NAS FX graph Quantization</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../../../../pytorch/sample_yolo_x_tiny_quant.html">YOLO-X Tiny FX Graph Quantization</a></li>
+</ul>
+</details></li>
+</ul>
+</details></li>
+<li class="toctree-l1 has-children"><a class="reference internal" href="../../../../../onnx/onnx_examples.html">ONNX Examples</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
+<li class="toctree-l2"><a class="reference internal" href="../../../../../onnx/example_quark_onnx_BFP.html">Block Floating Point (BFP)</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../../../onnx/example_quark_onnx_MX.html">MX Formats</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../../../onnx/example_quark_onnx_adaround.html">Fast Finetune AdaRound</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../../../onnx/example_quark_onnx_adaquant.html">Fast Finetune AdaQuant</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../../../onnx/example_quark_onnx_cle.html">Cross-Layer Equalization (CLE)</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../../../onnx/example_quark_onnx_layerwise_percentile.html">Layer-wise Percentile</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../../../onnx/example_quark_onnx_gptq.html">GPTQ</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../../../onnx/example_quark_onnx_mixed_precision.html">Mixed Precision</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../../../onnx/example_quark_onnx_smoothquant.html">Smooth Quant</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../../../onnx/example_quark_onnx_quarot.html">QuaRot</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../../../onnx/example_quark_onnx_auto_search.html">Auto-Search for General Yolov3 ONNX Model Quantization</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../../../onnx/example_quark_onnx_ryzenai_yolonas.html">Auto-Search for Ryzen AI Yolo-nas ONNX Model Quantization</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../../../onnx/example_ryzenai_autosearch_resnet50.html">Auto-Search for Ryzen AI Resnet50 ONNX Model Quantization</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../../../onnx/example_quark_onnx_ryzenai_yolov3_custom_evaluator.html">Auto-Search for Ryzen AI Yolov3 ONNX Quantization with Custom Evaluator</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../../../onnx/example_quark_onnx_dynamic_quantization_llama2.html">Quantizing an Llama-2-7b Model</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../../../onnx/example_quark_onnx_dynamic_quantization_opt.html">Quantizing an OPT-125M Model</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../../../onnx/example_quark_onnx_image_classification.html">Quantizing a ResNet50-v1-12 Model</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../../../onnx/example_quark_onnx_language_models.html">Quantizing an OPT-125M Model</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../../../onnx/example_quark_onnx_weights_only_quant_int4_matmul_nbits_llama2.html">Quantizing an Llama-2-7b Model Using the ONNX MatMulNBits</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../../../onnx/example_quark_onnx_weights_only_quant_int8_qdq_llama2.html">Quantizing Llama-2-7b model using MatMulNBits</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../../../onnx/example_quark_onnx_crypto_mode.html">Quantizing a ResNet50 model in crypto mode</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../../../onnx/image_classification_example_quark_onnx_ryzen_ai_best_practice.html">Best Practice for Quantizing an Image Classification Model</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../../../onnx/object_detection_example_quark_onnx_ryzen_ai_best_practice.html">Best Practice for Quantizing an Object Detection Model</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../../../onnx/hugging_face_timm_quantization.html">Hugging Face TIMM Quantization</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../../../onnx/example_quark_onnx_yolo_quantization.html">Yolo_nas and Yolox Quantization</a></li>
+</ul>
+</details></li>
+</ul>
+<p aria-level="2" class="caption" role="heading"><span class="caption-text">Supported accelerators</span></p>
+<ul class="nav bd-sidenav">
+<li class="toctree-l1 has-children"><a class="reference internal" href="../../../../../supported_accelerators/ryzenai/index.html">AMD Ryzen AI</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
+<li class="toctree-l2"><a class="reference internal" href="../../../../../supported_accelerators/ryzenai/tutorial_quick_start_for_ryzenai.html">Quick Start for Ryzen AI</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../../../supported_accelerators/ryzenai/ryzen_ai_best_practice.html">Best Practice for Ryzen AI in AMD Quark ONNX</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../../../onnx/example_quark_onnx_ryzenai.html">Auto-Search for Ryzen AI ONNX Model Quantization</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../../../supported_accelerators/ryzenai/tutorial_uint4_oga.html">Quantizing LLMs for ONNX Runtime GenAI</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../../../supported_accelerators/ryzenai/tutorial_convert_fp32_or_fp16_to_bf16.html">FP32/FP16 to BF16 Model Conversion</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../../../supported_accelerators/ryzenai/tutorial_xint8_quantize.html">Power-of-Two Scales (XINT8) Quantization</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../../../supported_accelerators/ryzenai/tutorial_a8w8_and_a16w8_quantize.html">Float Scales (A8W8 and A16W8) Quantization</a></li>
+</ul>
+</details></li>
+<li class="toctree-l1 has-children"><a class="reference internal" href="../../../../../supported_accelerators/mi_gpus/index.html">AMD Instinct</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
+<li class="toctree-l2 has-children"><a class="reference internal" href="../../../../../pytorch/example_quark_torch_llm_ptq.html">Language Model Post Training Quantization (PTQ) Using Quark</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
+<li class="toctree-l3"><a class="reference internal" href="../../../../../tutorials/torch/example_fp4.html">FP4 Post Training Quantization (PTQ) for LLM models</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../../../../tutorials/torch/example_fp8.html">FP8 Post Training Quantization (PTQ) for LLM models</a></li>
+</ul>
+</details></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../../../pytorch/example_quark_torch_llm_eval_perplexity.html">Evaluation of Quantized Models</a></li>
+</ul>
+</details></li>
+</ul>
+<p aria-level="2" class="caption" role="heading"><span class="caption-text">Advanced AMD Quark Features for PyTorch</span></p>
+<ul class="nav bd-sidenav">
+<li class="toctree-l1"><a class="reference internal" href="../../../../../pytorch/user_guide_config_for_llm.html">Configuring PyTorch Quantization for Large Language Models</a></li>
+<li class="toctree-l1 has-children"><a class="reference internal" href="../../../../../pytorch/user_guide_config_description.html">Configuring PyTorch Quantization from Scratch</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
+<li class="toctree-l2"><a class="reference internal" href="../../../../../pytorch/calibration_methods.html">Calibration Methods</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../../../pytorch/calibration_datasets.html">Calibration Datasets</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../../../pytorch/quantization_strategies.html">Quantization Strategies</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../../../pytorch/quantization_schemes.html">Quantization Schemes</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../../../pytorch/quantization_symmetry.html">Quantization Symmetry</a></li>
+</ul>
+</details></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../../pytorch/quark_save_load.html">Save and Load Quantized Models</a></li>
+<li class="toctree-l1 has-children"><a class="reference internal" href="../../../../../pytorch/export/quark_export.html">Exporting Quantized Models</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
+<li class="toctree-l2"><a class="reference internal" href="../../../../../pytorch/export/quark_export_onnx.html">ONNX format</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../../../pytorch/export/quark_export_hf.html">Hugging Face format (safetensors)</a></li>
+<li class="toctree-l2 has-children"><a class="reference internal" href="../../../../../pytorch/export/quark_export_gguf.html">GGUF format</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
+<li class="toctree-l3"><a class="reference internal" href="../../../../../pytorch/export/gguf_llamacpp.html">Bridge from Quark to llama.cpp</a></li>
+</ul>
+</details></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../../../pytorch/export/quark_export_quark.html">Quark format</a></li>
+</ul>
+</details></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../../pytorch/quark_torch_best_practices.html">Best Practices for Post-Training Quantization (PTQ)</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../../pytorch/debug.html">Debugging quantization Degradation</a></li>
+<li class="toctree-l1 has-children"><a class="reference internal" href="../../../../../pytorch/llm_quark.html">Language Model Optimization</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
+<li class="toctree-l2"><a class="reference internal" href="../../../../../pytorch/feature_pruning_overall.html">LLM Pruning</a></li>
+<li class="toctree-l2 has-children"><a class="reference internal" href="../../../../../pytorch/example_quark_torch_llm_ptq.html">Language Model Post Training Quantization (PTQ) Using Quark</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
+<li class="toctree-l3"><a class="reference internal" href="../../../../../tutorials/torch/example_fp4.html">FP4 Post Training Quantization (PTQ) for LLM models</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../../../../tutorials/torch/example_fp8.html">FP8 Post Training Quantization (PTQ) for LLM models</a></li>
+</ul>
+</details></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../../../pytorch/example_quark_torch_llm_qat.html">Language Model QAT Using Quark and Trainer</a></li>
+<li class="toctree-l2 has-children"><a class="reference internal" href="../../../../../pytorch/example_quark_torch_llm_eval.html">Language Model Evaluations in Quark</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
+<li class="toctree-l3"><a class="reference internal" href="../../../../../pytorch/example_quark_torch_llm_eval_perplexity.html">Perplexity Evaluations</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../../../../pytorch/example_quark_torch_llm_eval_rouge_meteor.html">Rouge &amp; Meteor Evaluations</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../../../../pytorch/example_quark_torch_llm_eval_harness.html">LM-Evaluation-Harness Evaluations</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../../../../pytorch/example_quark_torch_llm_eval_harness_offline.html">LM-Evaluation-Harness (Offline)</a></li>
+</ul>
+</details></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../../../pytorch/tutorial_rotation.html">Quantizing with Rotation and SmoothQuant</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../../../pytorch/tutorial_quarot.html">Rotation-based quantization with QuaRot</a></li>
+</ul>
+</details></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../../pytorch/smoothquant.html">Activation/Weight Smoothing (SmoothQuant)</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../../tutorials/torch/auto_smoothquant_document_and_example.html">Auto SmoothQuant</a></li>
+<li class="toctree-l1 has-children"><a class="reference internal" href="../../../../../pytorch/awq_document.html">Activation-aware Weight Quantization (AWQ)</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
+<li class="toctree-l2"><a class="reference internal" href="../../../../../tutorials/torch/example_awq.html">AWQ end-to-end demo</a></li>
+</ul>
+</details></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../../pytorch/tutorial_bfp16.html">Block Floating Point 16</a></li>
+<li class="toctree-l1 has-children"><a class="reference internal" href="../../../../../pytorch/extensions.html">Extensions</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
+<li class="toctree-l2"><a class="reference internal" href="../../../../../pytorch/example_quark_torch_pytorch_light.html">Integration with AMD Pytorch-light (APL)</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../../../pytorch/example_quark_torch_brevitas.html">Brevitas Integration</a></li>
+</ul>
+</details></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../../pytorch/adv_mx.html">Using MX (Microscaling)</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../../pytorch/adv_two_level.html">Two Level Quantization Formats</a></li>
+</ul>
+<p aria-level="2" class="caption" role="heading"><span class="caption-text">Advanced Quark Features for ONNX</span></p>
+<ul class="nav bd-sidenav">
+<li class="toctree-l1 has-children"><a class="reference internal" href="../../../../../onnx/user_guide_config_description.html">Configuring ONNX Quantization</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
+<li class="toctree-l2"><a class="reference internal" href="../../../../../onnx/appendix_full_quant_config_features.html">Full List of Quantization Config Features</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../../../onnx/config/calibration_methods.html">Calibration methods</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../../../onnx/config/calibration_datasets.html">Calibration datasets</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../../../onnx/config/quantization_strategies.html">Quantization Strategies</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../../../onnx/config/quantization_schemes.html">Quantization Schemes</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../../../onnx/config/quantization_symmetry.html">Quantization Symmetry</a></li>
+</ul>
+</details></li>
+<li class="toctree-l1 has-children"><a class="reference internal" href="../../../../../onnx/user_guide_supported_optype_datatype.html">Data and OP Types</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
+<li class="toctree-l2"><a class="reference internal" href="../../../../../onnx/custom_operators/ExtendedQuantizeLinear.html">ExtendedQuantizeLinear</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../../../onnx/custom_operators/ExtendedDequantizeLinear.html">ExtendedDequantizeLinear</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../../../onnx/custom_operators/ExtendedInstanceNormalization.html">ExtendedInstanceNormalization</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../../../onnx/custom_operators/ExtendedLSTM.html">ExtendedLSTM</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../../../onnx/custom_operators/BFPQuantizeDequantize.html">BFPQuantizeDequantize</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../../../onnx/custom_operators/MXQuantizeDequantize.html">MXQuantizeDequantize</a></li>
+</ul>
+</details></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../../onnx/gpu_usage_guide.html">Accelerate with GPUs</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../../onnx/tutorial_mix_precision.html">Mixed Precision</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../../onnx/tutorial_bfp16_quantization.html">Block Floating Point 16 (BFP16)</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../../onnx/tutorial_bf16_quantization.html">BF16 Quantization</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../../onnx/tutorial_microscaling_quantization.html">Microscaling (MX)</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../../onnx/tutorial_microexponents_quantization.html">Microexponents (MX)</a></li>
+<li class="toctree-l1 has-children"><a class="reference internal" href="../../../../../onnx/accuracy_improvement_algorithms.html">Accuracy Improvement Algorithms</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
+<li class="toctree-l2"><a class="reference internal" href="../../../../../onnx/accuracy_algorithms/cle.html">Quantizing Using CrossLayerEqualization (CLE)</a></li>
+
+<li class="toctree-l2"><a class="reference internal" href="../../../../../onnx/accuracy_algorithms/ada.html">Quantization Using AdaQuant and AdaRound</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../../../onnx/accuracy_algorithms/sq.html">SmoothQuant (SQ)</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../../../onnx/accuracy_algorithms/quarot.html">QuaRot</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../../../onnx/example_quark_onnx_gptq.html">Quantizing a model with GPTQ</a></li>
+</ul>
+</details></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../../onnx/user_guide_auto_search.html">Automatic Search for Model Quantization</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../../onnx/config/user_guide_onnx_model_inference_save_input_npy.html">Using ONNX Model Inference and Saving Input Data in NPY Format</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../../onnx/optional_utilities.html">Optional Utilities</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../../onnx/tools.html">Tools</a></li>
+</ul>
+<p aria-level="2" class="caption" role="heading"><span class="caption-text">Tutorials</span></p>
+<ul class="nav bd-sidenav">
+<li class="toctree-l1"><a class="reference internal" href="../../../../../tutorials/torch/quickstart_tutorial/quickstart_tutorial.html">AMD Quark Tutorial: PyTorch Quickstart</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../../tutorials/torch/diffusion_tutorial/diffusion_tutorial.html">Quantizing a Diffusion Model using Quark</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../../tutorials/torch/depth_wise_pruning/llm_depth_pruning.html">LLM Model Depth-Wise Pruning (beta)</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../../tutorials/torch/llm_tutorial/llm_tutorial.html">Quantizing a Large Language Model with Quark</a></li>
+</ul>
+<p aria-level="2" class="caption" role="heading"><span class="caption-text">Third-party contributions</span></p>
+<ul class="nav bd-sidenav">
+<li class="toctree-l1"><a class="reference internal" href="../../../../../intro_contrib.html">Introduction and guidelines</a></li>
+</ul>
+<p aria-level="2" class="caption" role="heading"><span class="caption-text">APIs</span></p>
+<ul class="nav bd-sidenav">
+<li class="toctree-l1 has-children"><a class="reference internal" href="../../../../../autoapi/pytorch_apis.html">PyTorch APIs</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
+<li class="toctree-l2"><a class="reference internal" href="../../../../../autoapi/quark/torch/pruning/api/index.html">Pruning</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../../../autoapi/quark/torch/quantization/api/index.html">Quantization</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../../../autoapi/quark/torch/export/api/index.html">Export</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../../../autoapi/quark/torch/pruning/config/index.html">Pruner Configuration</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../../../autoapi/quark/torch/quantization/config/config/index.html">Quantizer Configuration</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../../../autoapi/quark/torch/quantization/config/template/index.html">Quantizer Template</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../../../autoapi/quark/torch/export/config/config/index.html">Exporter Configuration</a></li>
+</ul>
+</details></li>
+<li class="toctree-l1 has-children"><a class="reference internal" href="../../../../../autoapi/onnx_apis.html">ONNX APIs</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
+<li class="toctree-l2"><a class="reference internal" href="../../../../../autoapi/quark/onnx/quantization/api/index.html">Quantization</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../../../autoapi/quark/onnx/optimize/index.html">Optimization</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../../../autoapi/quark/onnx/calibrate/index.html">Calibration</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../../../autoapi/quark/onnx/onnx_quantizer/index.html">ONNX Quantizer</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../../../autoapi/quark/onnx/qdq_quantizer/index.html">QDQ Quantizer</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../../../autoapi/quark/onnx/quantization/config/config/index.html">Configuration</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../../../autoapi/quark/onnx/quant_utils/index.html">Quantization Utilities</a></li>
+</ul>
+</details></li>
+</ul>
+<p aria-level="2" class="caption" role="heading"><span class="caption-text">Troubleshooting and Support</span></p>
+<ul class="nav bd-sidenav">
+<li class="toctree-l1"><a class="reference internal" href="../../../../../pytorch/pytorch_faq.html">PyTorch FAQ</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../../onnx/onnx_faq.html">ONNX FAQ</a></li>
+</ul>
+<ul class="nav bd-sidenav">
+<li class="toctree-l1"><a class="reference internal" href="../../../../../versions.html">AMD Quark release history</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../../license.html">Quark license</a></li>
+</ul>
+
+    </div>
+</nav></div>
+    </div>
+  
+  
+  <div class="sidebar-primary-items__end sidebar-primary__section">
+      <div class="sidebar-primary-item">
+<div id="ethical-ad-placement"
+      class="flat"
+      data-ea-publisher="readthedocs"
+      data-ea-type="readthedocs-sidebar"
+      data-ea-manual="true">
+</div></div>
+  </div>
+
+
+      </div>
+      
+      <main id="main-content" class="bd-main" role="main">
+        
+        
+
+<div class="sbt-scroll-pixel-helper"></div>
+
+          <div class="bd-content">
+            <div class="bd-article-container">
+              
+              <div class="bd-header-article d-print-none">
+<div class="header-article-items header-article__inner">
+  
+    <div class="header-article-items__start">
+      
+        <div class="header-article-item"><label class="sidebar-toggle primary-toggle btn btn-sm" for="__primary" title="Toggle primary sidebar" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <span class="fa-solid fa-angle-right"></span>
+  </label></div>
+      
+        <div class="header-article-item">
+
+<nav aria-label="Breadcrumb" class="d-print-none">
+  <ul class="bd-breadcrumbs">
+    
+    <li class="breadcrumb-item breadcrumb-home">
+      <a href="../../../../../index.html" class="nav-link" aria-label="Home">
+        <i class="fa-solid fa-home"></i>
+      </a>
+    </li>
+    
+    <li class="breadcrumb-item"><a href="../../../../index.html" class="nav-link">Module code</a></li>
+    
+    <li class="breadcrumb-item active" aria-current="page"><span class="ellipsis">quark.torch.quantization.config.template</span></li>
+  </ul>
+</nav>
+</div>
+      
+    </div>
+  
+  
+    <div class="header-article-items__end">
+      
+        <div class="header-article-item">
+
+<div class="article-header-buttons">
+
+
+<button class="btn btn-sm nav-link pst-navbar-icon theme-switch-button pst-js-only" aria-label="Color mode" data-bs-title="Color mode"  data-bs-placement="bottom" data-bs-toggle="tooltip">
+  <i class="theme-switch fa-solid fa-sun                fa-lg" data-mode="light" title="Light"></i>
+  <i class="theme-switch fa-solid fa-moon               fa-lg" data-mode="dark"  title="Dark"></i>
+  <i class="theme-switch fa-solid fa-circle-half-stroke fa-lg" data-mode="auto"  title="System Settings"></i>
+</button>
+
+
+<button class="btn btn-sm pst-navbar-icon search-button search-button__button pst-js-only" title="Search" aria-label="Search" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <i class="fa-solid fa-magnifying-glass fa-lg"></i>
+</button>
+
+</div></div>
+      
+    </div>
+  
+</div>
+</div>
+              
+              
+
+<div id="jb-print-docs-body" class="onlyprint">
+    <h1></h1>
+    <!-- Table of contents -->
+    <div id="print-main-content">
+        <div id="jb-print-toc">
+            
+        </div>
+    </div>
+</div>
+
+              
+                
+<div id="searchbox"></div>
+                <article class="bd-article">
+                  
+  <h1>Source code for quark.torch.quantization.config.template</h1><div class="highlight"><pre>
+<span></span>#
+# Copyright (C) 2025, Advanced Micro Devices, Inc. All rights reserved.
+# SPDX-License-Identifier: MIT
+#
+from __future__ import annotations
+
+from typing import Any, Union
+
+import torch.nn as nn
+
+from quark.shares.utils.log import ScreenLogger
+from quark.torch.quantization.config.algo_configs import get_algo_config
+from quark.torch.quantization.config.config import (
+    AutoSmoothQuantConfig,
+    AWQConfig,
+    BFP16Spec,
+    Config,
+    FP8E4M3PerTensorSpec,
+    GPTQConfig,
+    Int4PerGroupSpec,
+    Int8PerTensorSpec,
+    MX6Spec,
+    OCP_MXFP4Spec,
+    OCP_MXFP6E2M3Spec,
+    OCP_MXFP6E3M2Spec,
+    QuantizationConfig,
+    RotationConfig,
+    SmoothQuantConfig,
+    Uint4PerGroupSpec,
+)
+
+logger = ScreenLogger(__name__)
+
+
+<div class="viewcode-block" id="QuantizationScheme">
+<a class="viewcode-back" href="../../../../../autoapi/quark/torch/quantization/config/template/index.html#quark.torch.quantization.config.template.QuantizationScheme">[docs]</a>
+class QuantizationScheme:
+    &quot;&quot;&quot;Abstract base class for quantization schemes.&quot;&quot;&quot;
+
+    def __init__(self, config: QuantizationConfig):
+        self._config = config
+
+    @property
+    def config(self) -&gt; QuantizationConfig:
+        return self._config</div>
+
+
+
+<div class="viewcode-block" id="Int4WeightOnlyScheme">
+<a class="viewcode-back" href="../../../../../autoapi/quark/torch/quantization/config/template/index.html#quark.torch.quantization.config.template.Int4WeightOnlyScheme">[docs]</a>
+class Int4WeightOnlyScheme(QuantizationScheme):
+    &quot;&quot;&quot;Scheme for INT4 weight-only quantization.&quot;&quot;&quot;
+
+    def __init__(self, group_size: int):
+        self.group_size = group_size
+
+    @property
+    def config(self) -&gt; QuantizationConfig:
+        weight_spec = Int4PerGroupSpec(
+            ch_axis=-1, is_dynamic=False, scale_type=&quot;float&quot;, group_size=self.group_size
+        ).to_quantization_spec()
+        return QuantizationConfig(weight=weight_spec)</div>
+
+
+
+<div class="viewcode-block" id="Uint4WeightOnlyScheme">
+<a class="viewcode-back" href="../../../../../autoapi/quark/torch/quantization/config/template/index.html#quark.torch.quantization.config.template.Uint4WeightOnlyScheme">[docs]</a>
+class Uint4WeightOnlyScheme(QuantizationScheme):
+    &quot;&quot;&quot;Scheme for UINT4 weight-only quantization.&quot;&quot;&quot;
+
+    def __init__(self, group_size: int):
+        self.group_size = group_size
+
+    @property
+    def config(self) -&gt; QuantizationConfig:
+        weight_spec = Uint4PerGroupSpec(
+            ch_axis=-1, is_dynamic=False, scale_type=&quot;float&quot;, group_size=self.group_size
+        ).to_quantization_spec()
+        return QuantizationConfig(weight=weight_spec)</div>
+
+
+
+<div class="viewcode-block" id="Int8Scheme">
+<a class="viewcode-back" href="../../../../../autoapi/quark/torch/quantization/config/template/index.html#quark.torch.quantization.config.template.Int8Scheme">[docs]</a>
+class Int8Scheme(QuantizationScheme):
+    &quot;&quot;&quot;Scheme for INT8 weight and activation input quantization.&quot;&quot;&quot;
+
+    def __init__(self) -&gt; None:
+        pass
+
+    @property
+    def config(self) -&gt; QuantizationConfig:
+        spec = Int8PerTensorSpec(
+            observer_method=&quot;min_max&quot;, symmetric=True, scale_type=&quot;float&quot;, round_method=&quot;half_even&quot;, is_dynamic=False
+        ).to_quantization_spec()
+        return QuantizationConfig(weight=spec, input_tensors=spec)</div>
+
+
+
+<div class="viewcode-block" id="FP8Scheme">
+<a class="viewcode-back" href="../../../../../autoapi/quark/torch/quantization/config/template/index.html#quark.torch.quantization.config.template.FP8Scheme">[docs]</a>
+class FP8Scheme(QuantizationScheme):
+    &quot;&quot;&quot;Scheme for FP8 quantization (e4m3 format).&quot;&quot;&quot;
+
+    def __init__(self) -&gt; None:
+        pass
+
+    @property
+    def config(self) -&gt; QuantizationConfig:
+        spec = FP8E4M3PerTensorSpec(
+            observer_method=&quot;min_max&quot;, scale_type=&quot;float&quot;, is_dynamic=False
+        ).to_quantization_spec()
+        return QuantizationConfig(weight=spec, input_tensors=spec)</div>
+
+
+
+<div class="viewcode-block" id="MXFP4Scheme">
+<a class="viewcode-back" href="../../../../../autoapi/quark/torch/quantization/config/template/index.html#quark.torch.quantization.config.template.MXFP4Scheme">[docs]</a>
+class MXFP4Scheme(QuantizationScheme):
+    &quot;&quot;&quot;Scheme for MXFP4 quantization.&quot;&quot;&quot;
+
+    def __init__(self) -&gt; None:
+        pass
+
+    @property
+    def config(self) -&gt; QuantizationConfig:
+        spec = OCP_MXFP4Spec(is_dynamic=False).to_quantization_spec()
+        spec_dynamic = OCP_MXFP4Spec(is_dynamic=True).to_quantization_spec()
+        return QuantizationConfig(weight=spec, input_tensors=spec_dynamic)</div>
+
+
+
+<div class="viewcode-block" id="MXFP6E3M2Scheme">
+<a class="viewcode-back" href="../../../../../autoapi/quark/torch/quantization/config/template/index.html#quark.torch.quantization.config.template.MXFP6E3M2Scheme">[docs]</a>
+class MXFP6E3M2Scheme(QuantizationScheme):
+    &quot;&quot;&quot;Scheme for MXFP6E3M2 quantization.&quot;&quot;&quot;
+
+    def __init__(self) -&gt; None:
+        pass
+
+    @property
+    def config(self) -&gt; QuantizationConfig:
+        spec = OCP_MXFP6E3M2Spec(is_dynamic=False).to_quantization_spec()
+        spec_dynamic = OCP_MXFP6E3M2Spec(is_dynamic=True).to_quantization_spec()
+        return QuantizationConfig(weight=spec, input_tensors=spec_dynamic)</div>
+
+
+
+<div class="viewcode-block" id="MXFP6E2M3Scheme">
+<a class="viewcode-back" href="../../../../../autoapi/quark/torch/quantization/config/template/index.html#quark.torch.quantization.config.template.MXFP6E2M3Scheme">[docs]</a>
+class MXFP6E2M3Scheme(QuantizationScheme):
+    &quot;&quot;&quot;Scheme for MXFP6E2M3 quantization.&quot;&quot;&quot;
+
+    def __init__(self) -&gt; None:
+        pass
+
+    @property
+    def config(self) -&gt; QuantizationConfig:
+        spec = OCP_MXFP6E2M3Spec(is_dynamic=False).to_quantization_spec()
+        spec_dynamic = OCP_MXFP6E2M3Spec(is_dynamic=True).to_quantization_spec()
+        return QuantizationConfig(weight=spec, input_tensors=spec_dynamic)</div>
+
+
+
+<div class="viewcode-block" id="MX6Scheme">
+<a class="viewcode-back" href="../../../../../autoapi/quark/torch/quantization/config/template/index.html#quark.torch.quantization.config.template.MX6Scheme">[docs]</a>
+class MX6Scheme(QuantizationScheme):
+    &quot;&quot;&quot;Scheme for MX6 quantization.&quot;&quot;&quot;
+
+    def __init__(self) -&gt; None:
+        pass
+
+    @property
+    def config(self) -&gt; QuantizationConfig:
+        spec = MX6Spec(ch_axis=-1, block_size=32).to_quantization_spec()
+        return QuantizationConfig(weight=spec, input_tensors=spec)</div>
+
+
+
+<div class="viewcode-block" id="BFP16Scheme">
+<a class="viewcode-back" href="../../../../../autoapi/quark/torch/quantization/config/template/index.html#quark.torch.quantization.config.template.BFP16Scheme">[docs]</a>
+class BFP16Scheme(QuantizationScheme):
+    &quot;&quot;&quot;Scheme for BFP16 quantization.&quot;&quot;&quot;
+
+    def __init__(self) -&gt; None:
+        pass
+
+    @property
+    def config(self) -&gt; QuantizationConfig:
+        spec = BFP16Spec(ch_axis=-1).to_quantization_spec()
+        return QuantizationConfig(weight=spec, input_tensors=spec)</div>
+
+
+
+<div class="viewcode-block" id="QuantizationSchemeCollection">
+<a class="viewcode-back" href="../../../../../autoapi/quark/torch/quantization/config/template/index.html#quark.torch.quantization.config.template.QuantizationSchemeCollection">[docs]</a>
+class QuantizationSchemeCollection:
+    &quot;&quot;&quot;Collection for quantization schemes.&quot;&quot;&quot;
+
+    def __init__(self) -&gt; None:
+        self._schemes: dict[str, QuantizationScheme] = {}
+        self._collect_supported_schemes()
+
+    def _collect_supported_schemes(self) -&gt; None:
+        &quot;&quot;&quot;Collect all supported quantization schemes.&quot;&quot;&quot;
+        # INT4 weight-only schemes
+        self._schemes[&quot;int4_wo_32&quot;] = Int4WeightOnlyScheme(group_size=32)
+        self._schemes[&quot;int4_wo_64&quot;] = Int4WeightOnlyScheme(group_size=64)
+        self._schemes[&quot;int4_wo_128&quot;] = Int4WeightOnlyScheme(group_size=128)
+
+        # UINT4 weight-only schemes
+        self._schemes[&quot;uint4_wo_32&quot;] = Uint4WeightOnlyScheme(group_size=32)
+        self._schemes[&quot;uint4_wo_64&quot;] = Uint4WeightOnlyScheme(group_size=64)
+        self._schemes[&quot;uint4_wo_128&quot;] = Uint4WeightOnlyScheme(group_size=128)
+
+        # INT8 scheme
+        self._schemes[&quot;int8&quot;] = Int8Scheme()
+
+        # FP8 quantization schemes
+        self._schemes[&quot;fp8&quot;] = FP8Scheme()
+
+        # OCP MXFP quantization schemes
+        self._schemes[&quot;mxfp4&quot;] = MXFP4Scheme()
+        self._schemes[&quot;mxfp6_e3m2&quot;] = MXFP6E3M2Scheme()
+        self._schemes[&quot;mxfp6_e2m3&quot;] = MXFP6E2M3Scheme()
+
+        # MX6 quantization schemes
+        self._schemes[&quot;mx6&quot;] = MX6Scheme()
+
+        # BFP16 quantization schemes
+        self._schemes[&quot;bfp16&quot;] = BFP16Scheme()
+
+<div class="viewcode-block" id="QuantizationSchemeCollection.register_scheme">
+<a class="viewcode-back" href="../../../../../autoapi/quark/torch/quantization/config/template/index.html#quark.torch.quantization.config.template.QuantizationSchemeCollection.register_scheme">[docs]</a>
+    def register_scheme(self, scheme_name: str, scheme: QuantizationScheme) -&gt; None:
+        &quot;&quot;&quot;Register a quantization scheme.&quot;&quot;&quot;
+        self._schemes[scheme_name] = scheme</div>
+
+
+<div class="viewcode-block" id="QuantizationSchemeCollection.unregister_scheme">
+<a class="viewcode-back" href="../../../../../autoapi/quark/torch/quantization/config/template/index.html#quark.torch.quantization.config.template.QuantizationSchemeCollection.unregister_scheme">[docs]</a>
+    def unregister_scheme(self, scheme_name: str) -&gt; None:
+        &quot;&quot;&quot;Unregister a quantization scheme.&quot;&quot;&quot;
+        del self._schemes[scheme_name]</div>
+
+
+<div class="viewcode-block" id="QuantizationSchemeCollection.get_supported_schemes">
+<a class="viewcode-back" href="../../../../../autoapi/quark/torch/quantization/config/template/index.html#quark.torch.quantization.config.template.QuantizationSchemeCollection.get_supported_schemes">[docs]</a>
+    def get_supported_schemes(self) -&gt; list[str]:
+        &quot;&quot;&quot;Get list of supported quantization schemes.&quot;&quot;&quot;
+        return list(self._schemes.keys())</div>
+
+
+<div class="viewcode-block" id="QuantizationSchemeCollection.get_scheme">
+<a class="viewcode-back" href="../../../../../autoapi/quark/torch/quantization/config/template/index.html#quark.torch.quantization.config.template.QuantizationSchemeCollection.get_scheme">[docs]</a>
+    def get_scheme(self, scheme_name: str) -&gt; QuantizationScheme:
+        &quot;&quot;&quot;Get a quantization scheme by name.&quot;&quot;&quot;
+        return self._schemes[scheme_name]</div>
+</div>
+
+
+
+<div class="viewcode-block" id="LLMTemplate">
+<a class="viewcode-back" href="../../../../../autoapi/quark/torch/quantization/config/template/index.html#quark.torch.quantization.config.template.LLMTemplate">[docs]</a>
+class LLMTemplate:
+    &quot;&quot;&quot;
+    A configuration template that defines how to quantize specific types of LLM models.
+
+    Each LLM architecture (like llama, qwen, deepseek, etc.) has its own unique structure and naming patterns
+    for layers. This template allows specifying those patterns and quantization settings in a reusable way.
+
+    :param str model_type: Type of the LLM model.
+    :param List[str] kv_layers_name: List of k_proj and v_proj layer name patterns to match. Default is ``None``.
+    :param Union[str, List[str]] q_layer_name: q_proj layer name pattern to match. Default is ``None``.
+    :param List[str] exclude_layers_name: List of layer name patterns to exclude from quantization. Default is ``[]``.
+    :param AWQConfig awq_config: Configuration for AWQ algorithm. Default is ``None``.
+    :param GPTQConfig gptq_config: Configuration for GPTQ algorithm. Default is ``None``.
+    :param SmoothQuantConfig smoothquant_config: Configuration for SmoothQuant algorithm. Default is ``None``.
+    :param AutoSmoothQuantConfig autosmoothquant_config: Configuration for AutoSmoothQuant algorithm. Default is ``None``.
+    :param RotationConfig rotation_config: Configuration for Rotation algorithm. Default is ``None``.
+
+    Note:
+        - The quantization schemes supported by the template are:
+            - fp8
+            - int4_wo_32
+            - int4_wo_64
+            - int4_wo_128
+            - uint4_wo_32
+            - uint4_wo_64
+            - uint4_wo_128
+            - int8
+            - mxfp4
+            - mxfp6_e3m2
+            - mxfp6_e2m3
+            - mx6
+            - bfp16
+        - The quantization algorithms supported by the template are:
+            - awq
+            - gptq
+            - smoothquant
+            - autosmoothquant
+            - rotation
+        - The KV cache schemes supported by the template are:
+            - fp8
+        - The attention schemes supported by the template are:
+            - fp8
+
+    Creating a Custom Template:
+
+    To create a custom template for a new model type, you can define layer name patterns and algorithm configurations
+    specific to your model architecture. Take `moonshotai/Kimi-K2-Instruct &lt;https://huggingface.co/moonshotai/Kimi-K2-Instruct&gt;`__
+    as an example:
+
+    .. code-block:: python
+
+        from quark.torch import LLMTemplate
+
+        # Create a new template
+        template = LLMTemplate(
+            model_type=&quot;kimi_k2&quot;,
+            kv_layers_name=[&quot;*kv_b_proj&quot;],
+            exclude_layers_name=[&quot;lm_head&quot;]
+        )
+
+        # Register the template to LLMTemplate class (optional, if you want to use the template in other places)
+        LLMTemplate.register_template(template)
+    &quot;&quot;&quot;
+
+    _templates: dict[str, LLMTemplate] = {}
+    _SCHEME_COLLECTION = QuantizationSchemeCollection()
+    _SUPPORTED_SCHEMES = _SCHEME_COLLECTION.get_supported_schemes()
+    _SUPPORTED_ALGORITHMS = [&quot;awq&quot;, &quot;gptq&quot;, &quot;smoothquant&quot;, &quot;autosmoothquant&quot;, &quot;rotation&quot;]
+    _SUPPORTED_KV_CACHE_SCHEMES = [&quot;fp8&quot;]
+    _SUPPORTED_ATTENTION_SCHEMES = [&quot;fp8&quot;]
+
+    def __init__(
+        self,
+        model_type: str,
+        kv_layers_name: list[str] | None = None,
+        q_layer_name: str | list[str] | None = None,
+        exclude_layers_name: list[str] = [],
+        awq_config: AWQConfig | None = None,
+        gptq_config: GPTQConfig | None = None,
+        smoothquant_config: SmoothQuantConfig | None = None,
+        autosmoothquant_config: AutoSmoothQuantConfig | None = None,
+        rotation_config: RotationConfig | None = None,
+    ):
+        self.model_type = model_type
+        self.kv_layers_name = kv_layers_name
+        self.q_layer_name = q_layer_name
+        self.exclude_layers_name = exclude_layers_name
+
+        # Algorithm-specific configuration fields
+        self.awq_config = awq_config
+        self.gptq_config = gptq_config
+        self.smoothquant_config = smoothquant_config
+        self.autosmoothquant_config = autosmoothquant_config
+        self.rotation_config = rotation_config
+
+<div class="viewcode-block" id="LLMTemplate.list_available">
+<a class="viewcode-back" href="../../../../../autoapi/quark/torch/quantization/config/template/index.html#quark.torch.quantization.config.template.LLMTemplate.list_available">[docs]</a>
+    @classmethod
+    def list_available(cls: type[LLMTemplate]) -&gt; list[str]:
+        &quot;&quot;&quot;
+        List all available model names of registered templates.
+
+        :return: List of template names.
+        :rtype: List[str]
+
+        Example:
+
+        .. code-block:: python
+
+            from quark.torch import LLMTemplate
+
+            templates = LLMTemplate.list_available()
+            print(templates)  # [&#39;llama&#39;, &#39;opt&#39;, &#39;gpt2&#39;, ...]
+        &quot;&quot;&quot;
+        return list(cls._templates.keys())</div>
+
+
+<div class="viewcode-block" id="LLMTemplate.register_template">
+<a class="viewcode-back" href="../../../../../autoapi/quark/torch/quantization/config/template/index.html#quark.torch.quantization.config.template.LLMTemplate.register_template">[docs]</a>
+    @classmethod
+    def register_template(cls, template: LLMTemplate) -&gt; None:
+        &quot;&quot;&quot;
+        Register a template.
+
+        :param LLMTemplate template: The template to register.
+
+        Example:
+
+        .. code-block:: python
+
+            from quark.torch import LLMTemplate
+
+            # Create template
+            template = LLMTemplate(
+                model_type=&quot;llama&quot;,
+                kv_layers_name=[&quot;*k_proj&quot;, &quot;*v_proj&quot;],
+                q_layer_name=&quot;*q_proj&quot;
+            )
+
+            # Register template
+            LLMTemplate.register_template(template)
+        &quot;&quot;&quot;
+        cls._templates[template.model_type] = template</div>
+
+
+<div class="viewcode-block" id="LLMTemplate.get">
+<a class="viewcode-back" href="../../../../../autoapi/quark/torch/quantization/config/template/index.html#quark.torch.quantization.config.template.LLMTemplate.get">[docs]</a>
+    @classmethod
+    def get(cls, model_type: str) -&gt; LLMTemplate:
+        &quot;&quot;&quot;Get a template by model type.
+
+        :param str model_type: Type of the model. It is obtained from the original LLM HuggingFace model&#39;s ``model.config.model_type`` attribute. When the model_type field is not defined, the ``model.config.architecture[0]`` is assigned as the model_type..
+
+        Available model types:
+
+            - llama
+            - mllama
+            - llama4
+            - opt
+            - qwen2_moe
+            - qwen2
+            - qwen
+            - chatglm
+            - phi3
+            - phi
+            - mistral
+            - mixtral
+            - gptj
+            - grok-1
+            - cohere
+            - dbrx
+            - deepseek_v2
+            - deepseek_v3
+            - deepseek
+            - olmo
+            - gemma2
+            - gemma3_text
+            - gemma3
+            - instella
+            - gpt_oss
+
+        :return: The template object.
+        :rtype: LLMTemplate
+
+        Example:
+
+        .. code-block:: python
+
+            from quark.torch import LLMTemplate
+
+            template = LLMTemplate.get(&quot;llama&quot;)
+            print(template)
+
+        &quot;&quot;&quot;
+        if model_type not in cls._templates:
+            available = &quot;, &quot;.join(cls.list_available())
+            raise ValueError(
+                f&quot;There is no model template defined for the model type &#39;{model_type}&#39;. Available templates: {available}.&quot;
+            )
+
+        return cls._templates[model_type]</div>
+
+
+    # Register a new quantization scheme for the template
+<div class="viewcode-block" id="LLMTemplate.register_scheme">
+<a class="viewcode-back" href="../../../../../autoapi/quark/torch/quantization/config/template/index.html#quark.torch.quantization.config.template.LLMTemplate.register_scheme">[docs]</a>
+    @classmethod
+    def register_scheme(cls, scheme_name: str, config: QuantizationConfig) -&gt; None:
+        &quot;&quot;&quot;
+        Register a new quantization scheme for LLMTemplate class.
+
+        :param str scheme_name: Name of the scheme.
+        :param QuantizationConfig config: Configuration for the scheme.
+
+        Example:
+
+        .. code-block:: python
+
+            # Register a new quantization scheme ``int8_wo (int8 weight-only)`` to the template
+            from quark.torch import LLMTemplate
+            from quark.torch.quantization.config.config import Int8PerTensorSpec, QuantizationConfig
+
+            quant_spec = Int8PerTensorSpec(observer_method=&quot;min_max&quot;, symmetric=True, scale_type=&quot;float&quot;,
+                                           round_method=&quot;half_even&quot;, is_dynamic=False).to_quantization_spec()
+            global_config = QuantizationConfig(weight=quant_spec)
+
+            LLMTemplate.register_scheme(&quot;int8_wo&quot;, config=global_config)
+        &quot;&quot;&quot;
+        cls._SCHEME_COLLECTION.register_scheme(scheme_name, QuantizationScheme(config))
+        cls._SUPPORTED_SCHEMES = cls._SCHEME_COLLECTION.get_supported_schemes()</div>
+
+
+<div class="viewcode-block" id="LLMTemplate.unregister_scheme">
+<a class="viewcode-back" href="../../../../../autoapi/quark/torch/quantization/config/template/index.html#quark.torch.quantization.config.template.LLMTemplate.unregister_scheme">[docs]</a>
+    @classmethod
+    def unregister_scheme(cls, scheme_name: str) -&gt; None:
+        &quot;&quot;&quot;
+        Unregister a quantization scheme.
+
+        :param str scheme_name: Name of the scheme to unregister.
+
+        Example:
+
+        .. code-block:: python
+
+            from quark.torch import LLMTemplate
+
+            LLMTemplate.unregister_scheme(&quot;int8&quot;)
+        &quot;&quot;&quot;
+        cls._SCHEME_COLLECTION.unregister_scheme(scheme_name)
+        cls._SUPPORTED_SCHEMES = cls._SCHEME_COLLECTION.get_supported_schemes()</div>
+
+
+<div class="viewcode-block" id="LLMTemplate.get_config">
+<a class="viewcode-back" href="../../../../../autoapi/quark/torch/quantization/config/template/index.html#quark.torch.quantization.config.template.LLMTemplate.get_config">[docs]</a>
+    def get_config(
+        self,
+        scheme: str,
+        algorithm: Union[str, list[str]] | None = None,
+        kv_cache_scheme: str | None = None,
+        min_kv_scale: float = 0.0,
+        attention_scheme: str | None = None,
+        layer_config: dict[str, str] | None = None,
+        layer_type_config: dict[type[nn.Module], str] | None = None,
+        exclude_layers: list[str] | None = None,
+    ) -&gt; Config:
+        &quot;&quot;&quot;
+        Create a quantization configuration based on the provided parameters.
+
+        :param str scheme: Name of the quantization scheme.
+        :param Optional[Union[str, List[str]]] algorithm: Name or list of names of quantization algorithms to apply.
+        :param Optional[str] kv_cache_scheme: Name of the KV cache quantization scheme.
+        :param float min_kv_scale: Minimum value of KV Cache scale.
+        :param Optional[str] attention_scheme: Name of the attention quantization scheme.
+        :param Optional[Dict[str, str]] layer_config: Dictionary of layer name patterns and quantization scheme names.
+        :param Optional[Dict[Type[nn.Module], str]] layer_type_config: Dictionary of layer types and quantization scheme names.
+        :param Optional[List[str]] exclude_layers: List of layer names to exclude from quantization.
+
+        Example:
+
+        .. code-block:: python
+
+            from quark.torch import LLMTemplate
+
+            template = LLMTemplate.get(&quot;llama&quot;)
+            config = template.get_config(scheme=&quot;fp8&quot;, kv_cache_scheme=&quot;fp8&quot;)
+        &quot;&quot;&quot;
+        # Check if the scheme is supported
+        if scheme not in LLMTemplate._SUPPORTED_SCHEMES:
+            raise ValueError(f&quot;Unsupported quantization scheme: {scheme}&quot;)
+        # Check if the algorithm is supported
+        if algorithm:
+            if isinstance(algorithm, str):
+                algorithm = [algorithm]
+            for algo in algorithm:
+                if algo not in self._SUPPORTED_ALGORITHMS:
+                    raise ValueError(f&quot;Unsupported algorithm: {algo}&quot;)
+        # Check if the KV cache scheme is supported
+        if kv_cache_scheme and kv_cache_scheme not in self._SUPPORTED_KV_CACHE_SCHEMES:
+            raise ValueError(f&quot;Unsupported KV cache scheme: {kv_cache_scheme}&quot;)
+        # Check if the attention scheme is supported
+        if attention_scheme and attention_scheme not in self._SUPPORTED_ATTENTION_SCHEMES:
+            raise ValueError(f&quot;Unsupported attention scheme: {attention_scheme}&quot;)
+
+        # Set up base global configuration
+        global_config = self._create_global_config(scheme)
+
+        # Create config object
+        config = Config(
+            global_quant_config=global_config,
+            min_kv_scale=min_kv_scale,
+            exclude=self.exclude_layers_name,
+            kv_cache_group=self.kv_layers_name,
+        )
+
+        # Apply algorithm if specified
+        if algorithm:
+            config = self._set_algorithm(config, algorithm)
+
+        # Apply KV cache quantization if specified
+        if kv_cache_scheme:
+            config = self._set_kv_cache_config(config, kv_cache_scheme)
+
+        # Apply attention quantization if specified
+        if attention_scheme:
+            config = self._set_attention_config(config, attention_scheme)
+
+        # Apply per-layer configuration overrides
+        if layer_config:
+            config = self._set_layer_name_config(config, layer_config)
+        if layer_type_config:
+            config = self._set_layer_type_config(config, layer_type_config)
+
+        # Apply exclude layers configuration
+        if exclude_layers is not None:
+            config = self._set_exclude_layers_config(config, exclude_layers)
+
+        return config</div>
+
+
+    def _create_global_config(self, scheme: str) -&gt; QuantizationConfig:
+        return LLMTemplate._SCHEME_COLLECTION.get_scheme(scheme).config
+
+    def _set_algorithm(self, config: Config, algorithm: Union[str, list[str]]) -&gt; Config:
+        if isinstance(algorithm, str):
+            algorithm = [algorithm]
+        for algo in algorithm:
+            if config.algo_config is None:
+                config.algo_config = []
+            if algo.lower() == &quot;awq&quot;:
+                if self.awq_config:
+                    config.algo_config.append(self.awq_config)
+                else:
+                    logger.warning(
+                        f&quot;No AWQ config provided for {self.model_type}, &quot;
+                        &quot;falling back to default AWQ config. If you need customized AWQ quantization for this model, &quot;
+                        &quot;please provide the AWQ config, and pass it to LLMTemplate constructor.&quot;
+                    )
+                    # Fallback to default AWQ config
+                    config.algo_config.append(AWQConfig())
+            elif algo.lower() == &quot;gptq&quot;:
+                if self.gptq_config:
+                    config.algo_config.append(self.gptq_config)
+                else:
+                    logger.warning(
+                        f&quot;No GPTQ config provided for {self.model_type}, &quot;
+                        &quot;falling back to default GPTQ config. If you need customized GPTQ quantization for this model, &quot;
+                        &quot;please provide the GPTQ config, and pass it to LLMTemplate constructor.&quot;
+                    )
+                    # Fallback to default GPTQ config
+                    config.algo_config.append(GPTQConfig())
+            elif algo.lower() == &quot;smoothquant&quot;:
+                if self.smoothquant_config:
+                    config.algo_config.append(self.smoothquant_config)
+                else:
+                    logger.warning(
+                        f&quot;No SmoothQuant config provided for {self.model_type}, &quot;
+                        &quot;falling back to default SmoothQuant config. If you need customized SmoothQuant quantization for this model, &quot;
+                        &quot;please provide the SmoothQuant config, and pass it to LLMTemplate constructor.&quot;
+                    )
+                    # Fallback to default SmoothQuant config
+                    config.algo_config.append(SmoothQuantConfig())
+            elif algo.lower() == &quot;autosmoothquant&quot;:
+                if self.autosmoothquant_config:
+                    config.algo_config.append(self.autosmoothquant_config)
+                else:
+                    logger.warning(
+                        f&quot;No AutoSmoothQuant config provided for {self.model_type}, &quot;
+                        &quot;falling back to default AutoSmoothQuant config. If you need customized AutoSmoothQuant quantization for this model, &quot;
+                        &quot;please provide the AutoSmoothQuant config, and pass it to LLMTemplate constructor.&quot;
+                    )
+                    # Fallback to default AutoSmoothQuant config
+                    config.algo_config.append(AutoSmoothQuantConfig())
+            elif algo.lower() == &quot;rotation&quot;:
+                if self.rotation_config:
+                    config.algo_config.append(self.rotation_config)
+                else:
+                    logger.warning(
+                        f&quot;No Rotation config provided for {self.model_type}, &quot;
+                        &quot;not to use Rotation quantization for this model.&quot;
+                    )
+            else:
+                raise ValueError(f&quot;Unsupported algorithm: {algo}&quot;)
+        return config
+
+    def _set_kv_cache_config(self, config: Config, kv_cache_scheme: str) -&gt; Config:
+        # Use pattern matching to identify KV projection layers
+        if self.kv_layers_name is None:
+            return config
+
+        if kv_cache_scheme == &quot;fp8&quot;:
+            spec = FP8E4M3PerTensorSpec(observer_method=&quot;min_max&quot;, is_dynamic=False).to_quantization_spec()
+
+            for layer_name in self.kv_layers_name:
+                layer_config = QuantizationConfig(
+                    weight=config.global_quant_config.weight,
+                    input_tensors=config.global_quant_config.input_tensors,
+                    output_tensors=spec,
+                )
+                config.layer_quant_config[layer_name] = layer_config
+                # Create a separate config for KV cache
+                kv_cache_config = QuantizationConfig(
+                    weight=config.global_quant_config.weight,
+                    input_tensors=config.global_quant_config.input_tensors,
+                    output_tensors=spec,
+                )
+                config.kv_cache_quant_config[layer_name] = kv_cache_config
+        else:
+            raise ValueError(f&quot;Unsupported KV cache quantization scheme: {kv_cache_scheme}&quot;)
+        return config
+
+    def _set_attention_config(self, config: Config, attention_scheme: str) -&gt; Config:
+        if attention_scheme == &quot;fp8&quot;:
+            spec = FP8E4M3PerTensorSpec(observer_method=&quot;min_max&quot;, is_dynamic=False).to_quantization_spec()
+            config.softmax_quant_spec = spec
+
+            if self.q_layer_name is not None:
+                if isinstance(self.q_layer_name, str):
+                    self.q_layer_name = [self.q_layer_name]
+                for q_layer_name in self.q_layer_name:
+                    config.layer_quant_config[q_layer_name] = QuantizationConfig(
+                        weight=config.global_quant_config.weight,
+                        input_tensors=config.global_quant_config.input_tensors,
+                        output_tensors=spec,
+                    )
+        else:
+            raise ValueError(f&quot;Unsupported attention quantization scheme: {attention_scheme}&quot;)
+        return config
+
+    def _set_layer_name_config(self, config: Config, layer_name_config: dict[str, str]) -&gt; Config:
+        for layer_name, layer_scheme in layer_name_config.items():
+            config.layer_quant_config[layer_name] = LLMTemplate._SCHEME_COLLECTION.get_scheme(layer_scheme).config
+        return config
+
+    def _set_layer_type_config(self, config: Config, layer_type_config: dict[type[nn.Module], str]) -&gt; Config:
+        for layer_type, layer_scheme in layer_type_config.items():
+            config.layer_type_quant_config[layer_type] = LLMTemplate._SCHEME_COLLECTION.get_scheme(layer_scheme).config
+        return config
+
+    def _set_exclude_layers_config(self, config: Config, exclude_layers: list[str]) -&gt; Config:
+        config.exclude.clear()
+        for layer_name in exclude_layers:
+            config.exclude.append(layer_name)
+        return config</div>
+
+
+
+# Default template configurations
+DEFAULT_TEMPLATES = {
+    &quot;llama&quot;: {
+        &quot;kv_layers_name&quot;: [&quot;*k_proj&quot;, &quot;*v_proj&quot;],
+        &quot;q_layer_name&quot;: &quot;*q_proj&quot;,
+        &quot;exclude_layers_name&quot;: [&quot;lm_head&quot;],
+        &quot;awq_config&quot;: &quot;llama&quot;,
+        &quot;gptq_config&quot;: &quot;llama&quot;,
+        &quot;smoothquant_config&quot;: &quot;llama&quot;,
+        &quot;autosmoothquant_config&quot;: &quot;llama&quot;,
+        &quot;rotation_config&quot;: &quot;llama&quot;,
+    },
+    &quot;mllama&quot;: {
+        &quot;kv_layers_name&quot;: [&quot;*language_model.*k_proj&quot;, &quot;*language_model.*v_proj&quot;],
+        &quot;q_layer_name&quot;: &quot;*self_attn.q_proj&quot;,
+        &quot;exclude_layers_name&quot;: [&quot;*lm_head&quot;, &quot;*patch_embedding&quot;, &quot;multi_modal_projector&quot;],
+        &quot;awq_config&quot;: &quot;mllama&quot;,
+        &quot;gptq_config&quot;: &quot;mllama&quot;,
+        &quot;smoothquant_config&quot;: &quot;mllama&quot;,
+        &quot;autosmoothquant_config&quot;: &quot;mllama&quot;,
+        &quot;rotation_config&quot;: &quot;mllama&quot;,
+    },
+    &quot;llama4&quot;: {
+        &quot;kv_layers_name&quot;: [&quot;*language_model.*.k_proj&quot;, &quot;*language_model.*.v_proj&quot;],
+        &quot;q_layer_name&quot;: &quot;*language_model.*.q_proj&quot;,
+        &quot;exclude_layers_name&quot;: [
+            &quot;multi_modal_projector*&quot;,
+            &quot;*feed_forward.router&quot;,
+            &quot;vision_model*&quot;,
+            &quot;*lm_head&quot;,
+        ],
+        &quot;awq_config&quot;: &quot;llama4&quot;,
+        &quot;gptq_config&quot;: &quot;llama4&quot;,
+        &quot;smoothquant_config&quot;: &quot;llama4&quot;,
+        &quot;autosmoothquant_config&quot;: &quot;llama4&quot;,
+        &quot;rotation_config&quot;: &quot;llama4&quot;,
+    },
+    &quot;opt&quot;: {
+        &quot;kv_layers_name&quot;: [&quot;*k_proj&quot;, &quot;*v_proj&quot;],
+        &quot;q_layer_name&quot;: &quot;*q_proj&quot;,
+        &quot;exclude_layers_name&quot;: [&quot;lm_head&quot;],
+        &quot;awq_config&quot;: &quot;opt&quot;,
+        &quot;gptq_config&quot;: &quot;opt&quot;,
+        &quot;smoothquant_config&quot;: &quot;opt&quot;,
+        &quot;autosmoothquant_config&quot;: &quot;opt&quot;,
+        &quot;rotation_config&quot;: &quot;opt&quot;,
+    },
+    &quot;qwen2_moe&quot;: {
+        &quot;kv_layers_name&quot;: [&quot;*k_proj&quot;, &quot;*v_proj&quot;],
+        &quot;q_layer_name&quot;: &quot;*q_proj&quot;,
+        &quot;exclude_layers_name&quot;: [&quot;lm_head&quot;, &quot;*.gate&quot;, &quot;*.shared_expert_gate&quot;],
+        &quot;awq_config&quot;: &quot;qwen2_moe&quot;,
+        &quot;gptq_config&quot;: &quot;qwen2_moe&quot;,
+        &quot;smoothquant_config&quot;: &quot;qwen2_moe&quot;,
+        &quot;autosmoothquant_config&quot;: &quot;qwen2_moe&quot;,
+        &quot;rotation_config&quot;: &quot;qwen2_moe&quot;,
+    },
+    &quot;qwen2&quot;: {
+        &quot;kv_layers_name&quot;: [&quot;*k_proj&quot;, &quot;*v_proj&quot;],
+        &quot;q_layer_name&quot;: &quot;*q_proj&quot;,
+        &quot;exclude_layers_name&quot;: [&quot;lm_head&quot;],
+        &quot;awq_config&quot;: &quot;qwen2&quot;,
+        &quot;gptq_config&quot;: &quot;qwen2&quot;,
+        &quot;smoothquant_config&quot;: &quot;qwen2&quot;,
+        &quot;autosmoothquant_config&quot;: &quot;qwen2&quot;,
+        &quot;rotation_config&quot;: &quot;qwen2&quot;,
+    },
+    &quot;qwen&quot;: {
+        &quot;kv_layers_name&quot;: [&quot;*c_attn&quot;],
+        &quot;q_layer_name&quot;: &quot;*c_attn&quot;,
+        &quot;exclude_layers_name&quot;: [&quot;lm_head&quot;],
+        &quot;awq_config&quot;: &quot;qwen&quot;,
+        &quot;gptq_config&quot;: &quot;qwen&quot;,
+        &quot;smoothquant_config&quot;: &quot;qwen&quot;,
+        &quot;autosmoothquant_config&quot;: &quot;qwen&quot;,
+        &quot;rotation_config&quot;: &quot;qwen&quot;,
+    },
+    &quot;chatglm&quot;: {
+        &quot;kv_layers_name&quot;: [&quot;*query_key_value&quot;],
+        &quot;q_layer_name&quot;: &quot;*query_key_value&quot;,
+        &quot;exclude_layers_name&quot;: [&quot;transformer.output_layer&quot;],
+        &quot;awq_config&quot;: &quot;chatglm&quot;,
+        &quot;gptq_config&quot;: &quot;chatglm&quot;,
+        &quot;smoothquant_config&quot;: &quot;chatglm&quot;,
+        &quot;autosmoothquant_config&quot;: &quot;chatglm&quot;,
+        &quot;rotation_config&quot;: &quot;chatglm&quot;,
+    },
+    &quot;phi3&quot;: {
+        &quot;kv_layers_name&quot;: [&quot;*qkv_proj&quot;],
+        &quot;q_layer_name&quot;: &quot;*qkv_proj&quot;,
+        &quot;exclude_layers_name&quot;: [&quot;lm_head&quot;],
+        &quot;awq_config&quot;: &quot;phi3&quot;,
+        &quot;gptq_config&quot;: &quot;phi3&quot;,
+        &quot;smoothquant_config&quot;: &quot;phi3&quot;,
+        &quot;autosmoothquant_config&quot;: &quot;phi3&quot;,
+        &quot;rotation_config&quot;: &quot;phi3&quot;,
+    },
+    &quot;phi&quot;: {
+        &quot;kv_layers_name&quot;: [&quot;*k_proj&quot;, &quot;*v_proj&quot;],
+        &quot;q_layer_name&quot;: &quot;*q_proj&quot;,
+        &quot;exclude_layers_name&quot;: [&quot;lm_head&quot;],
+        &quot;awq_config&quot;: &quot;phi&quot;,
+        &quot;gptq_config&quot;: &quot;phi&quot;,
+        &quot;smoothquant_config&quot;: &quot;phi&quot;,
+        &quot;autosmoothquant_config&quot;: &quot;phi&quot;,
+        &quot;rotation_config&quot;: &quot;phi&quot;,
+    },
+    &quot;mistral&quot;: {
+        &quot;kv_layers_name&quot;: [&quot;*k_proj&quot;, &quot;*v_proj&quot;],
+        &quot;q_layer_name&quot;: &quot;*q_proj&quot;,
+        &quot;exclude_layers_name&quot;: [&quot;lm_head&quot;],
+        &quot;awq_config&quot;: &quot;mistral&quot;,
+        &quot;gptq_config&quot;: &quot;mistral&quot;,
+        &quot;smoothquant_config&quot;: &quot;mistral&quot;,
+        &quot;autosmoothquant_config&quot;: &quot;mistral&quot;,
+        &quot;rotation_config&quot;: &quot;mistral&quot;,
+    },
+    &quot;mixtral&quot;: {
+        &quot;kv_layers_name&quot;: [&quot;*k_proj&quot;, &quot;*v_proj&quot;],
+        &quot;q_layer_name&quot;: &quot;*q_proj&quot;,
+        &quot;exclude_layers_name&quot;: [&quot;lm_head&quot;, &quot;*.gate&quot;],
+        &quot;awq_config&quot;: &quot;mixtral&quot;,
+        &quot;gptq_config&quot;: &quot;mixtral&quot;,
+        &quot;smoothquant_config&quot;: &quot;mixtral&quot;,
+        &quot;autosmoothquant_config&quot;: &quot;mixtral&quot;,
+        &quot;rotation_config&quot;: &quot;mixtral&quot;,
+    },
+    &quot;gptj&quot;: {
+        &quot;kv_layers_name&quot;: [&quot;*k_proj&quot;, &quot;*v_proj&quot;],
+        &quot;q_layer_name&quot;: &quot;*q_proj&quot;,
+        &quot;exclude_layers_name&quot;: [&quot;lm_head&quot;],
+        &quot;awq_config&quot;: &quot;gptj&quot;,
+        &quot;gptq_config&quot;: &quot;gptj&quot;,
+        &quot;smoothquant_config&quot;: &quot;gptj&quot;,
+        &quot;autosmoothquant_config&quot;: &quot;gptj&quot;,
+        &quot;rotation_config&quot;: &quot;gptj&quot;,
+    },
+    &quot;grok-1&quot;: {
+        &quot;kv_layers_name&quot;: [&quot;*k_proj&quot;, &quot;*v_proj&quot;],
+        &quot;q_layer_name&quot;: &quot;*q_proj&quot;,
+        &quot;exclude_layers_name&quot;: [&quot;lm_head&quot;, &quot;*.gate&quot;],
+        &quot;awq_config&quot;: &quot;grok-1&quot;,
+        &quot;gptq_config&quot;: &quot;grok-1&quot;,
+        &quot;smoothquant_config&quot;: &quot;grok-1&quot;,
+        &quot;autosmoothquant_config&quot;: &quot;grok-1&quot;,
+        &quot;rotation_config&quot;: &quot;grok-1&quot;,
+    },
+    &quot;cohere&quot;: {
+        &quot;kv_layers_name&quot;: [&quot;*k_proj&quot;, &quot;*v_proj&quot;],
+        &quot;q_layer_name&quot;: &quot;*q_proj&quot;,
+        &quot;exclude_layers_name&quot;: [&quot;lm_head&quot;],
+        &quot;awq_config&quot;: &quot;cohere&quot;,
+        &quot;gptq_config&quot;: &quot;cohere&quot;,
+        &quot;smoothquant_config&quot;: &quot;cohere&quot;,
+        &quot;autosmoothquant_config&quot;: &quot;cohere&quot;,
+        &quot;rotation_config&quot;: &quot;cohere&quot;,
+    },
+    &quot;dbrx&quot;: {
+        &quot;kv_layers_name&quot;: [&quot;*Wqkv&quot;],
+        &quot;q_layer_name&quot;: &quot;*Wqkv&quot;,
+        &quot;exclude_layers_name&quot;: [&quot;lm_head&quot;, &quot;*router.layer&quot;],
+        &quot;awq_config&quot;: &quot;dbrx&quot;,
+        &quot;gptq_config&quot;: &quot;dbrx&quot;,
+        &quot;smoothquant_config&quot;: &quot;dbrx&quot;,
+        &quot;autosmoothquant_config&quot;: &quot;dbrx&quot;,
+        &quot;rotation_config&quot;: &quot;dbrx&quot;,
+    },
+    &quot;deepseek_v2&quot;: {
+        &quot;kv_layers_name&quot;: [&quot;*kv_b_proj&quot;],
+        &quot;q_layer_name&quot;: [&quot;*q_a_proj&quot;, &quot;*q_b_proj&quot;],
+        &quot;exclude_layers_name&quot;: [&quot;lm_head&quot;, &quot;*self_attn*&quot;, &quot;*mlp.gate&quot;],
+        &quot;awq_config&quot;: &quot;deepseek_v2&quot;,
+        &quot;gptq_config&quot;: &quot;deepseek_v2&quot;,
+        &quot;smoothquant_config&quot;: &quot;deepseek_v2&quot;,
+        &quot;autosmoothquant_config&quot;: &quot;deepseek_v2&quot;,
+        &quot;rotation_config&quot;: &quot;deepseek_v2&quot;,
+    },
+    &quot;deepseek_v3&quot;: {
+        &quot;kv_layers_name&quot;: [&quot;*kv_b_proj&quot;],
+        &quot;q_layer_name&quot;: [&quot;*q_a_proj&quot;, &quot;*q_b_proj&quot;],
+        &quot;exclude_layers_name&quot;: [&quot;lm_head&quot;, &quot;*self_attn*&quot;, &quot;*mlp.gate&quot;],
+        &quot;awq_config&quot;: &quot;deepseek_v3&quot;,
+        &quot;gptq_config&quot;: &quot;deepseek_v3&quot;,
+        &quot;smoothquant_config&quot;: &quot;deepseek_v3&quot;,
+        &quot;autosmoothquant_config&quot;: &quot;deepseek_v3&quot;,
+        &quot;rotation_config&quot;: &quot;deepseek_v3&quot;,
+    },
+    &quot;deepseek&quot;: {
+        &quot;kv_layers_name&quot;: [&quot;*k_proj&quot;, &quot;*v_proj&quot;],
+        &quot;q_layer_name&quot;: &quot;*q_proj&quot;,
+        &quot;exclude_layers_name&quot;: [&quot;lm_head&quot;, &quot;*.gate&quot;],
+        &quot;awq_config&quot;: &quot;deepseek&quot;,
+        &quot;gptq_config&quot;: &quot;deepseek&quot;,
+        &quot;smoothquant_config&quot;: &quot;deepseek&quot;,
+        &quot;autosmoothquant_config&quot;: &quot;deepseek&quot;,
+        &quot;rotation_config&quot;: &quot;deepseek&quot;,
+    },
+    &quot;olmo&quot;: {
+        &quot;kv_layers_name&quot;: [&quot;*k_proj&quot;, &quot;*v_proj&quot;],
+        &quot;q_layer_name&quot;: &quot;*q_proj&quot;,
+        &quot;exclude_layers_name&quot;: [&quot;lm_head&quot;],
+        &quot;awq_config&quot;: &quot;olmo&quot;,
+        &quot;gptq_config&quot;: &quot;olmo&quot;,
+        &quot;smoothquant_config&quot;: &quot;olmo&quot;,
+        &quot;autosmoothquant_config&quot;: &quot;olmo&quot;,
+        &quot;rotation_config&quot;: &quot;olmo&quot;,
+    },
+    &quot;gemma2&quot;: {
+        &quot;kv_layers_name&quot;: [&quot;*k_proj&quot;, &quot;*v_proj&quot;],
+        &quot;q_layer_name&quot;: &quot;*q_proj&quot;,
+        &quot;exclude_layers_name&quot;: [&quot;lm_head&quot;],
+        &quot;awq_config&quot;: &quot;gemma2&quot;,
+        &quot;gptq_config&quot;: &quot;gemma2&quot;,
+        &quot;smoothquant_config&quot;: &quot;gemma2&quot;,
+        &quot;autosmoothquant_config&quot;: &quot;gemma2&quot;,
+        &quot;rotation_config&quot;: &quot;gemma2&quot;,
+    },
+    &quot;gemma3_text&quot;: {
+        &quot;kv_layers_name&quot;: [&quot;*k_proj&quot;, &quot;*v_proj&quot;],
+        &quot;q_layer_name&quot;: &quot;*q_proj&quot;,
+        &quot;exclude_layers_name&quot;: [&quot;*lm_head&quot;],
+        &quot;awq_config&quot;: &quot;gemma3_text&quot;,
+        &quot;gptq_config&quot;: &quot;gemma3_text&quot;,
+        &quot;smoothquant_config&quot;: &quot;gemma3_text&quot;,
+        &quot;autosmoothquant_config&quot;: &quot;gemma3_text&quot;,
+        &quot;rotation_config&quot;: &quot;gemma3_text&quot;,
+    },
+    &quot;gemma3&quot;: {
+        &quot;kv_layers_name&quot;: [&quot;*language_model.*k_proj&quot;, &quot;*language_model.*v_proj&quot;],
+        &quot;q_layer_name&quot;: &quot;*language_model.*q_proj&quot;,
+        &quot;exclude_layers_name&quot;: [&quot;*vision_tower*&quot;, &quot;*multi_modal_projector*&quot;, &quot;*lm_head&quot;],
+        &quot;awq_config&quot;: &quot;gemma3&quot;,
+        &quot;gptq_config&quot;: &quot;gemma3&quot;,
+        &quot;smoothquant_config&quot;: &quot;gemma3&quot;,
+        &quot;autosmoothquant_config&quot;: &quot;gemma3&quot;,
+        &quot;rotation_config&quot;: &quot;gemma3&quot;,
+    },
+    &quot;instella&quot;: {
+        &quot;kv_layers_name&quot;: [&quot;*k_proj&quot;, &quot;*v_proj&quot;],
+        &quot;q_layer_name&quot;: &quot;*q_proj&quot;,
+        &quot;exclude_layers_name&quot;: [&quot;lm_head&quot;],
+        &quot;awq_config&quot;: &quot;instella&quot;,
+        &quot;gptq_config&quot;: &quot;instella&quot;,
+        &quot;smoothquant_config&quot;: &quot;instella&quot;,
+        &quot;autosmoothquant_config&quot;: &quot;instella&quot;,
+        &quot;rotation_config&quot;: &quot;instella&quot;,
+    },
+    &quot;gpt_oss&quot;: {
+        &quot;kv_layers_name&quot;: [&quot;*k_proj&quot;, &quot;*v_proj&quot;],
+        &quot;q_layer_name&quot;: &quot;*q_proj&quot;,
+        &quot;exclude_layers_name&quot;: [&quot;lm_head&quot;],
+        &quot;awq_config&quot;: &quot;gpt_oss&quot;,
+        &quot;gptq_config&quot;: &quot;gpt_oss&quot;,
+        &quot;smoothquant_config&quot;: &quot;gpt_oss&quot;,
+        &quot;autosmoothquant_config&quot;: &quot;gpt_oss&quot;,
+        &quot;rotation_config&quot;: &quot;gpt_oss&quot;,
+    },
+}
+
+
+def _create_template_from_config(model_type: str, config: dict[str, Any]) -&gt; LLMTemplate:
+    &quot;&quot;&quot;create a template from configuration dictionary.&quot;&quot;&quot;
+    return LLMTemplate(
+        model_type=model_type,
+        kv_layers_name=config[&quot;kv_layers_name&quot;],
+        q_layer_name=config[&quot;q_layer_name&quot;],
+        exclude_layers_name=config[&quot;exclude_layers_name&quot;],
+        awq_config=get_algo_config(&quot;awq&quot;, config[&quot;awq_config&quot;]),  # type: ignore
+        gptq_config=get_algo_config(&quot;gptq&quot;, config[&quot;gptq_config&quot;]),  # type: ignore
+        smoothquant_config=get_algo_config(&quot;smoothquant&quot;, config[&quot;smoothquant_config&quot;]),  # type: ignore
+        autosmoothquant_config=get_algo_config(&quot;autosmoothquant&quot;, config[&quot;autosmoothquant_config&quot;]),
+        rotation_config=get_algo_config(&quot;rotation&quot;, config[&quot;rotation_config&quot;]),
+    )  # type: ignore
+
+
+&quot;&quot;&quot;
+Developer Note for Quark Engineers:
+====================================
+
+To add a new model template, follow these steps:
+
+    1. Add the model configuration to DEFAULT_TEMPLATES dictionary above.
+    2. Add corresponding algorithm configs to the algo config registry if the algorithm is needed.
+    (see quark/torch/quantization/config/algo_config.py)
+    3. Update the docstring list in LLMTemplate.get() method to include the new model type.
+    4. Test the new template with various quantization schemes and algorithms
+
+Example for adding &quot;new_model&quot;:
+
+.. code-block:: python
+
+    &quot;new_model&quot;: {
+        &quot;kv_layers_name&quot;: [&quot;*attention.k_proj&quot;, &quot;*attention.v_proj&quot;],
+        &quot;q_layer_name&quot;: &quot;*attention.q_proj&quot;,
+        &quot;exclude_layers_name&quot;: [&quot;lm_head&quot;],
+        &quot;awq_config&quot;: &quot;new_model&quot;,
+        &quot;gptq_config&quot;: &quot;new_model&quot;,
+        &quot;smoothquant_config&quot;: &quot;new_model&quot;,
+        &quot;autosmoothquant_config&quot;: &quot;new_model&quot;,
+        &quot;rotation_config&quot;: &quot;new_model&quot;,
+    }
+&quot;&quot;&quot;
+
+# Register built-in templates
+for model_type, config in DEFAULT_TEMPLATES.items():
+    if model_type not in LLMTemplate._templates:
+        template = _create_template_from_config(model_type, config)
+        LLMTemplate.register_template(template)
+</pre></div>
+
+                </article>
+              
+
+              
+              
+              
+              
+                <footer class="prev-next-footer d-print-none">
+                  
+<div class="prev-next-area">
+</div>
+                </footer>
+              
+            </div>
+            
+            
+              
+            
+          </div>
+          <footer class="bd-footer-content">
+            <p>
+      Last updated on Sep 26, 2025.<br/>
+  </p>
+          </footer>
+        
+
+      </main>
+    </div>
+  </div>
+  
+  <!-- Scripts loaded after <body> so the DOM is not blocked -->
+  <script defer src="../../../../../_static/scripts/bootstrap.js?digest=8878045cc6db502f8baf"></script>
+<script defer src="../../../../../_static/scripts/pydata-sphinx-theme.js?digest=8878045cc6db502f8baf"></script>
+
+<footer class="rocm-footer">
+    <div class="container-lg">
+        <section class="bottom-menu menu py-45">
+            <div class="row d-flex align-items-center">
+                <div class="col-12 text-center">
+                    <ul>
+                        <li><a href="https://www.amd.com/en/corporate/copyright" target="_blank">Terms and Conditions</a></li>
+                        <li><a href="https://quark.docs.amd.com/latest/license.html">Quark Licenses and Disclaimers</a></li>
+                        <li><a href="https://www.amd.com/en/corporate/privacy" target="_blank">Privacy</a></li>
+                        <li><a href="https://www.amd.com/en/corporate/trademarks" target="_blank">Trademarks</a></li>
+                        <li><a href="https://www.amd.com/content/dam/amd/en/documents/corporate/cr/supply-chain-transparency.pdf" target="_blank">Supply Chain Transparency</a></li>
+                        <li><a href="https://www.amd.com/en/corporate/competition" target="_blank">Fair and Open Competition</a></li>
+                        <li><a href="https://www.amd.com/system/files/documents/amd-uk-tax-strategy.pdf" target="_blank">UK Tax Strategy</a></li>
+                        <li><a href="https://www.amd.com/en/corporate/cookies" target="_blank">Cookie Policy</a></li>
+                        <!-- OneTrust Cookies Settings button start -->
+                        <li><a href="#cookie-settings" id="ot-sdk-btn" class="ot-sdk-show-settings">Cookie Settings</a></li>
+                        <!-- OneTrust Cookies Settings button end -->
+                    </ul>
+                </div>
+            </div>
+            <div class="row d-flex align-items-center">
+                <div class="col-12 text-center">
+                    <div>
+                        <span class="copyright">© 2025 Advanced Micro Devices, Inc</span>
+                    </div>
+                </div>
+            </div>
+        </section>
+    </div>
+</footer>
+
+<!-- <div id="rdc-watermark-container">
+    <img id="rdc-watermark" src="../../../../../_static/images/alpha-watermark.svg" alt="DRAFT watermark"/>
+</div> -->
+  </body>
+</html>
