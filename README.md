@@ -17,7 +17,7 @@ pip install nltk
 ## Run Quantization Script
 cd examples/torch/language_modeling/llm_ptq/
 
-python quantize_quark.py --no_trust_remote_code --model_dir "Qwen/Qwen3-4B" --output_dir "quant_int4_Qwen3_4B" --quant_scheme w_uint4_per_group_asym --group_size 128 --num_calib_data 128 --seq_len 512 --quant_algo awq --dataset pileval_for_awq_benchmark --model_export hf_format --data_type bfloat16 --exclude_layers 
+python quantize_quark_qwen3_support.py --no_trust_remote_code --model_dir "Qwen/Qwen3-4B" --output_dir "quant_int4_Qwen3_4B" --quant_scheme w_uint4_per_group_asym --group_size 128 --num_calib_data 128 --seq_len 512 --quant_algo awq --dataset pileval_for_awq_benchmark --model_export hf_format --data_type bfloat16 --exclude_layers 
 
 
 # Quark
